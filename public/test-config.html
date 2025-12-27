@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geronimo V2 - Test de Configuración</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #1a1a1a;
+            color: #fff;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #eb6e24;
+            margin-bottom: 20px;
+        }
+
+        .section {
+            border: 2px solid #2c507f;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .section h2 {
+            color: #2c507f;
+            margin-bottom: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid #444;
+        }
+
+        th {
+            color: #aaa;
+        }
+
+        .success {
+            color: #44ff44;
+            font-weight: bold;
+        }
+
+        .error {
+            color: #ff4444;
+            font-weight: bold;
+        }
+
+        .warning {
+            color: #ffaa00;
+            font-weight: bold;
+        }
+
+        .loading {
+            color: #ffaa00;
+        }
+
+        #status {
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            background-color: #eb6e24;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+
+        .btn:hover {
+            background-color: #d15d1e;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 Geronimo V2 - Verificación de Configuración</h1>
+
+    <div id="status" class="loading">⏳ Cargando configuración...</div>
+
+    <div class="section">
+        <h2>📝 Variables de Entorno (Frontend)</h2>
+        <p style="color: #aaa; margin-bottom: 10px;">
+            Nota: Este es un archivo HTML estático. Las variables REACT_APP_ solo están disponibles
+            cuando la aplicación React está compilada. Esta prueba verifica la conexión directa con el backend.
+        </p>
+        <button class="btn" onclick="testEnvVars()">🔄 Probar Variables de Entorno</button>
+    </div>
+
+    <div class="section">
+        <h2>🔗 Conexión con Backend V2</h2>
+        <button class="btn" onclick="testBackend()">🔄 Probar Backend</button>
+        <button class="btn" onclick="testBackendConfig()">🔐 Verificar Config Keycloak</button>
+        <button class="btn" onclick="testBackendHealth()">💚 Health Check</button>
+
+        <div id="backendResults" style="margin-top: 15px;"></div>
+    </div>
+
+    <div class="section">
+        <h2>🔐 Keycloak - Well-Known Configuration</h2>
+        <button class="btn" onclick="testKeycloak()">🔄 Probar Keycloak</button>
+
+        <div id="keycloakResults" style="margin-top: 15px;"></div>
+    </div>
+
+    <div class="section" style="border-color: #44ff44;">
+        <h2 style="color: #44ff44;">📋 Checklist de Verificación</h2>
+        <ul id="checklist" style="list-style: none; padding-left: 0;">
+            <li id="check-backend" class="warning">⏳ Backend V2 respondiendo</li>
+            <li id="check-keycloak" class="warning">⏳ Keycloak accesible</li>
+            <li id="check-config" class="warning">⏳ Configuración coherente</li>
+            <li id="check-cors" class="warning">⏳ CORS configurado</li>
+        </ul>
+    </div>
+
+    <script>
+        const BACKEND_URL = 'http://62.171.160.238:3005';
+        const KEYCLOAK_URL = 'http://62.171.160.238:8095';
+        const KEYCLOAK_REALM = 'geronimo-v2-dev';
+
+        function updateStatus(message, type = 'loading') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.className = type;
+
+            if (type === 'loading') statusDiv.innerHTML = `⏳ ${message}`;
+            else if (type === 'success') statusDiv.innerHTML = `✅ ${message}`;
+            else if (type === 'error') statusDiv.innerHTML = `❌ ${message}`;
+        }
+
+        function updateChecklistItem(id, status) {
+            const item = document.getElementById(id);
+            if (!item) return;
+
+            if (status === 'success') {
+                item.className = 'success';
+                item.innerHTML = item.innerHTML.replace('⏳', '✅');
+            } else if (status === 'error') {
+                item.className = 'error';
+                item.innerHTML = item.innerHTML.replace('⏳', '❌');
+            }
+        }
+
+        async function testEnvVars() {
+            alert('Variables REACT_APP_ solo están disponibles en la app React compilada.\\n\\n' +
+                  'Para probarlas, ejecuta:\\n' +
+                  'npm start\\n\\n' +
+                  'Y accede a la app en http://localhost:3000');
+        }
+
+        async function testBackendHealth() {
+            try {
+                updateStatus('Probando health check del backend...', 'loading');
+                const response = await fetch(`${BACKEND_URL}/health`);
+                const data = await response.json();
+
+                document.getElementById('backendResults').innerHTML = `
+                    <div class="success" style="background: #044; padding: 10px; border-radius: 4px;">
+                        <p><strong>✅ Health Check Exitoso</strong></p>
+                        <table style="margin-top: 10px;">
+                            <tr><td>Status:</td><td class="success">${data.status}</td></tr>
+                            <tr><td>Version:</td><td>${data.version}</td></tr>
+                            <tr><td>Environment:</td><td>${data.environment}</td></tr>
+                            <tr><td>Timestamp:</td><td>${data.timestamp}</td></tr>
+                        </table>
+                    </div>
+                `;
+
+                updateChecklistItem('check-backend', 'success');
+                updateStatus('Backend V2 funcionando correctamente', 'success');
+            } catch (error) {
+                document.getElementById('backendResults').innerHTML = `
+                    <div class="error" style="background: #440000; padding: 10px; border-radius: 4px;">
+                        <p><strong>❌ Error conectando con backend</strong></p>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+
+                updateChecklistItem('check-backend', 'error');
+                updateStatus('Error conectando con backend', 'error');
+            }
+        }
+
+        async function testBackendConfig() {
+            try {
+                updateStatus('Verificando configuración de Keycloak en backend...', 'loading');
+                const response = await fetch(`${BACKEND_URL}/api/v2/auth/config`);
+                const data = await response.json();
+
+                document.getElementById('backendResults').innerHTML = `
+                    <div class="success" style="background: #044; padding: 10px; border-radius: 4px;">
+                        <p><strong>✅ Configuración de Keycloak (Backend)</strong></p>
+                        <table style="margin-top: 10px;">
+                            <tr><td>Keycloak URL:</td><td>${data.keycloakUrl}</td></tr>
+                            <tr><td>Realm:</td><td class="success">${data.realm}</td></tr>
+                            <tr><td>Client ID:</td><td>${data.clientId}</td></tr>
+                            <tr><td>Public Key URL:</td><td style="font-size: 11px;">${data.publicKeyUrl}</td></tr>
+                        </table>
+                    </div>
+                `;
+
+                updateChecklistItem('check-config', 'success');
+                updateStatus('Configuración de Keycloak verificada', 'success');
+            } catch (error) {
+                document.getElementById('backendResults').innerHTML = `
+                    <div class="error" style="background: #440000; padding: 10px; border-radius: 4px;">
+                        <p><strong>❌ Error obteniendo configuración</strong></p>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+
+                updateChecklistItem('check-config', 'error');
+                updateStatus('Error obteniendo configuración', 'error');
+            }
+        }
+
+        async function testBackend() {
+            try {
+                updateStatus('Conectando con backend V2...', 'loading');
+                const response = await fetch(`${BACKEND_URL}/`);
+                const data = await response.json();
+
+                document.getElementById('backendResults').innerHTML = `
+                    <div class="success" style="background: #044; padding: 10px; border-radius: 4px;">
+                        <p><strong>✅ Backend Respondiendo</strong></p>
+                        <table style="margin-top: 10px;">
+                            <tr><td>Nombre:</td><td>${data.name}</td></tr>
+                            <tr><td>Versión:</td><td class="success">${data.version}</td></tr>
+                            <tr><td>Mensaje:</td><td>${data.message}</td></tr>
+                        </table>
+                        <p style="margin-top: 10px; color: #aaa;">Endpoints disponibles:</p>
+                        <ul style="margin-left: 20px; color: #aaa;">
+                            ${Object.entries(data.endpoints).map(([key, value]) =>
+                                `<li>${key}: <span style="color: #44ff44;">${value}</span></li>`
+                            ).join('')}
+                        </ul>
+                    </div>
+                `;
+
+                updateChecklistItem('check-backend', 'success');
+                updateChecklistItem('check-cors', 'success');
+                updateStatus('Conexión con backend exitosa', 'success');
+            } catch (error) {
+                document.getElementById('backendResults').innerHTML = `
+                    <div class="error" style="background: #440000; padding: 10px; border-radius: 4px;">
+                        <p><strong>❌ Error conectando con backend</strong></p>
+                        <p>${error.message}</p>
+                        <p style="margin-top: 10px; color: #aaa;">Posibles causas:</p>
+                        <ul style="margin-left: 20px; color: #aaa;">
+                            <li>Backend no está corriendo en puerto 3005</li>
+                            <li>CORS no está configurado</li>
+                            <li>Firewall bloqueando la conexión</li>
+                        </ul>
+                    </div>
+                `;
+
+                updateChecklistItem('check-backend', 'error');
+                updateChecklistItem('check-cors', 'error');
+                updateStatus('Error conectando con backend', 'error');
+            }
+        }
+
+        async function testKeycloak() {
+            try {
+                updateStatus('Verificando Keycloak well-known configuration...', 'loading');
+                const url = `${KEYCLOAK_URL}/realms/${KEYCLOAK_REALM}/.well-known/openid-configuration`;
+                const response = await fetch(url);
+                const data = await response.json();
+
+                document.getElementById('keycloakResults').innerHTML = `
+                    <div class="success" style="background: #044; padding: 10px; border-radius: 4px;">
+                        <p><strong>✅ Keycloak Accesible</strong></p>
+                        <table style="margin-top: 10px;">
+                            <tr><td>Issuer:</td><td style="font-size: 12px;">${data.issuer}</td></tr>
+                            <tr><td>Authorization Endpoint:</td><td style="font-size: 11px;">${data.authorization_endpoint}</td></tr>
+                            <tr><td>Token Endpoint:</td><td style="font-size: 11px;">${data.token_endpoint}</td></tr>
+                            <tr><td>Userinfo Endpoint:</td><td style="font-size: 11px;">${data.userinfo_endpoint}</td></tr>
+                        </table>
+                    </div>
+                `;
+
+                updateChecklistItem('check-keycloak', 'success');
+                updateStatus('Keycloak configurado correctamente', 'success');
+            } catch (error) {
+                document.getElementById('keycloakResults').innerHTML = `
+                    <div class="error" style="background: #440000; padding: 10px; border-radius: 4px;">
+                        <p><strong>❌ Error conectando con Keycloak</strong></p>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+
+                updateChecklistItem('check-keycloak', 'error');
+                updateStatus('Error conectando con Keycloak', 'error');
+            }
+        }
+
+        // Auto-test on load
+        window.addEventListener('load', async () => {
+            updateStatus('Iniciando verificación automática...', 'loading');
+            await testBackendHealth();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            await testBackendConfig();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            await testKeycloak();
+        });
+    </script>
+</body>
+</html>

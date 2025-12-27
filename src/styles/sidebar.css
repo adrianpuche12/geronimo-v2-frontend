@@ -1,0 +1,281 @@
+/* ========================================
+   SIDEBAR
+   ======================================== */
+
+.sidebar {
+  width: 280px;
+  background-color: var(--md-surface-4dp);
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  box-shadow: var(--md-elevation-16);
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: var(--md-surface-4dp);
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: var(--md-surface-8dp);
+  border-radius: var(--md-radius-small);
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: var(--md-surface-12dp);
+}
+
+.sidebar h2 {
+  padding: var(--md-spacing-2) var(--md-spacing-2) var(--md-spacing-1) var(--md-spacing-2);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1.25px;
+  color: var(--md-text-medium);
+}
+
+.sidebar h3 {
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1.25px;
+  color: var(--md-text-medium);
+  margin-bottom: var(--md-spacing-1);
+}
+
+/* ========================================
+   PROJECT SELECTOR
+   ======================================== */
+
+.project-selector {
+  padding: var(--md-spacing-2) var(--md-spacing-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--md-spacing-1);
+}
+
+.project-selector select {
+  width: 100%;
+  padding: var(--md-spacing-1) var(--md-spacing-2);
+  background-color: var(--md-surface-8dp);
+  color: var(--md-text-high);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--md-radius-medium);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: var(--md-transition-standard);
+  font-weight: 500;
+}
+
+.project-selector select:hover {
+  background-color: var(--md-surface-12dp);
+  border-color: var(--md-primary);
+}
+
+.project-selector select:focus {
+  outline: none;
+  border-color: var(--md-primary);
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.12);
+}
+
+.create-project-btn {
+  width: 100%;
+  padding: var(--md-spacing-1) var(--md-spacing-2);
+  background: var(--md-primary);
+  color: white;
+  border: none;
+  border-radius: var(--md-radius-medium);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1.25px;
+  cursor: pointer;
+  transition: var(--md-transition-standard);
+  box-shadow: var(--md-elevation-2);
+}
+
+.create-project-btn:hover:not(:disabled) {
+  background: var(--md-primary-light);
+  box-shadow: var(--md-elevation-4);
+}
+
+.create-project-btn:active:not(:disabled) {
+  box-shadow: var(--md-elevation-8);
+}
+
+.create-project-btn:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+  box-shadow: var(--md-elevation-0);
+}
+
+/* ========================================
+   CREATE PROJECT FORM
+   ======================================== */
+
+.create-project-form {
+  padding: var(--md-spacing-2) var(--md-spacing-2);
+  background-color: var(--md-surface-2dp);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  margin-bottom: var(--md-spacing-2);
+}
+
+.create-project-form h3 {
+  margin-bottom: var(--md-spacing-2);
+  color: var(--md-text-high);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.create-project-form input,
+.create-project-form textarea {
+  width: 100%;
+  padding: var(--md-spacing-1);
+  background-color: var(--md-surface-4dp);
+  color: var(--md-text-high);
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: var(--md-radius-small) var(--md-radius-small) 0 0;
+  font-size: 0.875rem;
+  margin-bottom: var(--md-spacing-1);
+  font-family: inherit;
+  transition: var(--md-transition-standard);
+}
+
+.create-project-form input:focus,
+.create-project-form textarea:focus {
+  outline: none;
+  border-bottom-color: var(--md-primary);
+  border-bottom-width: 2px;
+  background-color: var(--md-surface-6dp);
+}
+
+.create-project-form textarea {
+  resize: vertical;
+  min-height: 64px;
+}
+
+.create-project-form .submit-btn {
+  width: 100%;
+  padding: var(--md-spacing-1);
+  background: var(--md-success);
+  color: white;
+  border: none;
+  border-radius: var(--md-radius-medium);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1.25px;
+  cursor: pointer;
+  transition: var(--md-transition-standard);
+  box-shadow: var(--md-elevation-2);
+}
+
+.create-project-form .submit-btn:hover:not(:disabled) {
+  box-shadow: var(--md-elevation-4);
+  background: #66BB6A;
+}
+
+.create-project-form .submit-btn:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+  box-shadow: var(--md-elevation-0);
+}
+
+/* ========================================
+   UPLOAD SECTION
+   ======================================== */
+
+.upload-section {
+  padding: var(--md-spacing-2) var(--md-spacing-2);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.upload-area {
+  border: 2px dashed rgba(255, 255, 255, 0.12);
+  border-radius: var(--md-radius-medium);
+  padding: var(--md-spacing-4) var(--md-spacing-2);
+  text-align: center;
+  cursor: pointer;
+  transition: var(--md-transition-standard);
+  background-color: var(--md-surface-2dp);
+}
+
+.upload-area:hover {
+  border-color: var(--md-primary);
+  background-color: var(--md-surface-4dp);
+}
+
+.upload-area.dragging {
+  border-color: var(--md-primary);
+  background-color: var(--md-surface-4dp);
+  box-shadow: var(--md-elevation-4);
+}
+
+.upload-area.disabled {
+  border-color: var(--md-text-disabled);
+  background-color: var(--md-surface-2dp);
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.upload-area.disabled:hover {
+  background-color: var(--md-surface-2dp);
+  border-color: var(--md-text-disabled);
+}
+
+.upload-icon {
+  font-size: 2.5rem;
+  margin-bottom: var(--md-spacing-1);
+  opacity: 0.6;
+}
+
+.upload-area p {
+  color: var(--md-text-medium);
+  font-size: 0.875rem;
+  margin: var(--md-spacing-1) 0;
+}
+
+.upload-area p strong {
+  color: var(--md-text-high);
+}
+
+.file-list {
+  margin-top: var(--md-spacing-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--md-spacing-1);
+}
+
+.file-item {
+  padding: var(--md-spacing-1);
+  background-color: var(--md-surface-6dp);
+  border-radius: var(--md-radius-small);
+  font-size: 0.8125rem;
+  color: var(--md-text-medium);
+  word-break: break-word;
+  display: flex;
+  align-items: center;
+  gap: var(--md-spacing-1);
+}
+
+.file-item::before {
+  content: '📄';
+  font-size: 1.1rem;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    max-height: 300px;
+  }
+}

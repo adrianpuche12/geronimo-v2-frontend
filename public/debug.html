@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Keycloak Debug</title>
+    <script src="https://cdn.jsdelivr.net/npm/keycloak-js@23.0.0/dist/keycloak.min.js"></script>
+</head>
+<body>
+    <h1>Keycloak Debug Test</h1>
+    <div id="status">Inicializando...</div>
+    <pre id="logs"></pre>
+
+    <script>
+        const logsDiv = document.getElementById('logs');
+        const statusDiv = document.getElementById('status');
+
+        function log(msg) {
+            console.log(msg);
+            logsDiv.textContent += msg + '\n';
+        }
+
+        const keycloak = new Keycloak({
+            url: 'http://62.171.160.238:8095/',
+            realm: 'geronimo-v2',
+            clientId: 'geronimo-v2-frontend'
+        });
+
+        log('Iniciando Keycloak...');
+        log('Config: ' + JSON.stringify({
+            url: 'http://62.171.160.238:8095/',
+            realm: 'geronimo-v2',
+            clientId: 'geronimo-v2-frontend'
+        }, null, 2));
+
+        keycloak.init({
+            onLoad: 'login-required',
+            checkLoginIframe: false
+        }).then(authenticated => {
+            log('Authenticated: ' + authenticated);
+            statusDiv.innerHTML = authenticated ?
+                '<span style="color:green">✅ AUTENTICADO</span>' :
+                '<span style="color:red">❌ NO AUTENTICADO</span>';
+
+            if (authenticated) {
+                log('Token: ' + keycloak.token.substring(0, 50) + '...');
+                log('User: ' + JSON.stringify(keycloak.tokenParsed, null, 2));
+            }
+        }).catch(error => {
+            log('ERROR: ' + error);
+            statusDiv.innerHTML = '<span style="color:red">❌ ERROR</span>';
+        });
+    </script>
+</body>
+</html>
