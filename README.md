@@ -1,70 +1,262 @@
-# Getting Started with Create React App
+# Geronimo 2.0 Frontend - Nilo
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Frontend de Geronimo 2.0, asistente inteligente de documentación con IA.
 
-## Available Scripts
+## 🎨 Características
 
-In the project directory, you can run:
+- **Tema Oscuro Geronimo 2.0**: Interfaz moderna con colores #000000 (negro) y #FF6600 (naranja)
+- **DocumentReader Profesional**: Vista de lectura estilo Medium/Notion con:
+  - Header ultra-compacto horizontal
+  - Tabla de contenidos automática
+  - Barra de progreso de lectura
+  - Búsqueda dentro del documento
+  - Descarga y copia de texto
+  - Tiempo estimado de lectura
+- **Gestión de Documentos**: Upload, visualización y búsqueda de PDFs, Word, imágenes y texto
+- **Chat con IA**: Interacción con documentos usando OpenAI
+- **Motor de Prompts CAPA 4**: Modos especializados (general, estadísticas, negocios)
+- **Integraciones**: Gmail, GitHub, Google Drive
 
-### `npm start`
+## 🚀 Inicio Rápido
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Prerequisitos
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Node.js 16+ y npm
+- Backend de Geronimo 2.0 corriendo
 
-### `npm test`
+### Instalación
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+# Clonar el repositorio
+git clone https://github.com/adrianpuche12/geronimo-v2-frontend.git
+cd geronimo-v2-frontend
 
-### `npm run build`
+# Instalar dependencias
+npm install
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# Configurar variables de entorno
+cp .env.example .env
+# Editar .env con tus configuraciones
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Variables de Entorno
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Crear archivo `.env` en la raíz del proyecto:
 
-### `npm run eject`
+```bash
+# API Backend
+REACT_APP_API_URL=/api
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+# Autenticación (opcional)
+REACT_APP_DISABLE_AUTH=true  # Desactivar Keycloak para desarrollo
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# Keycloak (si DISABLE_AUTH=false)
+REACT_APP_KEYCLOAK_URL=http://localhost:8095/
+REACT_APP_KEYCLOAK_REALM=geronimo-v2
+REACT_APP_KEYCLOAK_CLIENT_ID=geronimo-v2-frontend
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Desarrollo
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+# Iniciar servidor de desarrollo
+npm start
 
-## Learn More
+# Abrir http://localhost:3000
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Producción
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+# Generar build optimizado
+REACT_APP_API_URL=/api REACT_APP_DISABLE_AUTH=true npm run build
 
-### Code Splitting
+# Los archivos estarán en ./build/
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 📁 Estructura del Proyecto
 
-### Analyzing the Bundle Size
+```
+src/
+├── componentes/
+│   ├── document-reader.js      # Vista de lectura profesional
+│   ├── integrations.js         # Gestión de integraciones
+│   ├── modal.js                # Modales de vista previa
+│   ├── project-bar.js          # Barra lateral de proyectos
+│   ├── prompt-engine.js        # Motor CAPA 4
+│   ├── unified-header.js       # Header unificado
+│   ├── UserHeader.js           # Header del usuario
+│   └── chat.js                 # Componente de chat
+├── styles/
+│   ├── document-reader.css     # Estilos del reader (tema oscuro)
+│   ├── integrations.css
+│   ├── modal.css
+│   ├── project-bar.css
+│   ├── prompt-engine.css
+│   └── unified-header.css
+├── context/
+│   └── AuthContext.js          # Contexto de autenticación
+├── assets/
+│   └── images/
+│       └── logo.png            # Logo de Nilo
+├── App.js                      # Componente principal
+└── index.js                    # Punto de entrada
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 🎨 Componentes Principales
 
-### Making a Progressive Web App
+### DocumentReader
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Vista de lectura profesional para documentos con tema oscuro Geronimo 2.0.
 
-### Advanced Configuration
+**Características:**
+- Header compacto horizontal con metadata inline
+- Tabla de contenidos automática desde headings
+- Barra de progreso de lectura en tiempo real
+- Búsqueda dentro del documento
+- Botones de descarga, copia e impresión
+- Soporte para PDF, Word, Markdown, texto plano
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+**Uso:**
+```jsx
+import { DocumentReader } from './componentes/document-reader';
 
-### Deployment
+<DocumentReader
+  document={documentObject}
+  onClose={() => setShowReader(false)}
+/>
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### PromptEngine (CAPA 4)
 
-### `npm run build` fails to minify
+Motor de prompts especializados con 3 modos:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- **General**: Respuestas generales sobre documentos
+- **Estadísticas**: Análisis numérico y métricas
+- **Negocios**: Insights de negocio
+
+## 🔧 Configuración
+
+### Desactivar Autenticación
+
+Para desarrollo sin Keycloak:
+
+1. Agregar en `.env`:
+```bash
+REACT_APP_DISABLE_AUTH=true
+```
+
+2. La aplicación permitirá acceso sin login
+
+### Con Keycloak
+
+1. Configurar variables en `.env`:
+```bash
+REACT_APP_KEYCLOAK_URL=http://your-keycloak:8095/
+REACT_APP_KEYCLOAK_REALM=geronimo-v2
+REACT_APP_KEYCLOAK_CLIENT_ID=geronimo-v2-frontend
+```
+
+2. NO incluir `REACT_APP_DISABLE_AUTH` o setearla a `false`
+
+## 🎨 Paleta de Colores (Geronimo 2.0)
+
+```css
+/* Principales */
+--primary-black: #000000;
+--primary-dark: #111111;
+--accent-orange: #FF6600;
+
+/* Secundarios */
+--dark-bg: #0a0a0a;
+--border-dark: #2a2a2a;
+--text-light: #ffffff;
+--text-gray: #cccccc;
+```
+
+## 📦 Build y Deploy
+
+### Build Local
+
+```bash
+npm run build
+```
+
+### Deploy a Servidor
+
+```bash
+# En el servidor
+cd /opt/geronimo/frontend-src
+git pull origin master
+REACT_APP_API_URL=/api REACT_APP_DISABLE_AUTH=true npm run build
+cp -r build/* /opt/geronimo-v2/frontend/
+nginx -s reload
+```
+
+## 🐛 Troubleshooting
+
+### No veo los proyectos en producción
+
+1. Verificar que el backend está corriendo:
+```bash
+curl http://localhost:3005/api/projects
+```
+
+2. Verificar que nginx está proxeando correctamente:
+```bash
+curl http://localhost:82/api/projects
+```
+
+3. Verificar que `REACT_APP_DISABLE_AUTH=true` está en el build:
+```bash
+# Rebuild con variables explícitas
+REACT_APP_API_URL=/api REACT_APP_DISABLE_AUTH=true npm run build
+```
+
+4. Limpiar caché del navegador: Ctrl + Shift + R
+
+### Favicon no actualiza
+
+1. Limpiar caché del navegador completamente
+2. Cerrar todas las pestañas de la app
+3. Volver a abrir
+
+## 📝 Changelog
+
+### v2.0.0 (2026-01-03)
+
+#### Agregado
+- **DocumentReader**: Vista profesional estilo Medium con tema oscuro
+- **Header compacto**: Layout horizontal para maximizar espacio de contenido
+- **Soporte para desactivar autenticación**: Variable `REACT_APP_DISABLE_AUTH`
+- **Logo de Nilo**: Favicon actualizado en todas las resoluciones
+- **Extracción de texto**: PDF y Word extraídos automáticamente para búsqueda
+- **Integrations**: Gestión de Gmail, GitHub, Google Drive
+- **Prompt Engine CAPA 4**: 3 modos especializados de análisis
+
+#### Modificado
+- Tema completo migrado a Geronimo 2.0 (negro + naranja)
+- Manifest.json actualizado con branding de Nilo
+- AuthContext con soporte para bypass de autenticación
+
+## 🤝 Contribuir
+
+1. Fork el proyecto
+2. Crear branch de feature (`git checkout -b feature/AmazingFeature`)
+3. Commit cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push al branch (`git push origin feature/AmazingFeature`)
+5. Abrir Pull Request
+
+## 📄 Licencia
+
+Proyecto privado - Geronimo 2.0
+
+## 👥 Autores
+
+- **Jorge Adrian Pucheta** - Desarrollo Frontend
+- **Claude Sonnet 4.5** - Asistente de desarrollo IA
+
+## 🔗 Links
+
+- [Backend Repository](https://github.com/adrianpuche12/geronimo-v2-backend)
+- [Documentación de Deployment](./DEPLOYMENT_2025-12-27.md)
