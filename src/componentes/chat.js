@@ -1,5 +1,6 @@
 import React from 'react';
 import { ExportMenu } from './utilities';
+import { EnrichedResponse } from './prompt-engine';
 
 export const Chat = ({
   messages,
@@ -37,7 +38,12 @@ export const Chat = ({
                    message.role === 'assistant' ? 'Nilo' : 'Sistema'}
                 </div>
                 <div className="message-content">
-                  {message.content}
+                  {/* CAPA 4: Usar EnrichedResponse si hay datos estructurados */}
+                  {message.role === 'assistant' && (message.charts || message.tables || message.metrics || message.recommendations) ? (
+                    <EnrichedResponse response={message} />
+                  ) : (
+                    message.content
+                  )}
                 </div>
                 {message.role === 'assistant' && (
                   <div className="message-actions">

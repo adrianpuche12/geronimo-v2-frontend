@@ -7,7 +7,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding: 8px 16px;
+  padding: 0;
   width: 100%;
 }
 
@@ -15,48 +15,18 @@
   position: relative;
 }
 
-/* Modern User Avatar Button with Glassmorphism */
+/* Solo Avatar Circular - Clickeable */
 .user-avatar-button {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 16px;
-  border-radius: 50px;
+  background: none;
+  border: none;
+  padding: 0;
   cursor: pointer;
-  color: var(--text-primary);
-
-  /* Glassmorphism */
-  background: rgba(26, 26, 26, 0.6);
-  backdrop-filter: blur(15px) saturate(180%);
-  -webkit-backdrop-filter: blur(15px) saturate(180%);
-
-  /* Gradient Border */
-  border: 2px solid transparent;
-  background-image:
-    linear-gradient(rgba(26, 26, 26, 0.6), rgba(26, 26, 26, 0.6)),
-    linear-gradient(135deg, rgba(255, 102, 0, 0.3), rgba(255, 107, 53, 0.3));
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
-
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow:
-    0 4px 15px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
-
-  /* GPU Acceleration */
   transform: translateZ(0);
-  will-change: transform, box-shadow;
 }
 
 .user-avatar-button:hover {
-  background-image:
-    linear-gradient(rgba(26, 26, 26, 0.8), rgba(26, 26, 26, 0.8)),
-    linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-  transform: translateY(-2px) translateZ(0);
-  box-shadow:
-    0 8px 25px rgba(255, 102, 0, 0.4),
-    0 0 30px rgba(255, 102, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transform: scale(1.05) translateZ(0);
 }
 
 /* Modern Avatar with Gradient and Glow */
@@ -131,60 +101,49 @@
   position: absolute;
   top: calc(100% + 12px);
   right: 0;
-  min-width: 340px;
-  z-index: 1000;
-  overflow: hidden;
-  border-radius: 16px;
+  min-width: 300px;
+  z-index: 99999;
 
-  /* Glassmorphism */
-  background: rgba(17, 17, 17, 0.9);
-  backdrop-filter: blur(25px) saturate(180%);
-  -webkit-backdrop-filter: blur(25px) saturate(180%);
+  /* Glassmorphism - igual que dropdown de Modo */
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
 
-  /* Gradient Border */
-  border: 2px solid transparent;
+  /* Border con gradiente naranja */
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
   background-image:
-    linear-gradient(rgba(17, 17, 17, 0.9), rgba(17, 17, 17, 0.9)),
+    linear-gradient(rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.95)),
     linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
   background-origin: border-box;
   background-clip: padding-box, border-box;
 
+  /* Sombra elegante */
   box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.6),
-    0 0 80px rgba(255, 102, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    0 8px 32px rgba(0, 0, 0, 0.6),
+    0 2px 8px rgba(255, 102, 0, 0.3);
 
-  animation: menuSlideDown 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: dropdownFadeIn 0.2s ease-out;
 }
 
-@keyframes menuSlideDown {
+@keyframes dropdownFadeIn {
   from {
     opacity: 0;
-    transform: translateY(-20px) scale(0.95);
+    transform: translateY(-10px);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
   }
 }
 
-/* Modern Menu Header with Glassmorphism */
+/* Menu Header - Información del usuario */
 .user-menu-header {
-  padding: 24px;
+  padding: 1.5rem;
   display: flex;
-  gap: 16px;
+  gap: 1rem;
   align-items: center;
-
-  /* Glassmorphism */
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(10px);
-
-  border-bottom: 2px solid transparent;
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    linear-gradient(90deg, transparent, var(--accent-primary), transparent);
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
+  border-bottom: 1px solid rgba(255, 102, 0, 0.2);
 }
 
 /* Modern Avatar in Menu */
@@ -252,177 +211,67 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-/* Modern Divider */
+/* Divider */
 .user-menu-divider {
-  height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(255, 102, 0, 0.3), transparent);
+  height: 1px;
+  background: rgba(255, 102, 0, 0.2);
   margin: 0;
 }
 
-/* Modern Menu Options Container */
+/* Menu Options Container */
 .user-menu-options {
-  padding: 12px;
+  padding: 0.75rem;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 0;
 }
 
-/* Modern Menu Option Button with Glassmorphism */
+/* Menu Option Button - Estilo simple como dropdown de Modo */
 .menu-option-button {
   width: 100%;
-  padding: 14px 20px;
+  padding: 0.75rem 1rem;
+  background: transparent;
+  color: var(--text-secondary);
   border: none;
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.25rem;
+  font-family: var(--font-primary);
+  font-size: 0.9rem;
+  font-weight: var(--font-medium);
+  text-align: left;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: var(--text-primary);
-  position: relative;
-  overflow: hidden;
-  border-radius: 12px;
-
-  /* Glassmorphism */
-  background: rgba(26, 26, 26, 0.4);
-  backdrop-filter: blur(10px) saturate(180%);
-  -webkit-backdrop-filter: blur(10px) saturate(180%);
-
-  /* Gradient Border */
-  border: 2px solid transparent;
-  background-image:
-    linear-gradient(rgba(26, 26, 26, 0.4), rgba(26, 26, 26, 0.4)),
-    linear-gradient(135deg, rgba(255, 102, 0, 0.15), rgba(255, 107, 53, 0.15));
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
-
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-
-  /* GPU Acceleration */
-  transform: translateZ(0);
-  will-change: transform, background;
-}
-
-/* Shimmer effect */
-.menu-option-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 102, 0, 0.15), transparent);
-  transition: left 0.5s;
-}
-
-.menu-option-button:hover::before {
-  left: 100%;
+  transition: var(--transition);
+  display: block;
 }
 
 .menu-option-button:hover {
-  background-image:
-    linear-gradient(rgba(26, 26, 26, 0.6), rgba(26, 26, 26, 0.6)),
-    linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-  transform: translateX(6px) translateZ(0);
-  box-shadow:
-    -3px 0 15px rgba(255, 102, 0, 0.2),
-    0 4px 15px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  background: rgba(255, 102, 0, 0.15);
+  transform: translateX(4px);
 }
 
-.menu-option-button:active {
-  transform: translateX(4px) scale(0.98) translateZ(0);
+.menu-option-button:last-child {
+  margin-bottom: 0;
 }
 
-/* Menu Option Icon */
-.menu-option-icon {
-  font-size: 1.3rem;
-  flex-shrink: 0;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  filter: drop-shadow(0 0 8px rgba(255, 102, 0, 0.3));
-}
-
-.menu-option-button:hover .menu-option-icon {
-  transform: scale(1.15) rotate(5deg);
-  filter: drop-shadow(0 0 12px rgba(255, 102, 0, 0.6));
-}
-
-/* Menu Option Text */
-.menu-option-text {
-  flex: 1;
-  text-align: left;
-  font-family: var(--font-primary);
-  font-weight: var(--font-medium);
-  letter-spacing: -0.01em;
-}
-
-/* Modern Logout Button with Hover Effects */
+/* Logout Button - Estilo simple */
 .logout-button {
   width: 100%;
-  padding: 20px;
+  padding: 1rem;
   border: none;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--accent-danger);
-  position: relative;
-  overflow: hidden;
-
-  /* Glassmorphism */
-  background: rgba(26, 26, 26, 0.5);
-  backdrop-filter: blur(10px);
-
-  border-top: 2px solid transparent;
-  background-image:
-    linear-gradient(rgba(26, 26, 26, 0.5), rgba(26, 26, 26, 0.5)),
-    linear-gradient(90deg, transparent, rgba(229, 62, 62, 0.3), transparent);
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
-
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-
-  /* GPU Acceleration */
-  transform: translateZ(0);
-  will-change: transform, background;
-}
-
-.logout-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(229, 62, 62, 0.2), transparent);
-  transition: left 0.5s;
+  font-size: 0.9rem;
+  font-weight: var(--font-medium);
+  font-family: var(--font-primary);
+  color: #ff6b6b;
+  background: transparent;
+  text-align: center;
+  transition: var(--transition);
 }
 
 .logout-button:hover {
-  background-image:
-    linear-gradient(rgba(229, 62, 62, 0.15), rgba(229, 62, 62, 0.15)),
-    linear-gradient(90deg, transparent, var(--accent-danger), transparent);
-  color: #ff6b6b;
-  box-shadow:
-    inset 0 0 30px rgba(229, 62, 62, 0.2),
-    0 0 20px rgba(229, 62, 62, 0.3);
-}
-
-.logout-button:hover::before {
-  left: 100%;
-}
-
-.logout-icon {
-  font-size: 1.3rem;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.logout-button:hover .logout-icon {
-  transform: translateX(-4px) scale(1.1);
+  color: #ff4d4d;
+  background: rgba(229, 62, 62, 0.1);
 }
 
 /* Modern Overlay with Enhanced Blur */

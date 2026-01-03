@@ -25,44 +25,21 @@ export const UserHeader = () => {
 
   return (
     <div className="user-header">
-      {/* Hamburger button - Mobile only */}
+      {/* Solo Avatar - Clickeable */}
       <button
-        className="hamburger-menu-button"
+        className="user-avatar-button"
         onClick={() => setShowMenu(!showMenu)}
-        aria-label="Menu"
+        aria-label="Menú de usuario"
+        title={getDisplayName()}
       >
-        <span className={`hamburger-icon ${showMenu ? 'open' : ''}`}>
-          <span></span>
-          <span></span>
-          <span></span>
-        </span>
+        <div className="user-avatar">
+          {getInitials()}
+        </div>
       </button>
 
-      {/* Desktop user info */}
-      <div className="user-info-container">
-        <button
-          className="user-avatar-button"
-          onClick={() => setShowMenu(!showMenu)}
-        >
-          <div className="user-avatar">
-            {getInitials()}
-          </div>
-          <div className="user-details">
-            <span className="user-name">{getDisplayName()}</span>
-            {isAdmin && <span className="admin-badge">Admin</span>}
-          </div>
-          <span className="dropdown-icon">{showMenu ? '▲' : '▼'}</span>
-        </button>
-      </div>
-
-      {/* User menu - Outside container so it works in mobile */}
+      {/* User menu - Dropdown con estilos NILO */}
       {showMenu && (
         <div className="user-menu">
-          {/* Logo - Mobile only */}
-          <div className="user-menu-logo">
-            <img src={logo} alt="Nilo Solutions" />
-          </div>
-
           <div className="user-menu-header">
             <div className="user-menu-avatar">{getInitials()}</div>
             <div className="user-menu-info">
@@ -74,33 +51,28 @@ export const UserHeader = () => {
 
           <div className="user-menu-divider"></div>
 
-          {/* Menu Options */}
+          {/* Menu Options - Sin iconos */}
           <div className="user-menu-options">
             <button className="menu-option-button">
-              <span className="menu-option-icon">👤</span>
-              <span className="menu-option-text">Mi Perfil</span>
+              Mi Perfil
             </button>
 
             <button className="menu-option-button">
-              <span className="menu-option-icon">⚙️</span>
-              <span className="menu-option-text">Configuración</span>
+              Configuración
             </button>
 
             <button className="menu-option-button">
-              <span className="menu-option-icon">🎨</span>
-              <span className="menu-option-text">Preferencias</span>
+              Preferencias
             </button>
 
             <button className="menu-option-button">
-              <span className="menu-option-icon">❓</span>
-              <span className="menu-option-text">Ayuda</span>
+              Ayuda
             </button>
           </div>
 
           <div className="user-menu-divider"></div>
 
           <button onClick={logout} className="logout-button">
-            <span className="logout-icon">🚪</span>
             Cerrar Sesión
           </button>
         </div>

@@ -1,0 +1,512 @@
+/* ========================================
+   UNIFIED HEADER - All-in-One Navigation Bar
+   Single horizontal bar with all functionality
+   ======================================== */
+
+.unified-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 1rem 2.5rem;
+
+  /* Glassmorphism background */
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+
+  /* Bottom border separator */
+  border-bottom: 2px solid transparent;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)),
+    linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+
+  position: relative;
+  animation: fadeIn 0.3s ease-in;
+  min-height: 70px;
+  overflow: visible !important; /* Permitir que el dropdown sea visible */
+}
+
+/* ========================================
+   HEADER SECTIONS
+   ======================================== */
+
+.header-section {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  overflow: visible !important; /* Permitir que el dropdown sea visible */
+}
+
+/* Tabs section (left) */
+.tabs-section {
+  flex: 0 0 auto;
+  overflow: visible !important; /* Permitir que el dropdown sea visible */
+}
+
+/* Projects section (center) */
+.projects-section {
+  flex: 1;
+  justify-content: center;
+}
+
+/* Modes section (right) */
+.modes-section {
+  flex: 0 0 auto;
+}
+
+/* Section labels */
+.section-label {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: var(--font-semibold);
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  margin-right: 0.5rem;
+}
+
+/* Vertical divider */
+.header-divider {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--border-color),
+    transparent
+  );
+  flex-shrink: 0;
+}
+
+/* ========================================
+   TABS (Navigation)
+   ======================================== */
+
+.unified-tab {
+  padding: 0.75rem 1.5rem;
+  background-color: transparent;
+  color: var(--text-secondary);
+
+  border: none;
+  border-radius: var(--radius-md);
+
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: var(--font-semibold);
+  letter-spacing: 0.02em;
+
+  cursor: pointer;
+  position: relative;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.unified-tab::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 80%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+  border-radius: 2px;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.unified-tab:hover {
+  color: var(--text-primary);
+  background: rgba(26, 26, 26, 0.4);
+}
+
+.unified-tab:hover::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
+.unified-tab.active {
+  color: var(--accent-primary);
+  background: rgba(26, 26, 26, 0.6);
+}
+
+.unified-tab.active::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
+/* ========================================
+   PROJECT SELECT & BUTTONS
+   ======================================== */
+
+.project-select-unified {
+  min-width: 200px;
+  max-width: 300px;
+  padding: 0.625rem 1rem;
+
+  background: rgba(26, 26, 26, 0.5);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+
+  color: var(--text-primary);
+  font-family: var(--font-primary);
+  font-size: 0.9rem;
+  font-weight: var(--font-medium);
+
+  cursor: pointer;
+  transition: var(--transition);
+
+  /* Custom arrow */
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23FF6600' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.875rem center;
+  padding-right: 2.5rem;
+}
+
+.project-select-unified:hover {
+  border-color: var(--accent-primary);
+  background: rgba(26, 26, 26, 0.7);
+}
+
+.project-select-unified:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 2px rgba(255, 102, 0, 0.1);
+}
+
+.project-select-unified:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.project-select-unified option {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  padding: 0.5rem;
+}
+
+/* Unified buttons (Nuevo, Upload) */
+.btn-unified {
+  padding: 0.625rem 1.25rem;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+
+  color: var(--text-secondary);
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: var(--font-semibold);
+  letter-spacing: 0.02em;
+
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.btn-unified:hover:not(:disabled) {
+  color: var(--text-primary);
+  background: rgba(26, 26, 26, 0.4);
+  border-color: var(--accent-primary);
+}
+
+.btn-unified:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ========================================
+   MODE BUTTONS
+   ======================================== */
+
+.mode-btn-unified {
+  padding: 0.625rem 1.25rem;
+  background-color: transparent;
+  color: var(--text-secondary);
+
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: var(--font-semibold);
+  letter-spacing: 0.02em;
+
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+  position: relative;
+}
+
+.mode-btn-unified::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+  transform: scaleX(0);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.mode-btn-unified:hover:not(:disabled) {
+  color: var(--text-primary);
+  background: rgba(26, 26, 26, 0.4);
+  border-color: var(--accent-primary);
+}
+
+.mode-btn-unified:hover::after {
+  transform: scaleX(1);
+}
+
+.mode-btn-unified.active {
+  color: var(--accent-primary);
+  background: rgba(26, 26, 26, 0.6);
+  border-color: var(--accent-primary);
+}
+
+.mode-btn-unified.active::after {
+  transform: scaleX(1);
+}
+
+.mode-btn-unified:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 1200px) {
+  .unified-header {
+    gap: 1.5rem;
+    padding: 1rem 1.5rem;
+  }
+
+  .project-select-unified {
+    min-width: 150px;
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 992px) {
+  .unified-header {
+    gap: 1rem;
+    padding: 0.875rem 1rem;
+  }
+
+  .unified-tab,
+  .btn-unified,
+  .mode-btn-unified {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .project-select-unified {
+    min-width: 120px;
+    font-size: 0.85rem;
+  }
+
+  .section-label {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .unified-header {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    min-height: auto;
+  }
+
+  .header-section {
+    gap: 0.5rem;
+  }
+
+  .tabs-section {
+    width: 100%;
+    order: 1;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+  }
+
+  .header-divider {
+    display: none;
+  }
+
+  .projects-section {
+    width: 100%;
+    order: 2;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .modes-section {
+    width: 100%;
+    order: 3;
+    justify-content: flex-start;
+  }
+
+  .project-select-unified {
+    flex: 1;
+    min-width: 150px;
+    max-width: none;
+  }
+
+  .unified-tab,
+  .btn-unified,
+  .mode-btn-unified {
+    padding: 0.5rem 0.875rem;
+    font-size: 0.8rem;
+  }
+
+  .section-label {
+    font-size: 0.8rem;
+  }
+}
+
+/* ========================================
+   MODE DROPDOWN - Al lado del tab Chat
+   ======================================== */
+
+.mode-dropdown-container {
+  position: relative;
+  display: inline-block;
+  z-index: 1000; /* Asegurar que esté por encima del contenido */
+}
+
+.mode-dropdown-trigger {
+  padding: 0.5rem 1rem;
+  background-color: transparent;
+  color: var(--text-secondary);
+
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: var(--font-semibold);
+  letter-spacing: 0.02em;
+
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dropdown-arrow {
+  font-size: 0.7rem;
+  transition: transform 0.3s ease;
+}
+
+.mode-dropdown-trigger:hover:not(:disabled) {
+  color: var(--text-primary);
+  background: rgba(26, 26, 26, 0.4);
+  border-color: var(--accent-primary);
+}
+
+.mode-dropdown-trigger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Dropdown menu */
+.mode-dropdown-menu {
+  position: fixed;
+  z-index: 99999;
+
+  min-width: 200px;
+
+  /* Glassmorphism background - igual que unified-header */
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+
+  /* Border con gradiente naranja */
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.95)),
+    linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+
+  /* Sombra elegante */
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.6),
+    0 2px 8px rgba(255, 102, 0, 0.3);
+
+  padding: 0.75rem;
+  animation: dropdownFadeIn 0.2s ease-out;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Dropdown items */
+.mode-dropdown-item {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: transparent;
+  color: var(--text-secondary);
+
+  border: none;
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.25rem;
+
+  font-family: var(--font-primary);
+  font-size: 0.9rem;
+  font-weight: var(--font-medium);
+  text-align: left;
+
+  cursor: pointer;
+  transition: var(--transition);
+
+  display: block;
+}
+
+.mode-dropdown-item:hover {
+  color: var(--text-primary);
+  background: rgba(255, 102, 0, 0.15);
+  transform: translateX(4px);
+}
+
+.mode-dropdown-item.active {
+  color: var(--accent-primary);
+  background: rgba(255, 102, 0, 0.2);
+  font-weight: var(--font-semibold);
+}
+
+.mode-dropdown-item:last-child {
+  margin-bottom: 0;
+}

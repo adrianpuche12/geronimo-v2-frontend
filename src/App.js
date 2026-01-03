@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import './App.css';
+import './styles/unified-header.css'; // Barra única unificada
 import { DuplicateAlertModal, DocumentPreviewModal } from './componentes/modal';
+import { DocumentReader } from './componentes/document-reader'; // NUEVO: Reader Mode
 import { Sidebar } from './componentes/sidebar';
 import { Chat } from './componentes/chat';
 import { Explorer } from './componentes/explorer';
 import { Search } from './componentes/search';
+import { Integrations } from './componentes/integrations';
+import { UnifiedHeader } from './componentes/unified-header'; // Barra unificada
 import { formatDate, formatFileSize } from './componentes/utilities';
 import { Login } from './componentes/Login';
 import { UserHeader } from './componentes/UserHeader';
@@ -34,6 +38,7 @@ function App() {
   const [expandedProjects, setExpandedProjects] = useState({});
   const [selectedDocument, setSelectedDocument] = useState(null);
   const [showDocPreview, setShowDocPreview] = useState(false);
+  const [showReaderMode, setShowReaderMode] = useState(false); // NUEVO: Control del Reader Mode
   const [searchQuery, setSearchQuery] = useState('');
   const [searchFilters, setSearchFilters] = useState({
     projectId: '',
@@ -46,6 +51,7 @@ function App() {
   const [showExportMenu, setShowExportMenu] = useState(null); // Para menú de exportación
   const [duplicateAlert, setDuplicateAlert] = useState(null); // Para modal de duplicados
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false); // Para colapsar sidebar
+  const [selectedMode, setSelectedMode] = useState('general'); // CAPA 4: Modo de análisis (general, stats, business)
 
   const fileInputRef = useRef(null);
   const messagesEndRef = useRef(null);
@@ -295,15 +301,24 @@ function App() {
     setIsLoading(true);
 
     try {
+      // CAPA 4: Enviar modo de análisis en la petición
       const response = await axios.post(`${API_URL}/query`, {
         projectId: selectedProject,
-        question: inputMessage
+        question: inputMessage,
+        mode: selectedMode // general, stats o business
       });
 
+      // CAPA 4: Procesar respuesta estructurada
       const assistantMessage = {
         role: 'assistant',
         content: response.data.answer || response.data.message || 'Sin respuesta',
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        // Datos estructurados de CAPA 4
+        mode: response.data.mode || selectedMode,
+        charts: response.data.charts || [],
+        tables: response.data.tables || [],
+        metrics: response.data.metrics || [],
+        recommendations: response.data.recommendations || []
       };
 
       setMessages(prev => [...prev, assistantMessage]);
@@ -348,11 +363,11 @@ function App() {
   const handleViewDocument = async (doc) => {
     console.log('🔍 handleViewDocument called with:', doc);
 
-    // Si el documento ya tiene contenido completo, mostrarlo directamente
-    if (doc.content) {
-      console.log('✅ Document has content, showing preview directly');
+    // Si el documento ya tiene contenido completo, mostrarlo directamente en Reader Mode
+    if (doc.content || doc.content_text) {
+      console.log('✅ Document has content, showing Reader Mode');
       setSelectedDocument(doc);
-      setShowDocPreview(true);
+      setShowReaderMode(true); // NUEVO: Activar Reader Mode
       return;
     }
 
@@ -364,8 +379,8 @@ function App() {
       const response = await axios.get(`${API_URL}/docs/${doc.id}`);
       console.log('✅ Document fetched:', response.data);
       setSelectedDocument(response.data);
-      setShowDocPreview(true);
-      console.log('✅ Modal should be showing now');
+      setShowReaderMode(true); // NUEVO: Activar Reader Mode
+      console.log('✅ Reader Mode should be showing now');
     } catch (error) {
       console.error('❌ Error loading document:', error);
       addSystemMessage(`✗ Error al cargar documento: ${error.message}`);
@@ -518,27 +533,20 @@ function App() {
 
         {/* Content Area */}
         <main className="content-area">
-          {/* Tabs */}
-          <div className="tabs">
-            <button
-              className={`tab ${activeTab === 'chat' ? 'active' : ''}`}
-              onClick={() => setActiveTab('chat')}
-            >
-              💬 Chat
-            </button>
-            <button
-              className={`tab ${activeTab === 'explorer' ? 'active' : ''}`}
-              onClick={() => setActiveTab('explorer')}
-            >
-              📊 Explorador
-            </button>
-            <button
-              className={`tab ${activeTab === 'search' ? 'active' : ''}`}
-              onClick={() => setActiveTab('search')}
-            >
-              🔍 Búsqueda
-            </button>
-          </div>
+          {/* BARRA ÚNICA UNIFICADA - Todo en una sola línea */}
+          <UnifiedHeader
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+            projects={projects}
+            selectedProject={selectedProject}
+            onProjectChange={setSelectedProject}
+            onCreateProject={() => setShowCreateProject(true)}
+            fileInputRef={fileInputRef}
+            onFileSelect={handleFileSelect}
+            selectedMode={selectedMode}
+            onModeChange={setSelectedMode}
+            isLoading={isLoading}
+          />
 
           {/* Chat Section */}
           {activeTab === 'chat' && (
@@ -583,10 +591,26 @@ function App() {
               handleViewDocument={handleViewDocument}
             />
           )}
+
+          {/* Integrations Section */}
+          {activeTab === 'integrations' && (
+            <Integrations />
+          )}
         </main>
 
-        {/* Document Preview Modal - Global (works from any tab) */}
-        {showDocPreview && selectedDocument && (
+        {/* NUEVO: Document Reader Mode - Vista profesional */}
+        {showReaderMode && selectedDocument && (
+          <DocumentReader
+            document={selectedDocument}
+            onClose={() => {
+              setShowReaderMode(false);
+              setSelectedDocument(null);
+            }}
+          />
+        )}
+
+        {/* Document Preview Modal - Global (works from any tab) - DEPRECATED: usar Reader Mode */}
+        {showDocPreview && selectedDocument && !showReaderMode && (
           <DocumentPreviewModal
             document={selectedDocument}
             onClose={() => setShowDocPreview(false)}
@@ -600,6 +624,48 @@ function App() {
           alert={duplicateAlert}
           onClose={() => setDuplicateAlert(null)}
         />
+
+        {/* Modal de crear proyecto */}
+        {showCreateProject && (
+          <div className="modal-overlay" onClick={() => setShowCreateProject(false)}>
+            <div className="modal-content create-project-modal" onClick={(e) => e.stopPropagation()}>
+              <h3>Crear Nuevo Proyecto</h3>
+              <div className="modal-body">
+                <div className="form-group">
+                  <label>Nombre del Proyecto:</label>
+                  <input
+                    type="text"
+                    value={newProjectName}
+                    onChange={(e) => setNewProjectName(e.target.value)}
+                    placeholder="Ej: Mi Proyecto"
+                    autoFocus
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Descripción (opcional):</label>
+                  <textarea
+                    value={newProjectDescription}
+                    onChange={(e) => setNewProjectDescription(e.target.value)}
+                    placeholder="Breve descripción del proyecto..."
+                    rows="3"
+                  />
+                </div>
+              </div>
+              <div className="modal-actions">
+                <button className="btn-cancel" onClick={() => setShowCreateProject(false)}>
+                  Cancelar
+                </button>
+                <button
+                  className="btn-create"
+                  onClick={handleCreateProject}
+                  disabled={!newProjectName.trim() || isLoading}
+                >
+                  {isLoading ? 'Creando...' : 'Crear Proyecto'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
