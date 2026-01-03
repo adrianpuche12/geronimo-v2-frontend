@@ -23,6 +23,14 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     let mounted = true;
 
+    // Si la autenticación está deshabilitada, permitir acceso sin Keycloak
+    if (process.env.REACT_APP_DISABLE_AUTH === 'true') {
+      console.log('[AUTH] Authentication disabled by REACT_APP_DISABLE_AUTH');
+      setAuthenticated(true);
+      setLoading(false);
+      return;
+    }
+
     // Inicializar Keycloak SOLO UNA VEZ
     if (!window.keycloakInitialized) {
       window.keycloakInitialized = true;
