@@ -645,3 +645,171 @@
     transform: translateY(0);
   }
 }
+
+/* ========================================
+   LAYOUTS POR MODO
+   ======================================== */
+
+/* Modo General - Tonos azules/neutros, layout fluido */
+.enriched-response.mode-general {
+  border-left: 4px solid #4A90E2;
+  padding: 1.5rem;
+  background: rgba(74, 144, 226, 0.02);
+}
+
+.enriched-response.mode-general .mode-badge {
+  background: linear-gradient(135deg, rgba(74, 144, 226, 0.2), rgba(74, 144, 226, 0.05));
+  border: 1px solid rgba(74, 144, 226, 0.3);
+  color: #4A90E2;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  display: inline-block;
+}
+
+.general-content {
+  font-size: 1rem;
+  line-height: 1.8;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Modo Estadísticas - Tonos verdes/data, layout grid */
+.enriched-response.mode-stats {
+  border-left: 4px solid #27AE60;
+  padding: 1.5rem;
+  background: rgba(39, 174, 96, 0.02);
+}
+
+.enriched-response.mode-stats .mode-badge {
+  background: linear-gradient(135deg, rgba(39, 174, 96, 0.2), rgba(39, 174, 96, 0.05));
+  border: 1px solid rgba(39, 174, 96, 0.3);
+  color: #27AE60;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  display: inline-block;
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.stats-text {
+  margin-top: 2rem;
+  font-size: 0.95rem;
+  opacity: 0.9;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+}
+
+/* Modo Negocio - Tonos naranja/estratégico, layout secciones */
+.enriched-response.mode-business {
+  border-left: 4px solid #FF6600;
+  padding: 1.5rem;
+  background: rgba(255, 102, 0, 0.02);
+}
+
+.enriched-response.mode-business .mode-badge {
+  background: linear-gradient(135deg, rgba(255, 102, 0, 0.2), rgba(255, 102, 0, 0.05));
+  border: 1px solid rgba(255, 102, 0, 0.3);
+  color: #FF6600;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  display: inline-block;
+}
+
+.executive-summary {
+  background: rgba(255, 102, 0, 0.05);
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(255, 102, 0, 0.2);
+}
+
+/* ========================================
+   SECCIONES COLAPSABLES
+   ======================================== */
+
+.collapsible-section {
+  margin: 1rem 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.collapsible-header {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: none;
+  color: #e0e0e0;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: background 0.2s;
+  text-align: left;
+}
+
+.collapsible-header:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.collapsible-icon {
+  font-size: 0.8rem;
+  transition: transform 0.2s;
+  color: #FF6600;
+}
+
+.collapsible-title {
+  flex: 1;
+}
+
+.collapsible-content {
+  padding: 1.5rem;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .general-content {
+    max-width: 100%;
+  }
+
+  .enriched-response.mode-general,
+  .enriched-response.mode-stats,
+  .enriched-response.mode-business {
+    padding: 1rem;
+  }
+
+  .executive-summary {
+    padding: 1rem;
+  }
+}

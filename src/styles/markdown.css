@@ -1,0 +1,225 @@
+/* ========================================
+   MARKDOWN STYLES - Geronimo 2.0
+   Estilos para renderizado de markdown con tema oscuro
+   ======================================== */
+
+/* Tablas markdown */
+.markdown-table-wrapper {
+  overflow-x: auto;
+  margin: 1rem 0;
+  border-radius: 8px;
+  background: rgba(255, 102, 0, 0.05);
+}
+
+.markdown-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.markdown-table th {
+  background: rgba(255, 102, 0, 0.2);
+  color: #FF9955;
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid #FF9955;
+}
+
+.markdown-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255, 102, 0, 0.1);
+  color: #e0e0e0;
+}
+
+.markdown-table tr:hover {
+  background: rgba(255, 102, 0, 0.05);
+}
+
+.markdown-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Títulos - Tonalidad más clara para mejor contraste */
+.markdown-h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #FF9955;
+  margin: 1.5rem 0 1rem;
+  border-bottom: 2px solid #FF9955;
+  padding-bottom: 0.5rem;
+  text-shadow: 0 0 10px rgba(255, 153, 85, 0.3);
+}
+
+.markdown-h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #FF8833;
+  margin: 1.2rem 0 0.8rem;
+  text-shadow: 0 0 8px rgba(255, 136, 51, 0.25);
+}
+
+.markdown-h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #FFAA66;
+  margin: 1rem 0 0.6rem;
+  text-shadow: 0 0 6px rgba(255, 170, 102, 0.2);
+}
+
+.markdown-h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #FFBB77;
+  margin: 0.9rem 0 0.5rem;
+}
+
+.markdown-h5 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #FFCC88;
+  margin: 0.8rem 0 0.4rem;
+}
+
+.markdown-h6 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #FFDD99;
+  margin: 0.7rem 0 0.3rem;
+}
+
+/* Listas */
+.markdown-ul,
+.markdown-ol {
+  margin: 0.8rem 0;
+  padding-left: 1.5rem;
+}
+
+.markdown-ul li,
+.markdown-ol li {
+  margin: 0.4rem 0;
+  color: #e0e0e0;
+  line-height: 1.6;
+}
+
+.markdown-ul li::marker {
+  color: #FF8833;
+}
+
+.markdown-ol li::marker {
+  color: #FF8833;
+  font-weight: 600;
+}
+
+/* Listas anidadas */
+.markdown-ul .markdown-ul,
+.markdown-ol .markdown-ol,
+.markdown-ul .markdown-ol,
+.markdown-ol .markdown-ul {
+  margin: 0.3rem 0;
+}
+
+/* Code */
+.markdown-code-inline {
+  background: rgba(255, 102, 0, 0.15);
+  color: #FF9955;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Courier New', 'Monaco', monospace;
+  font-size: 0.9em;
+  border: 1px solid rgba(255, 102, 0, 0.2);
+}
+
+.markdown-code-block {
+  background: rgba(0, 0, 0, 0.5);
+  border-left: 3px solid #FF6600;
+  padding: 1rem;
+  border-radius: 4px;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.markdown-code-block code {
+  font-family: 'Courier New', 'Monaco', monospace;
+  font-size: 0.9rem;
+  color: #e0e0e0;
+  line-height: 1.5;
+}
+
+/* Scrollbar para code blocks */
+.markdown-code-block::-webkit-scrollbar {
+  height: 8px;
+}
+
+.markdown-code-block::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+.markdown-code-block::-webkit-scrollbar-thumb {
+  background: rgba(255, 102, 0, 0.3);
+  border-radius: 4px;
+}
+
+.markdown-code-block::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 102, 0, 0.5);
+}
+
+/* Enlaces */
+.markdown-link {
+  color: #FF8833;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: all 0.2s;
+}
+
+.markdown-link:hover {
+  color: #FFAA66;
+  border-bottom-color: #FFAA66;
+}
+
+/* Énfasis y negritas - Colores más brillantes */
+.markdown-strong {
+  color: #FF9955;
+  font-weight: 600;
+}
+
+.markdown-em {
+  color: #FFAA66;
+  font-style: italic;
+}
+
+/* Blockquotes */
+.markdown-blockquote {
+  border-left: 4px solid #FF6600;
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: rgba(224, 224, 224, 0.9);
+  font-style: italic;
+  background: rgba(255, 102, 0, 0.05);
+  padding: 0.8rem 1rem;
+  border-radius: 0 4px 4px 0;
+}
+
+/* Separador horizontal */
+.markdown-hr {
+  border: none;
+  border-top: 2px solid rgba(255, 102, 0, 0.3);
+  margin: 2rem 0;
+}
+
+/* Imágenes */
+.markdown-img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 1rem 0;
+  border: 1px solid rgba(255, 102, 0, 0.2);
+}
+
+/* Párrafos */
+.markdown-p {
+  margin: 0.8rem 0;
+  line-height: 1.6;
+  color: #e0e0e0;
+}

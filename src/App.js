@@ -337,6 +337,62 @@ function App() {
     }
   };
 
+  // Handler para copiar al portapapeles
+  const handleCopyMessage = async (content) => {
+    try {
+      await navigator.clipboard.writeText(content);
+      addSystemMessage('✓ Contenido copiado al portapapeles');
+    } catch (err) {
+      console.error('Error al copiar:', err);
+      addSystemMessage('✗ Error al copiar al portapapeles');
+    }
+  };
+
+  // Handler para regenerar respuesta
+  const handleRegenerateMessage = async (messageIndex) => {
+    // Obtener el mensaje del usuario anterior
+    const userMessage = messages[messageIndex - 1];
+
+    if (!userMessage || userMessage.role !== 'user') {
+      console.error('No se encontró mensaje de usuario previo');
+      addSystemMessage('✗ No se puede regenerar: mensaje de usuario no encontrado');
+      return;
+    }
+
+    // Remover último mensaje del asistente
+    setMessages(prev => prev.slice(0, -1));
+
+    // Reenviar la pregunta
+    setIsLoading(true);
+
+    try {
+      const response = await axios.post(`${API_URL}/query`, {
+        projectId: selectedProject,
+        question: userMessage.content,
+        mode: selectedMode
+      });
+
+      const assistantMessage = {
+        role: 'assistant',
+        content: response.data.answer || response.data.message || 'Sin respuesta',
+        timestamp: new Date().toISOString(),
+        mode: response.data.mode || selectedMode,
+        charts: response.data.charts || [],
+        tables: response.data.tables || [],
+        metrics: response.data.metrics || [],
+        recommendations: response.data.recommendations || []
+      };
+
+      setMessages(prev => [...prev, assistantMessage]);
+      addSystemMessage('✓ Respuesta regenerada');
+    } catch (error) {
+      console.error('Error al regenerar:', error);
+      addSystemMessage(`✗ Error al regenerar respuesta: ${error.message}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const toggleProjectExpand = (projectId) => {
     setExpandedProjects(prev => ({
       ...prev,
@@ -562,6 +618,8 @@ function App() {
               showExportMenu={showExportMenu}
               setShowExportMenu={setShowExportMenu}
               exportAIResponse={exportAIResponse}
+              handleCopyMessage={handleCopyMessage}
+              handleRegenerateMessage={handleRegenerateMessage}
             />
           )}
 

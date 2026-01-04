@@ -1,4 +1,5 @@
 import React from 'react';
+import '../styles/utilities.css';
 
 // Componente para el menú de exportación
 export const ExportMenu = ({ message, onClose, exportAIResponse }) => (

@@ -163,3 +163,104 @@
   cursor: not-allowed;
   box-shadow: var(--md-elevation-0);
 }
+
+/* ========================================
+   MESSAGE ACTIONS (Copiar, Regenerar, Exportar)
+   ======================================== */
+
+.message-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.btn-copy,
+.btn-regenerate,
+.btn-export-response {
+  padding: 0.5rem 1rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: none;
+  border-radius: var(--md-radius-medium);
+  cursor: pointer;
+  transition: var(--md-transition-standard);
+  font-family: inherit;
+  white-space: nowrap;
+  box-shadow: var(--md-elevation-1);
+}
+
+/* Botón Copiar - Estilo secundario azul */
+.btn-copy {
+  background: rgba(74, 144, 226, 0.15);
+  color: #4A90E2;
+  border: 1px solid rgba(74, 144, 226, 0.3);
+}
+
+.btn-copy:hover {
+  background: rgba(74, 144, 226, 0.25);
+  border-color: rgba(74, 144, 226, 0.5);
+  box-shadow: var(--md-elevation-2);
+  color: #5EAAF7;
+}
+
+.btn-copy:active {
+  box-shadow: var(--md-elevation-0);
+  transform: scale(0.98);
+}
+
+/* Botón Regenerar - Estilo secundario naranja */
+.btn-regenerate {
+  background: rgba(255, 102, 0, 0.15);
+  color: #FF6600;
+  border: 1px solid rgba(255, 102, 0, 0.3);
+}
+
+.btn-regenerate:hover {
+  background: rgba(255, 102, 0, 0.25);
+  border-color: rgba(255, 102, 0, 0.5);
+  box-shadow: var(--md-elevation-2);
+  color: #FF8533;
+}
+
+.btn-regenerate:active {
+  box-shadow: var(--md-elevation-0);
+  transform: scale(0.98);
+}
+
+/* Botón Exportar - Estilo secundario verde */
+.btn-export-response {
+  background: rgba(39, 174, 96, 0.15);
+  color: #27AE60;
+  border: 1px solid rgba(39, 174, 96, 0.3);
+}
+
+.btn-export-response:hover {
+  background: rgba(39, 174, 96, 0.25);
+  border-color: rgba(39, 174, 96, 0.5);
+  box-shadow: var(--md-elevation-2);
+  color: #2ECC71;
+}
+
+.btn-export-response:active {
+  box-shadow: var(--md-elevation-0);
+  transform: scale(0.98);
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .message-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn-copy,
+  .btn-regenerate,
+  .btn-export-response {
+    width: 100%;
+    text-align: center;
+  }
+}

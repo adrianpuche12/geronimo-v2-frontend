@@ -27,6 +27,15 @@ export const AuthProvider = ({ children }) => {
     if (process.env.REACT_APP_DISABLE_AUTH === 'true') {
       console.log('[AUTH] Authentication disabled by REACT_APP_DISABLE_AUTH');
       setAuthenticated(true);
+      setUser({
+        id: 'local-user',
+        username: 'usuario',
+        email: 'usuario@geronimo.local',
+        firstName: 'Usuario',
+        lastName: 'Local',
+        roles: ['user'],
+      });
+      setIsAdmin(false);
       setLoading(false);
       return;
     }

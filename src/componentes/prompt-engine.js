@@ -1,5 +1,8 @@
 import React from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import '../styles/prompt-engine.css';
+import '../styles/markdown.css';
 
 /**
  * Selector de Modo de Análisis
@@ -274,55 +277,205 @@ export const RecommendationsPanel = ({ recommendations }) => {
 };
 
 /**
+ * Sección colapsable para modo Business
+ */
+export const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
+  const [isOpen, setIsOpen] = React.useState(defaultOpen);
+
+  return (
+    <div className="collapsible-section">
+      <button
+        className="collapsible-header"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <span className="collapsible-icon">{isOpen ? '▼' : '▶'}</span>
+        <span className="collapsible-title">{title}</span>
+      </button>
+      {isOpen && (
+        <div className="collapsible-content">
+          {children}
+        </div>
+      )}
+    </div>
+  );
+};
+
+// Componentes markdown personalizados (compartidos entre modos)
+const markdownComponents = {
+  table: ({children}) => (
+    <div className="markdown-table-wrapper">
+      <table className="markdown-table">{children}</table>
+    </div>
+  ),
+  thead: ({children}) => <thead>{children}</thead>,
+  tbody: ({children}) => <tbody>{children}</tbody>,
+  tr: ({children}) => <tr>{children}</tr>,
+  th: ({children}) => <th>{children}</th>,
+  td: ({children}) => <td>{children}</td>,
+  h1: ({children}) => <h1 className="markdown-h1">{children}</h1>,
+  h2: ({children}) => <h2 className="markdown-h2">{children}</h2>,
+  h3: ({children}) => <h3 className="markdown-h3">{children}</h3>,
+  h4: ({children}) => <h4 className="markdown-h4">{children}</h4>,
+  h5: ({children}) => <h5 className="markdown-h5">{children}</h5>,
+  h6: ({children}) => <h6 className="markdown-h6">{children}</h6>,
+  ul: ({children}) => <ul className="markdown-ul">{children}</ul>,
+  ol: ({children}) => <ol className="markdown-ol">{children}</ol>,
+  li: ({children}) => <li>{children}</li>,
+  code: ({inline, children}) =>
+    inline ? <code className="markdown-code-inline">{children}</code>
+           : <pre className="markdown-code-block"><code>{children}</code></pre>,
+  a: ({href, children}) => (
+    <a href={href} className="markdown-link" target="_blank" rel="noopener noreferrer">
+      {children}
+    </a>
+  ),
+  strong: ({children}) => <strong className="markdown-strong">{children}</strong>,
+  em: ({children}) => <em className="markdown-em">{children}</em>,
+  blockquote: ({children}) => <blockquote className="markdown-blockquote">{children}</blockquote>,
+  hr: () => <hr className="markdown-hr" />,
+  p: ({children}) => <p className="markdown-p">{children}</p>,
+  img: ({src, alt}) => <img src={src} alt={alt} className="markdown-img" />
+};
+
+/**
  * Renderizador de respuesta enriquecida
  * Combina contenido markdown + datos estructurados (charts, tables, metrics, recommendations)
+ * Con layouts diferenciados por modo (General, Stats, Business)
  */
 export const EnrichedResponse = ({ response }) => {
   if (!response) return null;
 
-  const { content, mode, charts, tables, metrics, recommendations } = response;
+  const { content, mode = 'general', charts, tables, metrics, recommendations } = response;
 
+  // MODO GENERAL - Layout narrativo fluido
+  if (mode === 'general') {
+    return (
+      <div className="enriched-response mode-general">
+        <div className="mode-badge mode-general">
+          🔍 Análisis General
+        </div>
+
+        {/* Contenido principal fluido, estilo artículo */}
+        <div className="general-content">
+          <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+            {content}
+          </ReactMarkdown>
+        </div>
+
+        {/* Tablas y charts integrados naturalmente en el flujo */}
+        {tables && tables.length > 0 && tables.map((table, idx) => (
+          <TableComponent key={idx} table={table} />
+        ))}
+        {charts && charts.length > 0 && charts.map((chart, idx) => (
+          <ChartComponent key={idx} chart={chart} />
+        ))}
+      </div>
+    );
+  }
+
+  // MODO ESTADÍSTICAS - Layout Grid/Cards
+  if (mode === 'stats') {
+    return (
+      <div className="enriched-response mode-stats">
+        <div className="mode-badge mode-stats">
+          📊 Análisis Estadístico
+        </div>
+
+        {/* Grid de métricas destacadas arriba */}
+        {metrics && metrics.length > 0 && (
+          <MetricsPanel metrics={metrics} />
+        )}
+
+        {/* Gráficos en grid 2 columnas */}
+        {charts && charts.length > 0 && (
+          <div className="charts-grid">
+            {charts.map((chart, idx) => (
+              <ChartComponent key={idx} chart={chart} />
+            ))}
+          </div>
+        )}
+
+        {/* Contenido textual secundario */}
+        {content && (
+          <div className="stats-text">
+            <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+              {content}
+            </ReactMarkdown>
+          </div>
+        )}
+
+        {/* Tablas de datos completas */}
+        {tables && tables.length > 0 && tables.map((table, idx) => (
+          <TableComponent key={idx} table={table} />
+        ))}
+      </div>
+    );
+  }
+
+  // MODO NEGOCIO - Layout con secciones colapsables
+  if (mode === 'business') {
+    return (
+      <div className="enriched-response mode-business">
+        <div className="mode-badge mode-business">
+          💼 Análisis de Negocio
+        </div>
+
+        {/* Resumen ejecutivo destacado */}
+        {content && (
+          <div className="executive-summary">
+            <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+              {content}
+            </ReactMarkdown>
+          </div>
+        )}
+
+        {/* Recomendaciones estratégicas con acordeón */}
+        {recommendations && recommendations.length > 0 && (
+          <CollapsibleSection title="🎯 Recomendaciones Estratégicas" defaultOpen={true}>
+            <RecommendationsPanel recommendations={recommendations} />
+          </CollapsibleSection>
+        )}
+
+        {/* Datos de soporte en secciones colapsables */}
+        {charts && charts.length > 0 && (
+          <CollapsibleSection title="📈 Datos de Soporte">
+            <div className="charts-grid">
+              {charts.map((chart, idx) => (
+                <ChartComponent key={idx} chart={chart} />
+              ))}
+            </div>
+          </CollapsibleSection>
+        )}
+
+        {tables && tables.length > 0 && (
+          <CollapsibleSection title="📋 Tablas de Análisis">
+            {tables.map((table, idx) => (
+              <TableComponent key={idx} table={table} />
+            ))}
+          </CollapsibleSection>
+        )}
+
+        {metrics && metrics.length > 0 && (
+          <CollapsibleSection title="📊 Métricas Clave">
+            <MetricsPanel metrics={metrics} />
+          </CollapsibleSection>
+        )}
+      </div>
+    );
+  }
+
+  // Fallback para modos desconocidos
   return (
     <div className="enriched-response">
-      {/* Contenido principal (markdown) */}
       <div className="response-content">
-        {content}
+        <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+          {content}
+        </ReactMarkdown>
       </div>
-
-      {/* Gráficos (stats mode) */}
-      {charts && charts.length > 0 && (
-        <div className="charts-section">
-          {charts.map((chart, idx) => (
-            <ChartComponent key={idx} chart={chart} />
-          ))}
-        </div>
-      )}
-
-      {/* Tablas (stats y business modes) */}
-      {tables && tables.length > 0 && (
-        <div className="tables-section">
-          {tables.map((table, idx) => (
-            <TableComponent key={idx} table={table} />
-          ))}
-        </div>
-      )}
-
-      {/* Métricas clave (stats mode) */}
-      {metrics && metrics.length > 0 && (
-        <MetricsPanel metrics={metrics} />
-      )}
-
-      {/* Recomendaciones estratégicas (business mode) */}
-      {recommendations && recommendations.length > 0 && (
-        <RecommendationsPanel recommendations={recommendations} />
-      )}
-
-      {/* Badge del modo usado */}
-      <div className="mode-badge">
-        {mode === 'general' && '🔍 Modo General'}
-        {mode === 'stats' && '📊 Modo Estadísticas'}
-        {mode === 'business' && '💼 Modo Negocio'}
-      </div>
+      {charts && charts.length > 0 && charts.map((chart, idx) => <ChartComponent key={idx} chart={chart} />)}
+      {tables && tables.length > 0 && tables.map((table, idx) => <TableComponent key={idx} table={table} />)}
+      {metrics && metrics.length > 0 && <MetricsPanel metrics={metrics} />}
+      {recommendations && recommendations.length > 0 && <RecommendationsPanel recommendations={recommendations} />}
     </div>
   );
 };

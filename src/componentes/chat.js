@@ -1,6 +1,65 @@
 import React from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { ExportMenu } from './utilities';
 import { EnrichedResponse } from './prompt-engine';
+import '../styles/markdown.css';
+
+// Componentes markdown personalizados con tema Geronimo 2.0
+const markdownComponents = {
+  // Tablas con estilos profesionales
+  table: ({children}) => (
+    <div className="markdown-table-wrapper">
+      <table className="markdown-table">{children}</table>
+    </div>
+  ),
+  thead: ({children}) => <thead>{children}</thead>,
+  tbody: ({children}) => <tbody>{children}</tbody>,
+  tr: ({children}) => <tr>{children}</tr>,
+  th: ({children}) => <th>{children}</th>,
+  td: ({children}) => <td>{children}</td>,
+
+  // Títulos con jerarquía visual
+  h1: ({children}) => <h1 className="markdown-h1">{children}</h1>,
+  h2: ({children}) => <h2 className="markdown-h2">{children}</h2>,
+  h3: ({children}) => <h3 className="markdown-h3">{children}</h3>,
+  h4: ({children}) => <h4 className="markdown-h4">{children}</h4>,
+  h5: ({children}) => <h5 className="markdown-h5">{children}</h5>,
+  h6: ({children}) => <h6 className="markdown-h6">{children}</h6>,
+
+  // Listas con bullets personalizados
+  ul: ({children}) => <ul className="markdown-ul">{children}</ul>,
+  ol: ({children}) => <ol className="markdown-ol">{children}</ol>,
+  li: ({children}) => <li>{children}</li>,
+
+  // Code blocks con syntax highlighting
+  code: ({inline, children}) =>
+    inline ? <code className="markdown-code-inline">{children}</code>
+           : <pre className="markdown-code-block"><code>{children}</code></pre>,
+
+  // Enlaces con color naranja
+  a: ({href, children}) => (
+    <a href={href} className="markdown-link" target="_blank" rel="noopener noreferrer">
+      {children}
+    </a>
+  ),
+
+  // Énfasis y negritas
+  strong: ({children}) => <strong className="markdown-strong">{children}</strong>,
+  em: ({children}) => <em className="markdown-em">{children}</em>,
+
+  // Blockquotes
+  blockquote: ({children}) => <blockquote className="markdown-blockquote">{children}</blockquote>,
+
+  // Separador horizontal
+  hr: () => <hr className="markdown-hr" />,
+
+  // Párrafos
+  p: ({children}) => <p className="markdown-p">{children}</p>,
+
+  // Imágenes
+  img: ({src, alt}) => <img src={src} alt={alt} className="markdown-img" />
+};
 
 export const Chat = ({
   messages,
@@ -13,7 +72,9 @@ export const Chat = ({
   handleSendMessage,
   showExportMenu,
   setShowExportMenu,
-  exportAIResponse
+  exportAIResponse,
+  handleCopyMessage,
+  handleRegenerateMessage
 }) => {
   return (
     <section className="chat-section">
@@ -42,11 +103,41 @@ export const Chat = ({
                   {message.role === 'assistant' && (message.charts || message.tables || message.metrics || message.recommendations) ? (
                     <EnrichedResponse response={message} />
                   ) : (
-                    message.content
+                    message.role === 'assistant' ? (
+                      <ReactMarkdown
+                        remarkPlugins={[remarkGfm]}
+                        components={markdownComponents}
+                      >
+                        {message.content}
+                      </ReactMarkdown>
+                    ) : (
+                      message.content
+                    )
                   )}
                 </div>
                 {message.role === 'assistant' && (
                   <div className="message-actions">
+                    {/* Botón copiar */}
+                    <button
+                      className="btn-copy"
+                      onClick={() => handleCopyMessage(message.content)}
+                      title="Copiar respuesta al portapapeles"
+                    >
+                      📋 Copiar
+                    </button>
+
+                    {/* Botón regenerar (solo en último mensaje) */}
+                    {index === messages.length - 1 && !isLoading && (
+                      <button
+                        className="btn-regenerate"
+                        onClick={() => handleRegenerateMessage(index)}
+                        title="Regenerar respuesta"
+                      >
+                        🔄 Regenerar
+                      </button>
+                    )}
+
+                    {/* Botón exportar existente */}
                     <button
                       className="btn-export-response"
                       onClick={() => setShowExportMenu(showExportMenu === message.timestamp ? null : message.timestamp)}
@@ -54,6 +145,7 @@ export const Chat = ({
                     >
                       💾 Exportar
                     </button>
+
                     {showExportMenu === message.timestamp && (
                       <ExportMenu
                         message={message}
