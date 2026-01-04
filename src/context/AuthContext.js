@@ -114,6 +114,12 @@ export const AuthProvider = ({ children }) => {
         setAuthenticated(true);
         setKeycloakInstance(keycloak);
 
+        // Configurar axios con el token
+        if (keycloak.token) {
+          axios.defaults.headers.common['Authorization'] = `Bearer ${keycloak.token}`;
+          console.log('[AUTH] Token configured on reinitialization');
+        }
+
         if (keycloak.tokenParsed) {
           const tokenParsed = keycloak.tokenParsed;
           const realmRoles = tokenParsed?.realm_access?.roles || [];
