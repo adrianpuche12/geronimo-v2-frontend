@@ -203,17 +203,15 @@ function App() {
 
     for (const file of files) {
       try {
-        // Usar FormData para enviar el archivo binario
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('projectId', selectedProject);
-        formData.append('path', `docs/${file.name}`);
-        formData.append('title', file.name);
+        // Leer el contenido del archivo como texto
+        const content = await readFileContent(file);
 
-        const response = await axios.post(`${API_URL}/docs`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
+        // Enviar como JSON con el contenido del archivo
+        const response = await axios.post(`${API_URL}/docs`, {
+          projectId: selectedProject,
+          path: `docs/${file.name}`,
+          title: file.name,
+          content: content
         });
 
         // Verificar si el backend detectó un duplicado
