@@ -1,22 +1,23 @@
-import React, { useState, useEffect, useRef } from 'react';
-import ReactMarkdown from 'react-markdown';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import '../styles/document-reader.css';
 
 /**
  * DocumentReader - Vista profesional estilo Medium/Notion para documentos
  * Características:
- * - Tabla de contenidos automática
+ * - Tabla de contenidos automática (markdown, texto plano, PDFs)
  * - Barra de progreso de lectura
  * - Tiempo estimado de lectura
- * - Búsqueda dentro del documento
+ * - Búsqueda dentro del documento con highlight naranja
  * - Diseño optimizado para lectura
  */
 export const DocumentReader = ({ document, onClose }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [scrollProgress, setScrollProgress] = useState(0);
   const [tableOfContents, setTableOfContents] = useState([]);
-  const [highlightedText, setHighlightedText] = useState('');
+  const [activeSection, setActiveSection] = useState(null);
+  const [searchResultsCount, setSearchResultsCount] = useState(0);
   const contentRef = useRef(null);
+  const sectionRefs = useRef({});
 
   // Calcular tiempo de lectura (promedio 200 palabras por minuto)
   const calculateReadingTime = (text) => {
@@ -26,7 +27,7 @@ export const DocumentReader = ({ document, onClose }) => {
     return minutes;
   };
 
-  // Extraer tabla de contenidos (headings del markdown)
+  // Extraer tabla de contenidos mejorada (detecta múltiples patrones)
   const extractTableOfContents = (text) => {
     if (!text) return [];
 
@@ -34,20 +35,56 @@ export const DocumentReader = ({ document, onClose }) => {
     const lines = text.split('\n');
 
     lines.forEach((line, index) => {
-      // Detectar markdown headings (# ## ###)
-      const match = line.match(/^(#{1,6})\s+(.+)$/);
-      if (match) {
-        const level = match[1].length;
-        const title = match[2].trim();
-        const id = `heading-${index}`;
+      const trimmedLine = line.trim();
+      if (!trimmedLine) return;
+
+      // Patrón 1: Markdown headings (# ## ###)
+      const markdownMatch = trimmedLine.match(/^(#{1,6})\s+(.+)$/);
+      if (markdownMatch) {
+        const level = markdownMatch[1].length;
+        const title = markdownMatch[2].trim();
+        const id = `section-${index}`;
         headings.push({ level, title, id, line: index });
+        return;
+      }
+
+      // Patrón 2: Numeración (1. 2. 3. o 1) 2) 3))
+      const numberedMatch = trimmedLine.match(/^(\d+)[.)]\s+(.{3,50})$/);
+      if (numberedMatch && trimmedLine.length < 80) {
+        const title = numberedMatch[2].trim();
+        const id = `section-${index}`;
+        headings.push({ level: 2, title: `${numberedMatch[1]}. ${title}`, id, line: index });
+        return;
+      }
+
+      // Patrón 3: Palabras clave de sección
+      const sectionKeywords = /^(CAPITULO|CAPÍTULO|SECCION|SECCIÓN|TITULO|TÍTULO|PARTE|ANEXO|APENDICE|APÉNDICE|INTRODUCCION|INTRODUCCIÓN|CONCLUSION|CONCLUSIÓN|RESUMEN|ABSTRACT)\s*[:\-.]?\s*(.*)$/i;
+      const keywordMatch = trimmedLine.match(sectionKeywords);
+      if (keywordMatch) {
+        const keyword = keywordMatch[1].toUpperCase();
+        const rest = keywordMatch[2] ? keywordMatch[2].trim() : '';
+        const title = rest ? `${keyword}: ${rest}` : keyword;
+        const id = `section-${index}`;
+        headings.push({ level: 1, title, id, line: index });
+        return;
+      }
+
+      // Patrón 4: Líneas en MAYÚSCULAS (posibles títulos) - mínimo 4 caracteres, máximo 60
+      if (trimmedLine === trimmedLine.toUpperCase() &&
+          trimmedLine.length >= 4 &&
+          trimmedLine.length <= 60 &&
+          /^[A-ZÁÉÍÓÚÑ\s\d]+$/.test(trimmedLine) &&
+          !trimmedLine.match(/^[\d\s\-_.]+$/)) { // Excluir líneas solo con números/símbolos
+        const id = `section-${index}`;
+        headings.push({ level: 2, title: trimmedLine, id, line: index });
+        return;
       }
     });
 
     return headings;
   };
 
-  // Manejar scroll para actualizar progreso
+  // Manejar scroll para actualizar progreso y sección activa
   const handleScroll = () => {
     if (!contentRef.current) return;
 
@@ -58,27 +95,62 @@ export const DocumentReader = ({ document, onClose }) => {
 
     const progress = documentHeight > 0 ? (scrollTop / documentHeight) * 100 : 0;
     setScrollProgress(Math.min(100, Math.max(0, progress)));
+
+    // Detectar sección activa
+    const sections = Object.entries(sectionRefs.current);
+    for (let i = sections.length - 1; i >= 0; i--) {
+      const [id, ref] = sections[i];
+      if (ref && ref.offsetTop <= scrollTop + 100) {
+        setActiveSection(id);
+        break;
+      }
+    }
   };
 
-  // Scroll a sección específica
-  const scrollToSection = (lineNumber) => {
+  // Scroll a sección específica usando ID
+  const scrollToSection = (sectionId, lineNumber) => {
     if (!contentRef.current) return;
 
-    // Aproximación: cada línea tiene ~30px de altura
-    const targetScroll = lineNumber * 30;
-    contentRef.current.scrollTo({
-      top: targetScroll,
-      behavior: 'smooth'
-    });
+    const sectionElement = sectionRefs.current[sectionId];
+    if (sectionElement) {
+      sectionElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      // Fallback: aproximación por línea
+      const targetScroll = lineNumber * 28;
+      contentRef.current.scrollTo({
+        top: targetScroll,
+        behavior: 'smooth'
+      });
+    }
+    setActiveSection(sectionId);
   };
 
-  // Resaltar texto de búsqueda
-  const highlightSearchResults = (text) => {
-    if (!searchQuery.trim()) return text;
+  // Resaltar texto de búsqueda y contar resultados
+  const highlightSearchResults = useMemo(() => {
+    const content = document.content_text || document.content || '';
 
-    const regex = new RegExp(`(${searchQuery})`, 'gi');
-    return text.replace(regex, '<mark>$1</mark>');
-  };
+    if (!searchQuery.trim()) {
+      return { html: null, count: 0 };
+    }
+
+    try {
+      const escapedQuery = searchQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(`(${escapedQuery})`, 'gi');
+      const matches = content.match(regex);
+      const count = matches ? matches.length : 0;
+
+      const highlighted = content.replace(regex, '<mark class="search-highlight">$1</mark>');
+
+      return { html: highlighted, count };
+    } catch (e) {
+      return { html: null, count: 0 };
+    }
+  }, [searchQuery, document.content_text, document.content]);
+
+  // Actualizar contador de resultados
+  useEffect(() => {
+    setSearchResultsCount(highlightSearchResults.count);
+  }, [highlightSearchResults.count]);
 
   // Inicializar tabla de contenidos
   useEffect(() => {
@@ -95,6 +167,77 @@ export const DocumentReader = ({ document, onClose }) => {
   const isWord = mimeType.includes('word');
   const downloadUrl = `/api/docs/${document.id}/download`;
 
+  // Renderizar contenido con secciones marcadas para scroll
+  const renderContent = () => {
+    const content = document.content_text || document.content || '';
+    const lines = content.split('\n');
+
+    // Si hay búsqueda activa, usar HTML con highlights
+    if (searchQuery.trim() && highlightSearchResults.html) {
+      return (
+        <div
+          className="content-text"
+          dangerouslySetInnerHTML={{ __html: highlightSearchResults.html.replace(/\n/g, '<br/>') }}
+        />
+      );
+    }
+
+    // Renderizar con referencias para scroll
+    return (
+      <div className="content-text">
+        {lines.map((line, index) => {
+          const sectionId = `section-${index}`;
+          const isHeading = tableOfContents.some(h => h.line === index);
+
+          // Detectar nivel de heading para estilo
+          const heading = tableOfContents.find(h => h.line === index);
+          const headingClass = heading ? `heading-level-${heading.level}` : '';
+
+          return (
+            <div
+              key={index}
+              ref={isHeading ? el => sectionRefs.current[sectionId] = el : null}
+              id={isHeading ? sectionId : null}
+              className={`content-line ${headingClass}`}
+            >
+              {renderLine(line)}
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
+  // Renderizar una línea con formato básico
+  const renderLine = (line) => {
+    if (!line.trim()) return <br />;
+
+    // Detectar y formatear markdown básico
+    let formattedLine = line;
+
+    // Headers markdown
+    const headerMatch = line.match(/^(#{1,6})\s+(.+)$/);
+    if (headerMatch) {
+      const level = headerMatch[1].length;
+      const text = headerMatch[2];
+      const Tag = `h${level}`;
+      return <Tag>{text}</Tag>;
+    }
+
+    // Bold **text**
+    formattedLine = formattedLine.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    // Italic *text*
+    formattedLine = formattedLine.replace(/\*(.+?)\*/g, '<em>$1</em>');
+    // Code `text`
+    formattedLine = formattedLine.replace(/`(.+?)`/g, '<code>$1</code>');
+
+    if (formattedLine !== line) {
+      return <span dangerouslySetInnerHTML={{ __html: formattedLine }} />;
+    }
+
+    return <span>{line}</span>;
+  };
+
   // Imprimir documento
   const handlePrint = () => {
     window.print();
@@ -104,6 +247,11 @@ export const DocumentReader = ({ document, onClose }) => {
   const handleCopy = () => {
     navigator.clipboard.writeText(displayContent);
     alert('Contenido copiado al portapapeles');
+  };
+
+  // Limpiar búsqueda
+  const clearSearch = () => {
+    setSearchQuery('');
   };
 
   return (
@@ -134,6 +282,27 @@ export const DocumentReader = ({ document, onClose }) => {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="search-input"
             />
+            {searchQuery && (
+              <>
+                <span className="search-results-count">
+                  {searchResultsCount} resultado{searchResultsCount !== 1 ? 's' : ''}
+                </span>
+                <button
+                  className="btn-clear-search"
+                  onClick={clearSearch}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: '#999',
+                    cursor: 'pointer',
+                    fontSize: '1rem',
+                    padding: '0 4px'
+                  }}
+                >
+                  ✕
+                </button>
+              </>
+            )}
           </div>
         </div>
 
@@ -155,7 +324,7 @@ export const DocumentReader = ({ document, onClose }) => {
 
       {/* Contenedor principal */}
       <div className="reader-container">
-        {/* Sidebar con tabla de contenidos */}
+        {/* Sidebar con tabla de contenidos - SIEMPRE visible si hay contenido */}
         {tableOfContents.length > 0 && (
           <aside className="reader-sidebar">
             <div className="toc-header">
@@ -165,8 +334,8 @@ export const DocumentReader = ({ document, onClose }) => {
               {tableOfContents.map((item, index) => (
                 <a
                   key={index}
-                  className={`toc-item toc-level-${item.level}`}
-                  onClick={() => scrollToSection(item.line)}
+                  className={`toc-item toc-level-${item.level} ${activeSection === item.id ? 'active' : ''}`}
+                  onClick={() => scrollToSection(item.id, item.line)}
                 >
                   {item.title}
                 </a>
@@ -218,6 +387,11 @@ export const DocumentReader = ({ document, onClose }) => {
                       Texto extraído
                     </span>
                   )}
+                  {tableOfContents.length > 0 && (
+                    <span className="meta-badge">
+                      {tableOfContents.length} secciones
+                    </span>
+                  )}
                 </div>
 
                 {/* Acciones y progreso */}
@@ -244,7 +418,7 @@ export const DocumentReader = ({ document, onClose }) => {
             onScroll={handleScroll}
           >
             <div className="content-wrapper">
-              <ReactMarkdown>{displayContent}</ReactMarkdown>
+              {renderContent()}
             </div>
           </article>
         </main>

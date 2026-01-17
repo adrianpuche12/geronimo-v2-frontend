@@ -578,11 +578,32 @@
   margin: 3em 0;
 }
 
-/* Resaltado de búsqueda */
-.content-wrapper mark {
-  background-color: #ffeb3b;
-  padding: 2px 4px;
-  border-radius: 2px;
+/* Resaltado de búsqueda - Color Nilo Solutions */
+.content-wrapper mark,
+.search-highlight {
+  background-color: #FF6600;
+  color: #ffffff;
+  padding: 2px 6px;
+  border-radius: 3px;
+  box-shadow: 0 0 8px rgba(255, 102, 0, 0.4);
+  font-weight: 500;
+}
+
+/* Contador de resultados de búsqueda */
+.search-results-count {
+  color: #FF6600;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-left: 8px;
+  white-space: nowrap;
+}
+
+/* Sección activa en TOC */
+.toc-item.active {
+  background-color: #1a1a1a;
+  color: #FF6600;
+  border-left-color: #FF6600;
+  font-weight: 600;
 }
 
 /* Footer y scroll indicator removidos - ahora en el header */
