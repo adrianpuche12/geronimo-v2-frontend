@@ -203,15 +203,17 @@ function App() {
 
     for (const file of files) {
       try {
-        // Leer el contenido del archivo como texto
-        const content = await readFileContent(file);
+        // Usar FormData para enviar el archivo (el backend V2 extrae el contenido)
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('projectId', selectedProject);
+        formData.append('path', `docs/${file.name}`);
+        formData.append('title', file.name);
 
-        // Enviar como JSON con el contenido del archivo
-        const response = await axios.post(`${API_URL}/docs`, {
-          projectId: selectedProject,
-          path: `docs/${file.name}`,
-          title: file.name,
-          content: content
+        const response = await axios.post(`${API_URL}/docs`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
         });
 
         // Verificar si el backend detectó un duplicado
