@@ -14,6 +14,7 @@ import { formatDate, formatFileSize } from './componentes/utilities';
 import { Login } from './componentes/Login';
 import { UserHeader } from './componentes/UserHeader';
 import { useAuth } from './context/AuthContext';
+import './styles/explorer.css';
 import logo from './assets/images/logo.png';
 
 
@@ -52,6 +53,7 @@ function App() {
   const [duplicateAlert, setDuplicateAlert] = useState(null); // Para modal de duplicados
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false); // Para colapsar sidebar
   const [selectedMode, setSelectedMode] = useState('general'); // CAPA 4: Modo de análisis (general, stats, business)
+  const [activeFolderId, setActiveFolderId] = useState(null); // CAPA 8
   const [showEditProject, setShowEditProject] = useState(false); // Modal edición proyecto
   const [editingProject, setEditingProject] = useState(null); // Proyecto en edición
   const [editProjectName, setEditProjectName] = useState(''); // Nombre en edición
@@ -380,6 +382,7 @@ function App() {
         projectId: selectedProject,
         question: inputMessage,
         mode: selectedMode,
+        folderId: activeFolderId,
         history
       });
 
@@ -451,6 +454,7 @@ function App() {
         projectId: selectedProject,
         question: userMessage.content,
         mode: selectedMode,
+        folderId: activeFolderId,
         history: historyForRegen
       });
 
@@ -727,6 +731,8 @@ function App() {
               handleViewDocument={handleViewDocument}
               handleDeleteDocument={handleDeleteDocument}
               isLoading={isLoading}
+              activeFolderId={activeFolderId}
+              onFolderSelect={(folderId) => setActiveFolderId(folderId)}
             />
           )}
 
