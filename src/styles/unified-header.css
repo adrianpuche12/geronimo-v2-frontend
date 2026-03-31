@@ -1,0 +1,509 @@
+/* ========================================
+   UNIFIED HEADER
+   ======================================== */
+
+.unified-header {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 0.75rem 2rem;
+
+  background: rgba(10, 10, 10, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+  position: relative;
+  min-height: 64px;
+  overflow: visible !important;
+}
+
+/* ========================================
+   SECTIONS
+   ======================================== */
+
+.header-section {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  overflow: visible !important;
+}
+
+.tabs-section {
+  flex: 0 0 auto;
+}
+
+.projects-section {
+  flex: 1;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+/* ========================================
+   TABS — pill group
+   ======================================== */
+
+.tabs-pill-group {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.unified-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 1rem;
+
+  background: transparent;
+  border: none;
+  border-radius: 7px;
+
+  color: var(--text-secondary, rgba(255,255,255,0.45));
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.tab-icon {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  line-height: 1;
+}
+
+.tab-label {
+  line-height: 1;
+}
+
+.unified-tab:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary, #fff);
+}
+
+.unified-tab:hover .tab-icon {
+  opacity: 1;
+}
+
+.unified-tab.active {
+  background: rgba(255, 102, 0, 0.18);
+  color: var(--accent-primary, #FF6600);
+  font-weight: 600;
+}
+
+.unified-tab.active .tab-icon {
+  opacity: 1;
+}
+
+/* ========================================
+   MODO AUTO BADGE
+   ======================================== */
+
+.mode-auto-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  color: rgba(255, 255, 255, 0.25);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  cursor: default;
+  user-select: none;
+}
+
+.mode-auto-icon {
+  font-size: 0.7rem;
+  color: rgba(255, 102, 0, 0.4);
+}
+
+/* ========================================
+   MODO BUTTON
+   ======================================== */
+
+.btn-mode {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.875rem;
+
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+
+  color: var(--text-secondary, rgba(255,255,255,0.5));
+  font-family: var(--font-display);
+  font-size: 0.825rem;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.btn-mode-icon {
+  font-size: 0.8rem;
+  color: var(--accent-primary, #FF6600);
+}
+
+.btn-mode-arrow {
+  font-size: 0.6rem;
+  opacity: 0.6;
+}
+
+.btn-mode:hover:not(:disabled) {
+  background: rgba(255, 102, 0, 0.1);
+  border-color: rgba(255, 102, 0, 0.3);
+  color: var(--text-primary, #fff);
+}
+
+.btn-mode:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ========================================
+   PROJECT SELECTOR
+   ======================================== */
+
+.project-selector-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 9px;
+  padding: 0.3rem 0.5rem 0.3rem 0.75rem;
+}
+
+.project-selector-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted, rgba(255,255,255,0.3));
+  white-space: nowrap;
+  line-height: 1;
+}
+
+/* Custom Dropdown */
+.custom-dropdown {
+  position: relative;
+  min-width: 160px;
+  max-width: 260px;
+}
+
+.dropdown-disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.dropdown-trigger {
+  width: 100%;
+  padding: 0.4rem 2rem 0.4rem 0.75rem;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: var(--text-primary, #fff);
+  font-family: var(--font-primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  text-align: left;
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dropdown-trigger:hover {
+  background: rgba(255, 102, 0, 0.08);
+}
+
+.dropdown-trigger.dropdown-open {
+  background: rgba(255, 102, 0, 0.1);
+}
+
+.dropdown-arrow {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.5rem;
+  color: var(--accent-primary, #FF6600);
+  transition: transform 0.2s ease;
+  pointer-events: none;
+}
+
+.dropdown-arrow.arrow-up {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.dropdown-menu {
+  background: #111;
+  border: 1px solid rgba(255, 102, 0, 0.2);
+  border-radius: 10px;
+  max-height: 280px;
+  overflow-y: auto;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.8);
+  animation: dropdownFadeIn 0.15s ease-out;
+}
+
+@keyframes dropdownFadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.dropdown-item {
+  padding: 0.6rem 1rem;
+  color: var(--text-primary, #fff);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background 0.12s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dropdown-item:hover {
+  background: rgba(255, 102, 0, 0.15);
+  color: #FF6600;
+}
+
+.dropdown-item-active {
+  background: rgba(255, 102, 0, 0.12);
+  color: #FF6600;
+  font-weight: 600;
+}
+
+.dropdown-menu::-webkit-scrollbar { width: 4px; }
+.dropdown-menu::-webkit-scrollbar-track { background: transparent; }
+.dropdown-menu::-webkit-scrollbar-thumb { background: rgba(255,102,0,0.3); border-radius: 2px; }
+
+/* ========================================
+   ACTION BUTTONS
+   ======================================== */
+
+.btn-action {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.875rem;
+  border-radius: 8px;
+  font-family: var(--font-display);
+  font-size: 0.825rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  letter-spacing: 0.01em;
+}
+
+.btn-action-icon {
+  font-size: 0.9rem;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.btn-action:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* Nuevo — acento naranja sólido */
+.btn-action-primary {
+  background: var(--accent-primary, #FF6600);
+  border: 1px solid var(--accent-primary, #FF6600);
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(255, 102, 0, 0.3);
+}
+
+.btn-action-primary:hover:not(:disabled) {
+  background: #ff7a1f;
+  border-color: #ff7a1f;
+  box-shadow: 0 4px 16px rgba(255, 102, 0, 0.45);
+  transform: translateY(-1px);
+}
+
+/* Subir — azul */
+.btn-action-upload {
+  background: rgba(59, 130, 246, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  color: #60a5fa;
+}
+
+.btn-action-upload:hover:not(:disabled) {
+  background: rgba(59, 130, 246, 0.22);
+  border-color: #60a5fa;
+  color: #93c5fd;
+}
+
+/* Editar — naranja outline */
+.btn-action-edit {
+  background: rgba(255, 102, 0, 0.08);
+  border: 1px solid rgba(255, 102, 0, 0.35);
+  color: var(--accent-primary, #FF6600);
+}
+
+.btn-action-edit:hover:not(:disabled) {
+  background: rgba(255, 102, 0, 0.18);
+  border-color: var(--accent-primary, #FF6600);
+}
+
+/* Eliminar — rojo */
+.btn-action-delete {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #f87171;
+}
+
+.btn-action-delete:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.18);
+  border-color: #f87171;
+  color: #fca5a5;
+}
+
+/* ========================================
+   DIVIDERS
+   ======================================== */
+
+.header-divider {
+  width: 1px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.07);
+  flex-shrink: 0;
+}
+
+.header-divider-small {
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.07);
+  margin: 0 0.125rem;
+}
+
+/* ========================================
+   MODE DROPDOWN
+   ======================================== */
+
+.mode-dropdown-menu {
+  position: fixed;
+  z-index: 99999;
+  min-width: 220px;
+
+  background: rgba(12, 12, 12, 0.97);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 102, 0, 0.2);
+  border-radius: 10px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7), 0 2px 8px rgba(255, 102, 0, 0.15);
+  padding: 0.5rem;
+  animation: dropdownFadeIn 0.15s ease-out;
+}
+
+.mode-dropdown-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  background: transparent;
+  border: none;
+  border-radius: 7px;
+  color: var(--text-secondary, rgba(255,255,255,0.55));
+  font-family: var(--font-primary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.mode-item-check {
+  width: 1rem;
+  font-size: 0.75rem;
+  color: var(--accent-primary, #FF6600);
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.mode-item-desc {
+  margin-left: auto;
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.25);
+  font-weight: 400;
+}
+
+.mode-dropdown-item:hover {
+  background: rgba(255, 102, 0, 0.1);
+  color: var(--text-primary, #fff);
+}
+
+.mode-dropdown-item.active {
+  background: rgba(255, 102, 0, 0.15);
+  color: var(--accent-primary, #FF6600);
+  font-weight: 600;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 1200px) {
+  .unified-header { padding: 0.75rem 1.25rem; }
+  .custom-dropdown { min-width: 130px; max-width: 200px; }
+}
+
+@media (max-width: 992px) {
+  .unified-header { gap: 0.75rem; padding: 0.625rem 1rem; }
+  .unified-tab { padding: 0.4rem 0.75rem; font-size: 0.8rem; }
+  .btn-action { padding: 0.4rem 0.75rem; font-size: 0.8rem; }
+  .tab-label { display: none; }
+  .tab-icon { opacity: 1; font-size: 1rem; }
+  .unified-tab { padding: 0.45rem 0.6rem; }
+}
+
+@media (max-width: 768px) {
+  .unified-header {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.625rem 0.875rem;
+    min-height: auto;
+  }
+
+  .tabs-section {
+    width: 100%;
+    order: 1;
+  }
+
+  .tabs-pill-group {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .tab-label { display: inline; }
+
+  .unified-tab { flex: 1; justify-content: center; font-size: 0.75rem; }
+
+  .header-divider { display: none; }
+
+  .projects-section {
+    width: 100%;
+    order: 2;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .project-selector-group { flex: 1; min-width: 150px; }
+  .custom-dropdown { min-width: 100px; max-width: none; flex: 1; }
+}
