@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { formatDate, highlightText } from './utilities';
 
 export const Search = ({
@@ -12,19 +12,29 @@ export const Search = ({
   projects,
   handleViewDocument
 }) => {
+  const [filtersVisible, setFiltersVisible] = useState(true);
+
+  // Auto-collapse when results arrive
+  useEffect(() => {
+    if (searchResults.length > 0) setFiltersVisible(false);
+  }, [searchResults.length]);
+
+  const clearFilters = () => {
+    setSearchQuery('');
+    setSearchFilters({ projectId: '', dateFrom: '', dateTo: '', fileType: '' });
+  };
+
+  const hasActiveFilters = !!(searchFilters.projectId || searchFilters.dateFrom || searchFilters.dateTo || searchFilters.fileType || searchQuery);
+
   return (
+
     <section className="search-section">
       <div className="search-hero">
         <div className="search-hero-content">
-          <h1 className="search-hero-title">🔍 Busca en todo tu sistema</h1>
-          <p className="search-hero-subtitle">
-            Encuentra archivos, documentos y contenido en todos tus proyectos
-          </p>
-
           {/* Enhanced Search Bar */}
           <div className="search-bar-enhanced">
             <div className="search-input-wrapper">
-              <span className="search-icon">🔍</span>
+              <span className="search-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
               <input
                 type="text"
                 placeholder="Escribe para buscar en documentos, títulos, contenido..."
@@ -34,11 +44,11 @@ export const Search = ({
                 disabled={isSearching}
                 className="search-input-enhanced"
               />
-              {searchQuery && (
+              {hasActiveFilters && (
                 <button
                   className="search-clear-btn"
-                  onClick={() => setSearchQuery('')}
-                  title="Limpiar búsqueda"
+                  onClick={clearFilters}
+                  title="Limpiar búsqueda y filtros"
                 >
                   ✕
                 </button>
@@ -46,16 +56,16 @@ export const Search = ({
             </div>
             <button
               onClick={handleSearch}
-              disabled={isSearching || !searchQuery.trim()}
+              disabled={isSearching || (!searchQuery.trim() && !searchFilters.projectId && !searchFilters.dateFrom && !searchFilters.dateTo && !searchFilters.fileType)}
               className="search-btn-enhanced"
             >
               {isSearching ? (
                 <>
-                  <span className="search-btn-spinner">⏳</span> Buscando...
+                  <span className="search-btn-spinner"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{animation:"search-spin 0.7s linear infinite",display:"inline-block"}}><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg></span> Buscando...
                 </>
               ) : (
                 <>
-                  <span>🔍</span> Buscar
+                  Buscar
                 </>
               )}
             </button>
@@ -74,7 +84,20 @@ export const Search = ({
 
       <div className="search-container">
 
+        {/* Filter controls bar */}
+        <div className="search-filter-controls">
+          <button
+            className="search-filters-toggle"
+            onClick={() => setFiltersVisible(v => !v)}
+          >
+            <span className="search-filters-toggle-icon">{filtersVisible ? '▲' : '▼'}</span>
+            {filtersVisible ? 'Ocultar filtros' : 'Mostrar filtros'}
+            {hasActiveFilters && !filtersVisible && <span className="filter-active-dot" />}
+          </button>
+        </div>
+
         {/* Filters */}
+        {filtersVisible && (
         <div className="search-filters">
           <select
             value={searchFilters.projectId}
@@ -86,19 +109,23 @@ export const Search = ({
             ))}
           </select>
 
-          <input
-            type="date"
-            placeholder="Desde"
-            value={searchFilters.dateFrom}
-            onChange={(e) => setSearchFilters({...searchFilters, dateFrom: e.target.value})}
-          />
+          <div className="search-filter-date">
+            <span className="search-filter-date-label">Desde</span>
+            <input
+              type="date"
+              value={searchFilters.dateFrom}
+              onChange={(e) => setSearchFilters({...searchFilters, dateFrom: e.target.value})}
+            />
+          </div>
 
-          <input
-            type="date"
-            placeholder="Hasta"
-            value={searchFilters.dateTo}
-            onChange={(e) => setSearchFilters({...searchFilters, dateTo: e.target.value})}
-          />
+          <div className="search-filter-date">
+            <span className="search-filter-date-label">Hasta</span>
+            <input
+              type="date"
+              value={searchFilters.dateTo}
+              onChange={(e) => setSearchFilters({...searchFilters, dateTo: e.target.value})}
+            />
+          </div>
 
           <select
             value={searchFilters.fileType}
@@ -113,12 +140,13 @@ export const Search = ({
             <option value="py">Python (.py)</option>
           </select>
         </div>
+        )}
 
         {/* Results */}
         <div className="search-results">
-          {searchResults.length === 0 && !isSearching && searchQuery && (
+          {searchResults.length === 0 && !isSearching && (searchQuery || hasActiveFilters) && (
             <div className="empty-state">
-              <div className="empty-state-icon">🔍</div>
+              <div className="empty-state-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
               <p>No se encontraron resultados</p>
               <p style={{fontSize: '0.85rem', marginTop: '0.5rem'}}>
                 Intenta con otros términos de búsqueda
@@ -126,9 +154,9 @@ export const Search = ({
             </div>
           )}
 
-          {searchResults.length === 0 && !isSearching && !searchQuery && (
+          {searchResults.length === 0 && !isSearching && !searchQuery && !hasActiveFilters && (
             <div className="empty-state">
-              <div className="empty-state-icon">🔍</div>
+              <div className="empty-state-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
               <p>Escribe algo para buscar</p>
               <p style={{fontSize: '0.85rem', marginTop: '0.5rem'}}>
                 Busca en paths, títulos o contenido de documentos
@@ -137,38 +165,30 @@ export const Search = ({
           )}
 
           {searchResults.length > 0 && (
-            <div className="results-list">
+            <div className="exp-doc-list">
               {searchResults.map(result => (
-                <div key={result.id} className="result-item">
-                  <div className="result-header">
-                    <span className="result-icon">📄</span>
-                    <div className="result-info">
-                      <div className="result-path">
-                        {highlightText(result.path, searchQuery)}
-                      </div>
-                      <div className="result-meta">
-                        <span className="result-project">📁 {result.projectName}</span>
-                        <span className="result-date">📅 {formatDate(result.createdAt)}</span>
-                        <span className="result-match">
-                          {result.matchType === 'path' && '🎯 Match en ruta'}
-                          {result.matchType === 'title' && '🎯 Match en título'}
-                          {result.matchType === 'content' && '🎯 Match en contenido'}
-                        </span>
-                      </div>
+                <div
+                  key={result.id}
+                  className="exp-doc-row"
+                  onClick={() => handleViewDocument(result)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <span className="exp-doc-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                      <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                  </span>
+                  <div className="exp-doc-info">
+                    <div className="exp-doc-path">{highlightText(result.path, searchQuery)}</div>
+                    <div className="exp-doc-meta">
+                      {result.projectName && <span>{result.projectName}</span>}
+                      {result.projectName && <span> &middot; </span>}
+                      <span>{formatDate(result.created_at || result.createdAt)}</span>
+                      {result.snippet && (
+                        <span className="result-snippet-meta"> &middot; {highlightText(result.snippet.substring(0, 100), searchQuery)}</span>
+                      )}
                     </div>
-                  </div>
-                  {result.snippet && (
-                    <div className="result-snippet">
-                      {highlightText(result.snippet, searchQuery)}
-                    </div>
-                  )}
-                  <div className="result-actions">
-                    <button
-                      className="btn-view"
-                      onClick={() => handleViewDocument(result)}
-                    >
-                      👁️ Ver
-                    </button>
                   </div>
                 </div>
               ))}

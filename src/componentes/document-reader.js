@@ -13,6 +13,7 @@ import '../styles/document-reader.css';
 export const DocumentReader = ({ document, onClose }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [infoCollapsed, setInfoCollapsed] = useState(false);
   const [tableOfContents, setTableOfContents] = useState([]);
   const [activeSection, setActiveSection] = useState(null);
   const [searchResultsCount, setSearchResultsCount] = useState(0);
@@ -147,6 +148,29 @@ export const DocumentReader = ({ document, onClose }) => {
     }
   }, [searchQuery, document.content_text, document.content]);
 
+  // Posiciones de coincidencias para el scroll map
+  const matchPositions = useMemo(() => {
+    if (!searchQuery.trim() || highlightSearchResults.count === 0) return [];
+    const content = document.content_text || document.content || '';
+    if (!content) return [];
+    try {
+      const escaped = searchQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(escaped, 'gi');
+      const positions = [];
+      let m;
+      while ((m = regex.exec(content)) !== null) {
+        positions.push((m.index / content.length) * 100);
+      }
+      return positions;
+    } catch { return []; }
+  }, [searchQuery, document.content_text, document.content, highlightSearchResults.count]);
+
+  const scrollToMatchAt = (pct) => {
+    if (!contentRef.current) return;
+    const { scrollHeight, clientHeight } = contentRef.current;
+    contentRef.current.scrollTo({ top: (pct / 100) * (scrollHeight - clientHeight), behavior: 'smooth' });
+  };
+
   // Actualizar contador de resultados
   useEffect(() => {
     setSearchResultsCount(highlightSearchResults.count);
@@ -238,6 +262,22 @@ export const DocumentReader = ({ document, onClose }) => {
     return <span>{line}</span>;
   };
 
+  // Descargar contenido del documento directamente (sin pasar por API)
+  const handleDownload = () => {
+    const content = document.content_text || document.content || '';
+    const rawName = document.title || document.path || 'documento';
+    const filename = rawName.split('/').pop() || rawName;
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = window.document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    window.document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  };
+
   // Imprimir documento
   const handlePrint = () => {
     window.print();
@@ -245,8 +285,25 @@ export const DocumentReader = ({ document, onClose }) => {
 
   // Copiar contenido al portapapeles
   const handleCopy = () => {
-    navigator.clipboard.writeText(displayContent);
-    alert('Contenido copiado al portapapeles');
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(displayContent).then(() => {
+          alert('Contenido copiado al portapapeles');
+        });
+      } else {
+        const textarea = document.createElement('textarea');
+        textarea.value = displayContent;
+        textarea.style.cssText = 'position:fixed;top:0;left:0;opacity:0;pointer-events:none';
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        alert('Contenido copiado al portapapeles');
+      }
+    } catch (err) {
+      alert('No se pudo copiar el contenido');
+    }
   };
 
   // Limpiar búsqueda
@@ -307,7 +364,7 @@ export const DocumentReader = ({ document, onClose }) => {
         </div>
 
         <div className="reader-header-right">
-          <button className="btn-action" onClick={() => window.open(downloadUrl, '_blank')} title="Descargar">
+          <button className="btn-action" onClick={handleDownload} title="Descargar">
             📥
           </button>
           <button className="btn-action" onClick={handleCopy} title="Copiar texto">
@@ -357,8 +414,21 @@ export const DocumentReader = ({ document, onClose }) => {
                 <h1 className="document-title">{document.title || document.path}</h1>
               </div>
 
+              {/* Toggle info — solo mobile */}
+              <button
+                className="reader-info-toggle"
+                onClick={() => setInfoCollapsed(v => !v)}
+                aria-label={infoCollapsed ? 'Mostrar info' : 'Ocultar info'}
+              >
+                {infoCollapsed
+                  ? <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+                  : <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="18 15 12 9 6 15"/></svg>
+                }
+                <span>{infoCollapsed ? 'Ver info' : 'Ocultar info'}</span>
+              </button>
+
               {/* Fila 2: Todo en una línea horizontal */}
-              <div className="document-header-actions">
+              <div className={`document-header-actions${infoCollapsed ? ' reader-info-hidden' : ''}`}>
                 {/* Metadata */}
                 <div className="document-meta-compact">
                   <span className="meta-badge">
@@ -395,7 +465,7 @@ export const DocumentReader = ({ document, onClose }) => {
                 </div>
 
                 {/* Acciones y progreso */}
-                <button className="btn-header-action" onClick={() => window.open(downloadUrl, '_blank')}>
+                <button className="btn-header-action" onClick={handleDownload}>
                   📥 Descargar
                 </button>
                 <button className="btn-header-action" onClick={handleCopy}>
@@ -405,22 +475,37 @@ export const DocumentReader = ({ document, onClose }) => {
                   {Math.round(scrollProgress)}%
                 </div>
                 <div className="document-storage-info">
-                  Geronimo 2.0
+                  Lexiius 2.0
                 </div>
               </div>
             </div>
           </header>
 
-          {/* Contenido del documento */}
-          <article
-            className="document-content"
-            ref={contentRef}
-            onScroll={handleScroll}
-          >
-            <div className="content-wrapper">
-              {renderContent()}
-            </div>
-          </article>
+          {/* Contenido del documento + mapa de scroll de búsqueda */}
+          <div className="reader-content-wrap">
+            <article
+              className="document-content"
+              ref={contentRef}
+              onScroll={handleScroll}
+            >
+              <div className="content-wrapper">
+                {renderContent()}
+              </div>
+            </article>
+            {matchPositions.length > 0 && (
+              <div className="search-scroll-map">
+                {matchPositions.map((pct, i) => (
+                  <div
+                    key={i}
+                    className="search-scroll-dot"
+                    style={{ top: `${pct}%` }}
+                    onClick={() => scrollToMatchAt(pct)}
+                    title={`Ir a coincidencia ${i + 1} de ${matchPositions.length}`}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
         </main>
       </div>
     </div>

@@ -1,0 +1,596 @@
+/* ============================================================
+   GERONIMO 3.0 — DESIGN TOKENS
+   Paleta: Índigo / Near-black
+   Última actualización: 2026-03-31
+
+   REGLA: Este es el único archivo donde se definen valores
+   numéricos, colores o fuentes. Ningún otro archivo CSS
+   debe contener hex, rgb, rem hardcodeados, ni font-family
+   explícitos. Solo var(--token-name).
+   ============================================================ */
+
+:root {
+
+  /* ══════════════════════════════════════════
+     ESCALA DE COLOR BASE
+     No usar directamente en componentes.
+     Existen para construir los tokens semánticos.
+     ══════════════════════════════════════════ */
+
+  /* Grises */
+  --_gray-50:  #F4F4F6;
+  --_gray-100: #EBEBEF;
+  --_gray-200: #D5D5E0;
+  --_gray-300: #ABABC2;
+  --_gray-400: #8080A0;
+  --_gray-500: #5C5C78;
+  --_gray-600: #3A3A52;
+  --_gray-700: #28283A;
+  --_gray-800: #1C1C28;
+  --_gray-900: #13131C;
+  --_gray-950: #0C0C0F;
+
+  /* Índigo */
+  --_indigo-100: #E0E0FF;
+  --_indigo-200: #C4C4FF;
+  --_indigo-300: #A5A6FF;
+  --_indigo-400: #8486FA;
+  --_indigo-500: #6366F1;
+  --_indigo-600: #4F51D4;
+  --_indigo-700: #3C3EB8;
+  --_indigo-800: #2B2D90;
+  --_indigo-900: #1B1D68;
+  --_indigo-950: #0E0F3F;
+
+  /* ══════════════════════════════════════════
+     FONDOS
+     ══════════════════════════════════════════ */
+
+  /* Capas de profundidad — de más oscuro a más elevado */
+  --bg-base:          var(--_gray-950);   /* Fondo de página */
+  --bg-surface-1:     var(--_gray-900);   /* Panel lateral, cards base */
+  --bg-surface-2:     var(--_gray-800);   /* Cards elevadas, dropdowns */
+  --bg-surface-3:     var(--_gray-700);   /* Hover de items, tooltips */
+  --bg-inverse:       var(--_gray-50);    /* Fondos claros (badges, etc.) */
+
+  /* Overlay y glass */
+  --bg-overlay:       rgba(12, 12, 15, 0.80);   /* Backdrop de modales */
+  --bg-glass:         rgba(19, 19, 28, 0.75);   /* Glass morphism */
+  --bg-glass-strong:  rgba(19, 19, 28, 0.92);   /* Glass opaco */
+
+  /* Acento con transparencia */
+  --bg-accent-subtle: rgba(99, 102, 241, 0.07);  /* Fondo tintado suave */
+  --bg-accent-muted:  rgba(99, 102, 241, 0.14);  /* Fondo tintado medio */
+  --bg-accent-strong: rgba(99, 102, 241, 0.25);  /* Fondo tintado fuerte */
+
+  /* Semánticos */
+  --bg-success:       rgba(16, 185, 129, 0.10);
+  --bg-warning:       rgba(245, 158, 11, 0.10);
+  --bg-error:         rgba(239, 68, 68, 0.10);
+  --bg-info:          rgba(99, 102, 241, 0.10);
+
+  /* Estados interactivos de fondo */
+  --bg-hover:         rgba(255, 255, 255, 0.04);
+  --bg-active:        rgba(255, 255, 255, 0.08);
+  --bg-selected:      var(--bg-accent-subtle);
+  --bg-disabled:      rgba(255, 255, 255, 0.03);
+
+  /* ══════════════════════════════════════════
+     BORDES
+     ══════════════════════════════════════════ */
+
+  --border-subtle:    rgba(255, 255, 255, 0.04);  /* Divisores, separadores */
+  --border-default:   rgba(255, 255, 255, 0.08);  /* Bordes de cards, inputs */
+  --border-strong:    rgba(255, 255, 255, 0.14);  /* Bordes visibles */
+  --border-inverse:   rgba(0, 0, 0, 0.12);        /* Bordes en fondos claros */
+  --border-accent:    rgba(99, 102, 241, 0.40);   /* Borde con acento */
+  --border-focus:     var(--_indigo-500);          /* Ring de foco */
+  --border-error:     rgba(239, 68, 68, 0.50);
+  --border-success:   rgba(16, 185, 129, 0.40);
+  --border-warning:   rgba(245, 158, 11, 0.40);
+
+  /* ══════════════════════════════════════════
+     TEXTO
+     ══════════════════════════════════════════ */
+
+  --text-primary:     var(--_gray-50);     /* Títulos, body principal */
+  --text-secondary:   var(--_gray-300);    /* Subtítulos, labels */
+  --text-tertiary:    var(--_gray-400);    /* Texto de apoyo, metadata */
+  --text-muted:       var(--_gray-500);    /* Placeholders, hints */
+  --text-disabled:    var(--_gray-600);    /* Elementos deshabilitados */
+  --text-inverse:     var(--_gray-950);    /* Texto sobre fondos claros */
+  --text-on-accent:   #FFFFFF;             /* Texto sobre botón de acento */
+  --text-on-success:  #FFFFFF;
+  --text-on-error:    #FFFFFF;
+
+  /* Texto con color */
+  --text-accent:      var(--_indigo-400);  /* Texto destacado con acento */
+  --text-success:     #34D399;
+  --text-warning:     #FCD34D;
+  --text-error:       #FCA5A5;
+  --text-info:        var(--_indigo-300);
+
+  /* Links */
+  --text-link:        var(--_indigo-400);
+  --text-link-hover:  var(--_indigo-300);
+  --text-link-visited:var(--_indigo-600);
+
+  /* ══════════════════════════════════════════
+     ACENTO PRINCIPAL
+     ══════════════════════════════════════════ */
+
+  --accent:           var(--_indigo-500);   /* #6366F1 — estado normal */
+  --accent-hover:     var(--_indigo-400);   /* #8486FA — hover */
+  --accent-active:    var(--_indigo-600);   /* #4F51D4 — click/active */
+  --accent-disabled:  rgba(99, 102, 241, 0.35);
+  --accent-subtle:    var(--bg-accent-subtle);
+  --accent-muted:     var(--bg-accent-muted);
+
+  /* ══════════════════════════════════════════
+     COLORES SEMÁNTICOS — ÉXITO / WARNING / ERROR / INFO
+     ══════════════════════════════════════════ */
+
+  /* Éxito */
+  --success:          #10B981;
+  --success-hover:    #34D399;
+  --success-bg:       var(--bg-success);
+  --success-border:   var(--border-success);
+  --success-text:     var(--text-success);
+
+  /* Advertencia */
+  --warning:          #F59E0B;
+  --warning-hover:    #FCD34D;
+  --warning-bg:       var(--bg-warning);
+  --warning-border:   var(--border-warning);
+  --warning-text:     var(--text-warning);
+
+  /* Error / Destructivo */
+  --error:            #EF4444;
+  --error-hover:      #F87171;
+  --error-bg:         var(--bg-error);
+  --error-border:     var(--border-error);
+  --error-text:       var(--text-error);
+
+  /* Info */
+  --info:             var(--_indigo-500);
+  --info-hover:       var(--_indigo-400);
+  --info-bg:          var(--bg-info);
+  --info-border:      var(--border-accent);
+  --info-text:        var(--text-info);
+
+  /* ══════════════════════════════════════════
+     TIPOGRAFÍA — FAMILIAS
+     ══════════════════════════════════════════ */
+
+  --font-body:     'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display:  'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono:     'JetBrains Mono', 'Fira Code', 'Consolas', 'Monaco', monospace;
+
+  /* ══════════════════════════════════════════
+     TIPOGRAFÍA — TAMAÑOS
+     Escala modular. Base: 16px.
+     ══════════════════════════════════════════ */
+
+  --text-2xs:   0.625rem;    /* 10px — badges, labels micro */
+  --text-xs:    0.75rem;     /* 12px — metadata, timestamps */
+  --text-sm:    0.875rem;    /* 14px — body secundario, inputs */
+  --text-base:  1rem;        /* 16px — body principal */
+  --text-lg:    1.125rem;    /* 18px — body destacado */
+  --text-xl:    1.25rem;     /* 20px — subtítulos */
+  --text-2xl:   1.5rem;      /* 24px — títulos de sección */
+  --text-3xl:   1.875rem;    /* 30px — títulos de página */
+  --text-4xl:   2.25rem;     /* 36px — hero de pantalla */
+  --text-5xl:   3rem;        /* 48px — landing/hero principal */
+  --text-6xl:   3.75rem;     /* 60px — landing/hero grande */
+
+  /* ══════════════════════════════════════════
+     TIPOGRAFÍA — PESOS
+     ══════════════════════════════════════════ */
+
+  --font-light:      300;
+  --font-regular:    400;
+  --font-medium:     500;
+  --font-semibold:   600;
+  --font-bold:       700;
+  --font-extrabold:  800;
+
+  /* ══════════════════════════════════════════
+     TIPOGRAFÍA — INTERLINEADO Y TRACKING
+     ══════════════════════════════════════════ */
+
+  --leading-none:     1;
+  --leading-tight:    1.25;
+  --leading-snug:     1.375;
+  --leading-normal:   1.5;
+  --leading-relaxed:  1.625;
+  --leading-loose:    2;
+
+  --tracking-tighter: -0.05em;
+  --tracking-tight:   -0.025em;
+  --tracking-normal:   0em;
+  --tracking-wide:     0.025em;
+  --tracking-wider:    0.05em;
+  --tracking-widest:   0.1em;
+
+  /* ══════════════════════════════════════════
+     ESPACIADO
+     Escala de 4px. Múltiplos de 4.
+     ══════════════════════════════════════════ */
+
+  --space-px:  1px;
+  --space-0:   0;
+  --space-1:   0.25rem;    /*  4px */
+  --space-2:   0.5rem;     /*  8px */
+  --space-3:   0.75rem;    /* 12px */
+  --space-4:   1rem;       /* 16px */
+  --space-5:   1.25rem;    /* 20px */
+  --space-6:   1.5rem;     /* 24px */
+  --space-8:   2rem;       /* 32px */
+  --space-10:  2.5rem;     /* 40px */
+  --space-12:  3rem;       /* 48px */
+  --space-14:  3.5rem;     /* 56px */
+  --space-16:  4rem;       /* 64px */
+  --space-20:  5rem;       /* 80px */
+  --space-24:  6rem;       /* 96px */
+  --space-32:  8rem;       /* 128px */
+
+  /* ══════════════════════════════════════════
+     BORDER RADIUS
+     ══════════════════════════════════════════ */
+
+  --radius-xs:   3px;
+  --radius-sm:   6px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+  --radius-2xl:  24px;
+  --radius-3xl:  32px;
+  --radius-full: 9999px;
+
+  /* ══════════════════════════════════════════
+     SOMBRAS
+     ══════════════════════════════════════════ */
+
+  --shadow-xs:          0 1px 2px rgba(0, 0, 0, 0.50);
+  --shadow-sm:          0 2px 6px rgba(0, 0, 0, 0.50);
+  --shadow-md:          0 4px 14px rgba(0, 0, 0, 0.55);
+  --shadow-lg:          0 8px 28px rgba(0, 0, 0, 0.60);
+  --shadow-xl:          0 16px 48px rgba(0, 0, 0, 0.70);
+  --shadow-2xl:         0 24px 64px rgba(0, 0, 0, 0.80);
+
+  /* Glow del acento — para elementos destacados */
+  --shadow-glow-sm:     0 0 12px rgba(99, 102, 241, 0.20);
+  --shadow-glow:        0 0 24px rgba(99, 102, 241, 0.30);
+  --shadow-glow-lg:     0 0 48px rgba(99, 102, 241, 0.40);
+
+  /* Focus ring — accesibilidad */
+  --shadow-focus:       0 0 0 3px rgba(99, 102, 241, 0.45);
+  --shadow-focus-error: 0 0 0 3px rgba(239, 68, 68, 0.40);
+
+  /* Inset — para inputs presionados */
+  --shadow-inset:       inset 0 1px 3px rgba(0, 0, 0, 0.40);
+
+  /* ══════════════════════════════════════════
+     TRANSICIONES Y ANIMACIONES
+     ══════════════════════════════════════════ */
+
+  --duration-instant:  50ms;
+  --duration-fast:     100ms;
+  --duration-normal:   200ms;
+  --duration-slow:     350ms;
+  --duration-slower:   500ms;
+
+  --ease-linear:  linear;
+  --ease-default: cubic-bezier(0.4, 0, 0.2, 1);   /* Material standard */
+  --ease-in:      cubic-bezier(0.4, 0, 1, 1);
+  --ease-out:     cubic-bezier(0, 0, 0.2, 1);
+  --ease-spring:  cubic-bezier(0.34, 1.56, 0.64, 1); /* Rebote suave */
+
+  --transition-fast:   all var(--duration-fast)   var(--ease-default);
+  --transition-normal: all var(--duration-normal) var(--ease-default);
+  --transition-slow:   all var(--duration-slow)   var(--ease-default);
+  --transition-spring: all var(--duration-slow)   var(--ease-spring);
+  --transition-colors: color var(--duration-normal) var(--ease-default),
+                       background-color var(--duration-normal) var(--ease-default),
+                       border-color var(--duration-normal) var(--ease-default);
+
+  /* ══════════════════════════════════════════
+     Z-INDEX
+     ══════════════════════════════════════════ */
+
+  --z-below:    -1;
+  --z-base:      0;
+  --z-raised:   10;
+  --z-dropdown: 100;
+  --z-sticky:   200;
+  --z-drawer:   300;
+  --z-modal:    400;
+  --z-toast:    500;
+  --z-tooltip:  600;
+  --z-maximum:  999;
+
+  /* ══════════════════════════════════════════
+     LAYOUT — ESTRUCTURA GLOBAL
+     ══════════════════════════════════════════ */
+
+  --topbar-height:          52px;
+  --rail-width-expanded:    220px;
+  --rail-width-collapsed:   60px;
+  --content-max-width:      1200px;
+  --content-max-width-sm:   768px;
+  --content-max-width-lg:   1440px;
+
+  /* ══════════════════════════════════════════
+     COMPONENTES — TOKENS ESPECÍFICOS
+     Cada componente tiene sus propios tokens
+     que referencian los tokens base.
+     ══════════════════════════════════════════ */
+
+  /* ── Botones ── */
+  --btn-radius:         var(--radius-sm);
+  --btn-font-size:      var(--text-sm);
+  --btn-font-weight:    var(--font-medium);
+  --btn-transition:     var(--transition-fast);
+  --btn-height-sm:      32px;
+  --btn-height-md:      38px;
+  --btn-height-lg:      44px;
+  --btn-padding-x-sm:   var(--space-3);
+  --btn-padding-x-md:   var(--space-4);
+  --btn-padding-x-lg:   var(--space-5);
+  --btn-gap:            var(--space-2);
+
+  /* Variantes de botón */
+  --btn-primary-bg:         var(--accent);
+  --btn-primary-bg-hover:   var(--accent-hover);
+  --btn-primary-bg-active:  var(--accent-active);
+  --btn-primary-text:       var(--text-on-accent);
+  --btn-primary-shadow:     var(--shadow-glow-sm);
+
+  --btn-secondary-bg:       var(--bg-surface-2);
+  --btn-secondary-bg-hover: var(--bg-surface-3);
+  --btn-secondary-border:   var(--border-default);
+  --btn-secondary-text:     var(--text-primary);
+
+  --btn-ghost-bg:           transparent;
+  --btn-ghost-bg-hover:     var(--bg-hover);
+  --btn-ghost-text:         var(--text-secondary);
+  --btn-ghost-text-hover:   var(--text-primary);
+
+  --btn-destructive-bg:       var(--error-bg);
+  --btn-destructive-bg-hover: rgba(239, 68, 68, 0.18);
+  --btn-destructive-border:   var(--border-error);
+  --btn-destructive-text:     var(--text-error);
+
+  --btn-disabled-bg:        var(--bg-disabled);
+  --btn-disabled-text:      var(--text-disabled);
+  --btn-disabled-border:    var(--border-subtle);
+
+  /* ── Inputs y formularios ── */
+  --input-height-sm:    32px;
+  --input-height-md:    38px;
+  --input-height-lg:    44px;
+  --input-padding-x:    var(--space-3);
+  --input-gap:          var(--space-2);
+  --input-font-size:    var(--text-sm);
+  --input-radius:       var(--radius-sm);
+  --input-bg:           var(--bg-surface-1);
+  --input-bg-hover:     var(--bg-surface-2);
+  --input-bg-focus:     var(--bg-surface-1);
+  --input-border:       var(--border-default);
+  --input-border-hover: var(--border-strong);
+  --input-border-focus: var(--border-focus);
+  --input-border-error: var(--border-error);
+  --input-text:         var(--text-primary);
+  --input-placeholder:  var(--text-muted);
+  --input-label:        var(--text-secondary);
+  --input-label-size:   var(--text-xs);
+  --input-label-weight: var(--font-medium);
+  --input-helper-size:  var(--text-xs);
+  --input-helper-color: var(--text-muted);
+  --input-shadow-focus: var(--shadow-focus);
+  --input-shadow-error: var(--shadow-focus-error);
+  --input-transition:   var(--transition-fast);
+
+  /* ── Cards ── */
+  --card-bg:            var(--bg-surface-1);
+  --card-bg-hover:      var(--bg-surface-2);
+  --card-border:        var(--border-default);
+  --card-border-hover:  var(--border-strong);
+  --card-border-accent: var(--border-accent);
+  --card-radius:        var(--radius-lg);
+  --card-padding:       var(--space-6);
+  --card-padding-sm:    var(--space-4);
+  --card-shadow:        var(--shadow-sm);
+  --card-shadow-hover:  var(--shadow-md);
+
+  /* ── Modales y Dialogs ── */
+  --modal-bg:           var(--bg-surface-1);
+  --modal-border:       var(--border-default);
+  --modal-radius:       var(--radius-xl);
+  --modal-shadow:       var(--shadow-xl);
+  --modal-padding:      var(--space-8);
+  --modal-max-width-sm: 400px;
+  --modal-max-width-md: 560px;
+  --modal-max-width-lg: 720px;
+  --modal-header-size:  var(--text-xl);
+  --modal-header-weight:var(--font-semibold);
+
+  /* ── Dropdown / Menú ── */
+  --dropdown-bg:        var(--bg-surface-2);
+  --dropdown-border:    var(--border-default);
+  --dropdown-radius:    var(--radius-md);
+  --dropdown-shadow:    var(--shadow-lg);
+  --dropdown-padding-y: var(--space-1);
+  --dropdown-item-px:   var(--space-3);
+  --dropdown-item-py:   var(--space-2);
+  --dropdown-item-hover:var(--bg-hover);
+  --dropdown-item-size: var(--text-sm);
+
+  /* ── Tooltips ── */
+  --tooltip-bg:         var(--bg-surface-3);
+  --tooltip-text:       var(--text-primary);
+  --tooltip-radius:     var(--radius-xs);
+  --tooltip-padding-x:  var(--space-2);
+  --tooltip-padding-y:  var(--space-1);
+  --tooltip-font-size:  var(--text-xs);
+  --tooltip-shadow:     var(--shadow-md);
+
+  /* ── Toast / Notificaciones ── */
+  --toast-bg:           var(--bg-surface-2);
+  --toast-border:       var(--border-strong);
+  --toast-radius:       var(--radius-md);
+  --toast-shadow:       var(--shadow-xl);
+  --toast-padding-x:    var(--space-4);
+  --toast-padding-y:    var(--space-3);
+  --toast-font-size:    var(--text-sm);
+  --toast-min-width:    280px;
+  --toast-max-width:    400px;
+
+  /* ── Badges / Tags ── */
+  --badge-height:       20px;
+  --badge-padding-x:    var(--space-2);
+  --badge-radius:       var(--radius-full);
+  --badge-font-size:    var(--text-2xs);
+  --badge-font-weight:  var(--font-semibold);
+  --badge-tracking:     var(--tracking-wide);
+
+  --badge-default-bg:   var(--bg-surface-3);
+  --badge-default-text: var(--text-secondary);
+  --badge-accent-bg:    var(--bg-accent-muted);
+  --badge-accent-text:  var(--text-accent);
+  --badge-success-bg:   var(--bg-success);
+  --badge-success-text: var(--text-success);
+  --badge-warning-bg:   var(--bg-warning);
+  --badge-warning-text: var(--text-warning);
+  --badge-error-bg:     var(--bg-error);
+  --badge-error-text:   var(--text-error);
+
+  /* ── Avatares ── */
+  --avatar-xs:          20px;
+  --avatar-sm:          28px;
+  --avatar-md:          36px;
+  --avatar-lg:          48px;
+  --avatar-xl:          64px;
+  --avatar-2xl:         96px;
+  --avatar-bg:          var(--bg-accent-muted);
+  --avatar-text:        var(--text-accent);
+  --avatar-border:      var(--border-default);
+  --avatar-font-size-sm:var(--text-xs);
+  --avatar-font-size-md:var(--text-sm);
+  --avatar-font-size-lg:var(--text-xl);
+
+  /* ── Tablas ── */
+  --table-header-bg:       var(--bg-surface-1);
+  --table-header-text:     var(--text-muted);
+  --table-header-size:     var(--text-xs);
+  --table-header-weight:   var(--font-semibold);
+  --table-header-tracking: var(--tracking-wider);
+  --table-row-hover:       var(--bg-hover);
+  --table-row-selected:    var(--bg-accent-subtle);
+  --table-border:          var(--border-subtle);
+  --table-cell-px:         var(--space-4);
+  --table-cell-py:         var(--space-3);
+  --table-font-size:       var(--text-sm);
+
+  /* ── Separadores ── */
+  --divider-color:      var(--border-subtle);
+  --divider-color-strong:var(--border-default);
+
+  /* ── Scrollbar ── */
+  --scrollbar-width:    6px;
+  --scrollbar-track:    transparent;
+  --scrollbar-thumb:    var(--_gray-700);
+  --scrollbar-thumb-hover:var(--_gray-600);
+
+  /* ── Code / Inline code ── */
+  --code-bg:            rgba(99, 102, 241, 0.08);
+  --code-border:        var(--border-accent);
+  --code-text:          var(--_indigo-300);
+  --code-radius:        var(--radius-xs);
+  --code-padding-x:     var(--space-2);
+  --code-padding-y:     var(--space-1);
+  --code-font-size:     0.85em;
+
+  /* Code blocks */
+  --codeblock-bg:       var(--bg-surface-2);
+  --codeblock-border:   var(--border-subtle);
+  --codeblock-radius:   var(--radius-md);
+  --codeblock-padding:  var(--space-4);
+  --codeblock-font-size:var(--text-sm);
+
+  /* ── Pantalla de carga / Skeleton ── */
+  --skeleton-bg:        var(--bg-surface-2);
+  --skeleton-highlight: var(--bg-surface-3);
+
+  /* ── Pantalla vacía (empty state) ── */
+  --empty-icon-color:   var(--text-disabled);
+  --empty-title-color:  var(--text-tertiary);
+  --empty-text-color:   var(--text-muted);
+
+  /* ── Configuración de usuario (Settings) ── */
+  --settings-sidebar-width:  240px;
+  --settings-content-max:    640px;
+  --settings-section-gap:    var(--space-8);
+  --settings-label-color:    var(--text-secondary);
+  --settings-label-size:     var(--text-sm);
+  --settings-label-weight:   var(--font-medium);
+  --settings-helper-color:   var(--text-muted);
+  --settings-helper-size:    var(--text-xs);
+
+  /* ── Chat ── */
+  --chat-user-bg:         var(--accent);
+  --chat-user-text:       var(--text-on-accent);
+  --chat-user-radius:     var(--radius-lg);
+  --chat-assistant-bg:    var(--bg-surface-1);
+  --chat-assistant-border:var(--border-default);
+  --chat-assistant-radius:var(--radius-lg);
+  --chat-input-bg:        var(--bg-surface-1);
+  --chat-input-border:    var(--border-default);
+  --chat-input-radius:    var(--radius-lg);
+  --chat-max-width:       760px;
+
+  /* ── Explorer / Árbol de carpetas ── */
+  --tree-indent:            20px;
+  --tree-item-height:       32px;
+  --tree-item-radius:       var(--radius-sm);
+  --tree-item-hover:        var(--bg-hover);
+  --tree-item-active:       var(--bg-accent-subtle);
+  --tree-item-active-border:var(--accent);
+  --tree-icon-size:         16px;
+  --tree-icon-color:        var(--text-muted);
+  --tree-icon-active:       var(--accent);
+
+  /* ── Landing page ── */
+  --landing-hero-bg:        var(--bg-base);
+  --landing-section-gap:    var(--space-24);
+  --landing-card-bg:        var(--bg-surface-1);
+  --landing-card-glow:      var(--shadow-glow);
+  --landing-gradient-from:  var(--_indigo-950);
+  --landing-gradient-to:    var(--bg-base);
+  --landing-badge-bg:       var(--bg-accent-muted);
+  --landing-badge-text:     var(--text-accent);
+
+  /* ── Pricing cards ── */
+  --pricing-free-accent:    var(--_gray-400);
+  --pricing-pro-accent:     var(--accent);
+  --pricing-business-accent:var(--_indigo-300);
+  --pricing-enterprise-accent: var(--_gray-100);
+  --pricing-featured-border:var(--border-accent);
+  --pricing-featured-shadow:var(--shadow-glow);
+
+  /* ── Integraciones ── */
+  --integration-card-bg:    var(--bg-surface-1);
+  --integration-active-bg:  var(--bg-accent-subtle);
+  --integration-active-border:var(--border-accent);
+  --integration-icon-size:  40px;
+
+  /* ── Progress / Loading ── */
+  --progress-bg:      var(--bg-surface-2);
+  --progress-fill:    var(--accent);
+  --progress-radius:  var(--radius-full);
+  --progress-height:  4px;
+
+  /* ── Spinner ── */
+  --spinner-color:    var(--accent);
+  --spinner-track:    var(--bg-surface-2);
+}

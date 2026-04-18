@@ -1,0 +1,311 @@
+/* ============================================================
+   GERONIMO 3.0 — ESTILOS GLOBALES
+   Aplica los tokens al documento base.
+   No incluye estilos de componentes.
+   ============================================================ */
+
+/* ── Importar fuentes ─────────────────────────────────────── */
+
+
+
+/* ── Base del documento ───────────────────────────────────── */
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--font-regular);
+  line-height: var(--leading-normal);
+  color: var(--text-primary);
+  background-color: var(--bg-base);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Selección de texto ───────────────────────────────────── */
+::selection {
+  background-color: var(--bg-accent-muted);
+  color: var(--text-primary);
+}
+
+
+/* ── Scrollbar global ─────────────────────────────────────── */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar {
+  width: var(--scrollbar-width);
+  height: var(--scrollbar-width);
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+  border-radius: var(--radius-full);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-thumb-hover);
+}
+
+
+/* ── Focus visible — accesibilidad ───────────────────────── */
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+
+/* ── Links globales ───────────────────────────────────────── */
+a {
+  color: var(--text-link);
+  transition: var(--transition-colors);
+}
+
+a:hover {
+  color: var(--text-link-hover);
+}
+
+
+/* ── Tipografía base ──────────────────────────────────────── */
+h1 {
+  font-family: var(--font-display);
+  font-size: var(--text-4xl);
+  font-weight: var(--font-bold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-primary);
+}
+
+h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: var(--font-semibold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-primary);
+}
+
+h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: var(--font-semibold);
+  line-height: var(--leading-snug);
+  color: var(--text-primary);
+}
+
+h4 {
+  font-size: var(--text-xl);
+  font-weight: var(--font-semibold);
+  line-height: var(--leading-snug);
+  color: var(--text-primary);
+}
+
+h5 {
+  font-size: var(--text-lg);
+  font-weight: var(--font-medium);
+  line-height: var(--leading-normal);
+  color: var(--text-secondary);
+}
+
+h6 {
+  font-size: var(--text-base);
+  font-weight: var(--font-medium);
+  line-height: var(--leading-normal);
+  color: var(--text-secondary);
+}
+
+p {
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  color: var(--text-secondary);
+}
+
+small {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+strong {
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: var(--code-font-size);
+  background-color: var(--code-bg);
+  color: var(--code-text);
+  border: 1px solid var(--code-border);
+  border-radius: var(--code-radius);
+  padding: var(--code-padding-y) var(--code-padding-x);
+}
+
+pre {
+  font-family: var(--font-mono);
+  font-size: var(--codeblock-font-size);
+  background-color: var(--codeblock-bg);
+  border: 1px solid var(--codeblock-border);
+  border-radius: var(--codeblock-radius);
+  padding: var(--codeblock-padding);
+  overflow-x: auto;
+  line-height: var(--leading-relaxed);
+}
+
+pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--divider-color);
+  margin: var(--space-6) 0;
+}
+
+label {
+  font-size: var(--input-label-size);
+  font-weight: var(--input-label-weight);
+  color: var(--input-label);
+  display: block;
+  margin-bottom: var(--space-2);
+}
+
+
+/* ── Clases utilitarias de texto ──────────────────────────── */
+.text-primary    { color: var(--text-primary); }
+.text-secondary  { color: var(--text-secondary); }
+.text-tertiary   { color: var(--text-tertiary); }
+.text-muted      { color: var(--text-muted); }
+.text-disabled   { color: var(--text-disabled); }
+.text-accent     { color: var(--text-accent); }
+.text-success    { color: var(--text-success); }
+.text-warning    { color: var(--text-warning); }
+.text-error      { color: var(--text-error); }
+
+.text-xs    { font-size: var(--text-xs); }
+.text-sm    { font-size: var(--text-sm); }
+.text-base  { font-size: var(--text-base); }
+.text-lg    { font-size: var(--text-lg); }
+.text-xl    { font-size: var(--text-xl); }
+
+.font-regular   { font-weight: var(--font-regular); }
+.font-medium    { font-weight: var(--font-medium); }
+.font-semibold  { font-weight: var(--font-semibold); }
+.font-bold      { font-weight: var(--font-bold); }
+
+.font-mono { font-family: var(--font-mono); }
+.font-display { font-family: var(--font-display); }
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/* ── Clases utilitarias de layout ─────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: var(--divider-color);
+}
+
+.divider--strong {
+  background-color: var(--divider-color-strong);
+}
+
+
+/* ── Skeleton loader ──────────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--skeleton-bg) 25%,
+    var(--skeleton-highlight) 50%,
+    var(--skeleton-bg) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+@keyframes skeleton-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+
+/* ── Spinner ──────────────────────────────────────────────── */
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--spinner-track);
+  border-top-color: var(--spinner-color);
+  border-radius: var(--radius-full);
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+
+/* ── Glass morphism ───────────────────────────────────────── */
+.glass {
+  background-color: var(--bg-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
+}
+
+.glass--strong {
+  background-color: var(--bg-glass-strong);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+
+/* ── Glow decorativo ──────────────────────────────────────── */
+.glow {
+  box-shadow: var(--shadow-glow);
+}
+
+.glow--strong {
+  box-shadow: var(--shadow-glow-lg);
+}
+
+
+/* ── Accesibilidad: reducir movimiento ────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

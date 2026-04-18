@@ -9,7 +9,8 @@ export const DuplicateAlertModal = ({ alert, onClose }) => {
     <div className="duplicate-modal-overlay" onClick={onClose}>
       <div className="duplicate-modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="duplicate-modal-header">
-          <div className="duplicate-icon">⚠️</div>
+          <div className="duplicate-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+          <h3 className="duplicate-modal-title">Archivo duplicado</h3>
         </div>
 
         <div className="duplicate-modal-body">
@@ -56,7 +57,7 @@ export const DocumentPreviewModal = ({ document, onClose, formatDate, formatFile
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content modal-content-large" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h3>📄 {document.path}</h3>
+          <h3><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight:'6px',verticalAlign:'middle',flexShrink:0}}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>{document.path}</h3>
           <button
             className="modal-close"
             onClick={onClose}
@@ -84,7 +85,7 @@ export const DocumentPreviewModal = ({ document, onClose, formatDate, formatFile
           {/* Botón de descarga */}
           <div className="doc-actions">
             <button className="btn-download" onClick={handleDownload}>
-              💾 Descargar Archivo Original
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Descargar archivo
             </button>
           </div>
 
@@ -94,7 +95,7 @@ export const DocumentPreviewModal = ({ document, onClose, formatDate, formatFile
             {isExtractableText && document.content_text && (
               <div className="extracted-text-container">
                 <div className="extracted-text-indicator">
-                  📄 Texto Extraído
+                  Texto extraído
                   {isPDF && ' (del PDF)'}
                   {mimeType.includes('word') && ' (del documento Word)'}
                 </div>
@@ -136,7 +137,7 @@ export const DocumentPreviewModal = ({ document, onClose, formatDate, formatFile
             {/* Fallback: archivo no previsualizable */}
             {!isExtractableText && !isPDF && !isImage && !isText && (
               <div className="no-preview">
-                <div className="no-preview-icon">📎</div>
+                <div className="no-preview-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg></div>
                 <p>Vista previa no disponible para este tipo de archivo</p>
                 <p className="no-preview-hint">Usa el botón de descarga para abrir el archivo</p>
               </div>
@@ -171,25 +172,31 @@ export const ConfirmDeleteModal = ({ modal, onConfirm, onCancel, isProcessing })
           </div>
         ) : (
           <>
-            <div className="confirm-modal-icon">🗑️</div>
+            <div className="confirm-modal-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></div>
             <h3 className="confirm-modal-title">
               ¿Eliminar {modal.type}?
             </h3>
             <p className="confirm-modal-message">
               Estás por eliminar <strong>"{modal.name}"</strong>.
-              {isProject && (
-                <span className="confirm-modal-warning">
-                  <br />Esto eliminará <strong>todos los documentos y archivos</strong> del proyecto.
-                </span>
-              )}
-              <br />Esta acción no se puede deshacer.
             </p>
+            {isProject && (
+              <div className="confirm-modal-danger-box">
+                <span className="confirm-modal-danger-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+                <div className="confirm-modal-danger-text">
+                  <strong>Se eliminarán todos los documentos y archivos del proyecto.</strong>
+                  <br />Esta acción es permanente e irreversible.
+                </div>
+              </div>
+            )}
+            {!isProject && (
+              <p className="confirm-modal-irreversible">Esta acción no se puede deshacer.</p>
+            )}
             <div className="confirm-modal-actions">
               <button className="btn-confirm-cancel" onClick={onCancel}>
                 Cancelar
               </button>
               <button className="btn-confirm-delete" onClick={onConfirm}>
-                Sí, eliminar
+                {isProject ? 'Eliminar proyecto y contenido' : 'Sí, eliminar'}
               </button>
             </div>
           </>
@@ -206,7 +213,10 @@ export const Toast = ({ toast }) => {
   return (
     <div className={`toast-notification toast-${toast.type}`}>
       <span className="toast-icon">
-        {toast.type === 'success' ? '✓' : '✗'}
+        {toast.type === 'success'
+          ? <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          : <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        }
       </span>
       <span className="toast-message">{toast.message}</span>
     </div>

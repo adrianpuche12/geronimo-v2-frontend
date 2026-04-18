@@ -1,135 +1,91 @@
-/* ========================================
-   User Header - Modern Glassmorphism Design
-   ======================================== */
+/* ============================================================
+   USER HEADER — Avatar y menú de perfil
+   Todos los valores referencian tokens de styles/tokens.css
+   ============================================================ */
 
 .user-header {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding: 0;
-  width: 100%;
 }
 
 .user-info-container {
   position: relative;
 }
 
-/* Solo Avatar Circular - Clickeable */
+
+/* ── Botón avatar ──────────────────────────────────────────── */
+
 .user-avatar-button {
   background: none;
   border: none;
   padding: 0;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  transform: translateZ(0);
-}
-
-.user-avatar-button:hover {
-  transform: scale(1.05) translateZ(0);
-}
-
-/* Modern Avatar with Gradient and Glow */
-.user-avatar {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 1rem;
-  box-shadow:
-    0 4px 15px rgba(255, 102, 0, 0.4),
-    0 0 20px rgba(255, 102, 0, 0.3),
-    inset 0 -2px 10px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: var(--transition-spring);
 }
 
 .user-avatar-button:hover .user-avatar {
-  box-shadow:
-    0 6px 20px rgba(255, 102, 0, 0.6),
-    0 0 30px rgba(255, 102, 0, 0.5),
-    inset 0 -2px 10px rgba(0, 0, 0, 0.3);
-  transform: scale(1.05);
+  box-shadow: var(--shadow-glow);
 }
 
-.user-details {
+
+/* ── Avatar circular ───────────────────────────────────────── */
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--accent) 0%, var(--_indigo-300) 100%);
+  color: var(--text-on-accent);
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  font-weight: var(--font-bold);
+  font-size: var(--text-sm);
+  box-shadow: var(--shadow-glow-sm);
+  transition: var(--transition-spring);
 }
 
-.user-name {
-  color: var(--text-primary);
-  font-weight: 600;
-  font-size: 0.95rem;
+.user-avatar-button:hover .user-avatar {
+  box-shadow: var(--shadow-glow);
 }
 
-/* Modern Admin Badge with Glow */
+
+/* ── Badge admin (top bar) ─────────────────────────────────── */
+
 .admin-badge {
-  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-  color: white;
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 0.7rem;
-  font-weight: 700;
+  background: var(--bg-accent-muted);
+  color: var(--text-accent);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: var(--text-2xs);
+  font-weight: var(--font-bold);
   text-transform: uppercase;
-  letter-spacing: 0.8px;
-  box-shadow:
-    0 2px 10px rgba(255, 102, 0, 0.4),
-    0 0 20px rgba(255, 102, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  letter-spacing: var(--tracking-wider);
+  border: 1px solid var(--border-accent);
 }
 
-.dropdown-icon {
-  color: var(--text-secondary);
-  font-size: 0.8rem;
-  margin-left: 4px;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
 
-.user-avatar-button:hover .dropdown-icon {
-  color: var(--accent-primary);
-  transform: translateY(2px);
-}
+/* ── Dropdown menú ─────────────────────────────────────────── */
 
-/* Modern User Menu with Glassmorphism */
 .user-menu {
   position: absolute;
-  top: calc(100% + 12px);
+  top: calc(100% + var(--space-3));
   right: 0;
-  min-width: 300px;
-  z-index: 99999;
-
-  /* Glassmorphism - igual que dropdown de Modo */
-  background: rgba(0, 0, 0, 0.95);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-
-  /* Border con gradiente naranja */
-  border: 1px solid transparent;
-  border-radius: var(--radius-md);
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.95)),
-    linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
-
-  /* Sombra elegante */
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.6),
-    0 2px 8px rgba(255, 102, 0, 0.3);
-
-  animation: dropdownFadeIn 0.2s ease-out;
+  min-width: 240px;
+  z-index: var(--z-dropdown);
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border-default);
+  border-radius: var(--dropdown-radius);
+  box-shadow: var(--shadow-xl), var(--shadow-glow-sm);
+  animation: dropdown-appear var(--duration-normal) var(--ease-out);
 }
 
-@keyframes dropdownFadeIn {
+@keyframes dropdown-appear {
   from {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(calc(-1 * var(--space-2)));
   }
   to {
     opacity: 1;
@@ -137,32 +93,30 @@
   }
 }
 
-/* Menu Header - Información del usuario */
+
+/* ── Header del menú ───────────────────────────────────────── */
+
 .user-menu-header {
-  padding: 1.5rem;
+  padding: var(--space-6);
   display: flex;
-  gap: 1rem;
+  gap: var(--space-4);
   align-items: center;
-  border-bottom: 1px solid rgba(255, 102, 0, 0.2);
+  border-bottom: 1px solid var(--border-default);
 }
 
-/* Modern Avatar in Menu */
 .user-menu-avatar {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-  color: white;
+  width: var(--avatar-lg);
+  height: var(--avatar-lg);
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--accent) 0%, var(--_indigo-300) 100%);
+  color: var(--text-on-accent);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
-  font-size: 1.4rem;
+  font-weight: var(--font-bold);
+  font-size: var(--text-xl);
   flex-shrink: 0;
-  box-shadow:
-    0 6px 20px rgba(255, 102, 0, 0.5),
-    0 0 30px rgba(255, 102, 0, 0.4),
-    inset 0 -3px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-glow);
 }
 
 .user-menu-info {
@@ -171,356 +125,134 @@
 }
 
 .user-menu-name {
-  font-weight: 600;
-  font-size: 1.1rem;
+  font-weight: var(--font-semibold);
+  font-size: var(--text-base);
   color: var(--text-primary);
-  margin-bottom: 6px;
+  margin-bottom: var(--space-1);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .user-menu-email {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  opacity: 0.8;
 }
 
-/* Modern Admin Role Badge in Menu */
 .user-menu-role {
-  font-size: 0.75rem;
-  color: var(--accent-primary);
-  font-weight: 700;
-  margin-top: 8px;
+  font-size: var(--badge-font-size);
+  color: var(--text-accent);
+  font-weight: var(--font-bold);
+  margin-top: var(--space-2);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: var(--tracking-wider);
   display: inline-block;
-  padding: 4px 12px;
-  border-radius: 8px;
-
-  /* Glassmorphism */
-  background: rgba(255, 102, 0, 0.15);
-  backdrop-filter: blur(10px);
-
-  border: 1px solid rgba(255, 102, 0, 0.4);
-  box-shadow:
-    0 2px 8px rgba(255, 102, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--bg-accent-subtle);
+  border: 1px solid var(--border-accent);
 }
 
-/* Divider */
+
+/* ── Opciones del menú ─────────────────────────────────────── */
+
 .user-menu-divider {
   height: 1px;
-  background: rgba(255, 102, 0, 0.2);
-  margin: 0;
+  background: var(--border-subtle);
 }
 
-/* Menu Options Container */
 .user-menu-options {
-  padding: 0.75rem;
+  padding: var(--dropdown-padding-y) var(--space-2);
   display: flex;
   flex-direction: column;
-  gap: 0;
 }
 
-/* Menu Option Button - Estilo simple como dropdown de Modo */
 .menu-option-button {
   width: 100%;
-  padding: 0.75rem 1rem;
+  padding: var(--dropdown-item-py) var(--dropdown-item-px);
   background: transparent;
   color: var(--text-secondary);
   border: none;
-  border-radius: var(--radius-sm);
-  margin-bottom: 0.25rem;
-  font-family: var(--font-primary);
-  font-size: 0.9rem;
+  border-radius: var(--dropdown-radius);
+  font-family: var(--font-body);
+  font-size: var(--dropdown-item-size);
   font-weight: var(--font-medium);
   text-align: left;
   cursor: pointer;
-  transition: var(--transition);
-  display: block;
+  transition: var(--transition-fast);
 }
 
 .menu-option-button:hover {
   color: var(--text-primary);
-  background: rgba(255, 102, 0, 0.15);
-  transform: translateX(4px);
+  background: var(--dropdown-item-hover);
 }
 
-.menu-option-button:last-child {
-  margin-bottom: 0;
-}
 
-/* Logout Button - Estilo simple */
+/* ── Botón cerrar sesión ───────────────────────────────────── */
+
 .logout-button {
-  width: 100%;
-  padding: 1rem;
+  display: block;
+  width: calc(100% - var(--space-4));
+  margin: 0 var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
   border: none;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
   font-weight: var(--font-medium);
-  font-family: var(--font-primary);
-  color: #ff6b6b;
+  font-family: var(--font-body);
+  color: var(--text-error);
   background: transparent;
   text-align: center;
-  transition: var(--transition);
+  transition: var(--transition-fast);
+  border-top: 1px solid var(--border-subtle);
 }
 
 .logout-button:hover {
-  color: #ff4d4d;
-  background: rgba(229, 62, 62, 0.1);
+  background: var(--error-bg);
+  color: var(--error-hover);
 }
 
-/* Modern Overlay with Enhanced Blur */
+
+/* ── Overlay ───────────────────────────────────────────────── */
+
 .user-menu-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(8px) saturate(120%);
-  -webkit-backdrop-filter: blur(8px) saturate(120%);
-  z-index: 999;
-  animation: overlayFadeIn 0.3s ease;
+  inset: 0;
+  background: var(--bg-overlay);
+  z-index: 99;
+  animation: overlay-appear var(--duration-normal) var(--ease-default);
 }
 
-@keyframes overlayFadeIn {
-  from {
-    opacity: 0;
-    backdrop-filter: blur(0px);
-  }
-  to {
-    opacity: 1;
-    backdrop-filter: blur(8px);
-  }
+@keyframes overlay-appear {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
-/* Modern Hamburger Menu Button - Mobile only */
-.hamburger-menu-button {
-  display: none;
-  background: rgba(26, 26, 26, 0.6);
-  backdrop-filter: blur(10px);
-  border: 2px solid rgba(255, 102, 0, 0.3);
-  border-radius: 12px;
-  cursor: pointer;
-  padding: 12px;
-  z-index: 1001;
-  outline: none;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-}
 
-.hamburger-menu-button:hover {
-  background: rgba(26, 26, 26, 0.8);
-  border-color: var(--accent-primary);
-  box-shadow: 0 6px 20px rgba(255, 102, 0, 0.4);
-  transform: scale(1.05);
-}
+/* ── Responsive (mobile) ───────────────────────────────────── */
 
-.hamburger-icon {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 5px;
-  width: 30px;
-  height: 24px;
-  position: relative;
-}
-
-.hamburger-icon span {
-  display: block;
-  width: 100%;
-  height: 4px;
-  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-  border-radius: 3px;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 2px 8px rgba(255, 102, 0, 0.3);
-}
-
-.hamburger-icon.open span:nth-child(1) {
-  transform: rotate(45deg) translateY(10px);
-  background: linear-gradient(135deg, #ff6b6b, var(--accent-danger));
-}
-
-.hamburger-icon.open span:nth-child(2) {
-  opacity: 0;
-  transform: scaleX(0);
-}
-
-.hamburger-icon.open span:nth-child(3) {
-  transform: rotate(-45deg) translateY(-10px);
-  background: linear-gradient(135deg, #ff6b6b, var(--accent-danger));
-}
-
-/* Modern Logo in Menu - Mobile only */
-.user-menu-logo {
-  display: none;
-  padding: 24px;
-  text-align: center;
-
-  /* Glassmorphism */
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(10px);
-
-  border-bottom: 2px solid transparent;
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    linear-gradient(90deg, transparent, var(--accent-primary), transparent);
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
-}
-
-.user-menu-logo img {
-  width: 90px;
-  height: auto;
-  filter: drop-shadow(0 4px 15px rgba(255, 102, 0, 0.3));
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.user-menu-logo img:hover {
-  filter: drop-shadow(0 6px 20px rgba(255, 102, 0, 0.5));
-  transform: scale(1.05);
-}
-
-/* Responsive */
 @media (max-width: 768px) {
-  /* Adjust header layout for mobile */
-  .user-header {
-    justify-content: flex-start;
-    position: relative;
-  }
-
-  /* Show hamburger button */
-  .hamburger-menu-button {
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    left: 0;
-    top: 0;
-    min-width: 50px;
-    min-height: 50px;
-  }
-
-  /* Hide desktop user info button */
-  .user-info-container {
-    display: none !important;
-  }
-
-  /* Show logo in mobile menu */
-  .user-menu-logo {
-    display: block !important;
-    padding: 20px !important;
-    text-align: center !important;
-    border-bottom: 1px solid var(--border-subtle) !important;
-    background: var(--bg-primary) !important;
-  }
-
-  .user-menu-logo img {
-    width: 80px !important;
-    height: auto !important;
-    display: block !important;
-    margin: 0 auto !important;
-  }
-
-  /* Modern Mobile Menu - Full height sidebar with glassmorphism */
   .user-menu {
     position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
     right: auto;
-    width: 320px;
+    width: 300px;
     max-width: 85vw;
-    min-width: auto;
-    border-radius: 0 20px 20px 0;
-    z-index: 1000;
+    min-width: unset;
+    border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
+    z-index: var(--z-modal);
     overflow-y: auto;
-
-    /* Enhanced Glassmorphism for Mobile */
-    background: rgba(17, 17, 17, 0.95) !important;
-    backdrop-filter: blur(25px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
-
-    /* Gradient Border Right */
-    border: 3px solid transparent !important;
-    border-left: none !important;
-    background-image:
-      linear-gradient(rgba(17, 17, 17, 0.95), rgba(17, 17, 17, 0.95)),
-      linear-gradient(180deg, var(--accent-primary), var(--accent-secondary), var(--accent-primary)) !important;
-    background-origin: border-box !important;
-    background-clip: padding-box, border-box !important;
-
-    box-shadow:
-      4px 0 40px rgba(0, 0, 0, 0.7),
-      0 0 60px rgba(255, 102, 0, 0.3) !important;
-
-    animation: slideInFromLeft 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: slide-in-left var(--duration-slow) var(--ease-spring);
   }
 
-  @keyframes slideInFromLeft {
-    from {
-      transform: translateX(-100%);
-      opacity: 0;
-    }
-    to {
-      transform: translateX(0);
-      opacity: 1;
-    }
-  }
-
-  /* Enhanced Mobile Overlay */
-  .user-menu-overlay {
-    backdrop-filter: blur(10px) saturate(120%) !important;
-    -webkit-backdrop-filter: blur(10px) saturate(120%) !important;
-    background: rgba(0, 0, 0, 0.7) !important;
-  }
-
-  /* Mobile menu header adjustments */
-  .user-menu-header {
-    padding: 28px 24px !important;
-  }
-
-  .user-menu-avatar {
-    width: 70px !important;
-    height: 70px !important;
-    font-size: 1.6rem !important;
-  }
-
-  .user-menu-name {
-    font-size: 1.2rem !important;
-  }
-
-  .user-menu-email {
-    font-size: 0.95rem !important;
-  }
-
-  .user-menu-role {
-    margin-top: 10px !important;
-  }
-
-  /* Menu options in mobile */
-  .user-menu-options {
-    padding: 16px 12px !important;
-    gap: 8px !important;
-  }
-
-  .menu-option-button {
-    padding: 16px 20px !important;
-    font-size: 1rem !important;
-  }
-
-  .menu-option-icon {
-    font-size: 1.4rem !important;
-  }
-
-  /* Logout button in mobile */
-  .logout-button {
-    padding: 24px !important;
-    font-size: 1.05rem !important;
+  @keyframes slide-in-left {
+    from { transform: translateX(-100%); opacity: 0; }
+    to   { transform: translateX(0);     opacity: 1; }
   }
 }

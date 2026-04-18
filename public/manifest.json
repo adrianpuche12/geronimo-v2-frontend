@@ -1,6 +1,6 @@
 {
-  "short_name": "Nilo",
-  "name": "Nilo - Asistente de Documentación IA",
+  "short_name": "Lexiius",
+  "name": "Lexiius — Tu conocimiento, activado.",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +20,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#FF6600",
+  "theme_color": "#6D28D9",
   "background_color": "#000000"
 }

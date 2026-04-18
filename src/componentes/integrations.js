@@ -727,17 +727,28 @@ export function Integrations() {
 
   if (loading) {
     return (
-      <div className="integrations-page">
+      <div style={{display:"flex",flexDirection:"column",height:"100%"}}>
+      <div style={{background:"var(--bg-warning,rgba(245,158,11,0.08))",border:"1px solid var(--border-warning,rgba(245,158,11,0.3))",borderRadius:"var(--radius-md)",padding:"10px 16px",margin:"12px 16px",display:"flex",alignItems:"center",gap:"10px",fontSize:"var(--text-sm)",color:"var(--text-secondary)",flexShrink:0}}>
+        <span style={{fontSize:16}}>🚧</span>
+        <div><strong style={{color:"var(--text-primary)"}}>En desarrollo</strong> — Las integraciones estarán disponibles próximamente. Podés explorar las opciones disponibles.</div>
+      </div>
+      <div className="integrations-page" style={{flex:1,overflow:"hidden"}}>
         <div className="integrations-loading">
           <div className="loading-spinner-large"></div>
           <p>Cargando integraciones...</p>
         </div>
       </div>
+      </div>
     );
   }
 
   return (
-    <div className="integrations-page">
+    <div style={{display:"flex",flexDirection:"column",height:"100%"}}>
+      <div style={{background:"var(--bg-warning,rgba(245,158,11,0.08))",border:"1px solid var(--border-warning,rgba(245,158,11,0.3))",borderRadius:"var(--radius-md)",padding:"10px 16px",margin:"12px 16px",display:"flex",alignItems:"center",gap:"10px",fontSize:"var(--text-sm)",color:"var(--text-secondary)",flexShrink:0}}>
+        <span style={{fontSize:16}}>🚧</span>
+        <div><strong style={{color:"var(--text-primary)"}}>En desarrollo</strong> — Las integraciones estarán disponibles próximamente. Podés explorar las opciones disponibles.</div>
+      </div>
+      <div className="integrations-page" style={{flex:1,overflow:"hidden"}}>
       {/* Sidebar con lista de proveedores */}
       <aside className="integrations-sidebar">
         <div className="sidebar-header">
@@ -779,7 +790,7 @@ export function Integrations() {
 
         <div className="sidebar-footer">
           <p className="sidebar-footer-text">
-            Las integraciones te permiten sincronizar datos externos con tu workspace de Geronimo.
+            Las integraciones te permiten sincronizar datos externos con tu workspace de Lexiius.
           </p>
         </div>
       </aside>
@@ -819,6 +830,7 @@ export function Integrations() {
           </div>
         )}
       </main>
+    </div>
     </div>
   );
 }

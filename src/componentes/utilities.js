@@ -2,7 +2,7 @@ import React from 'react';
 import '../styles/utilities.css';
 
 // Componente para el menú de exportación
-export const ExportMenu = ({ message, onClose, exportAIResponse }) => (
+export const ExportMenu = ({ message, onClose, exportAIResponse, exportToPDF }) => (
   <div className="export-menu">
     <div className="export-menu-header">
       <span>Exportar como:</span>
@@ -21,13 +21,20 @@ export const ExportMenu = ({ message, onClose, exportAIResponse }) => (
       <button onClick={() => { exportAIResponse(message, 'json'); onClose(); }}>
         📊 JSON (.json)
       </button>
+      {exportToPDF && (
+        <button onClick={() => { exportToPDF(message); onClose(); }}>
+          🖨️ PDF (imprimir)
+        </button>
+      )}
     </div>
   </div>
 );
 
 // Función para formatear fechas
 export const formatDate = (dateString) => {
+  if (!dateString) return 'Sin fecha';
   const date = new Date(dateString);
+  if (isNaN(date.getTime())) return 'Sin fecha';
   return date.toLocaleDateString('es-ES', {
     year: 'numeric',
     month: 'short',
