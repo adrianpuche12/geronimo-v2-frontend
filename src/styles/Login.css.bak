@@ -1,0 +1,323 @@
+/* ============================================================
+   LOGIN — Pantalla de autenticación
+   Todos los valores referencian tokens de styles/tokens.css
+   ============================================================ */
+
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-base);
+  padding: var(--space-5);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Glow decorativo de fondo */
+.login-container::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--bg-accent-muted) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.login-card {
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-xl), var(--shadow-glow);
+  max-width: 420px;
+  width: 100%;
+  overflow: hidden;
+  animation: login-appear var(--duration-slow) var(--ease-out);
+}
+
+@keyframes login-appear {
+  from {
+    opacity: 0;
+    transform: translateY(var(--space-5));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Header ────────────────────────────────────────────────── */
+
+.login-header {
+  padding: var(--space-10) var(--space-8) var(--space-6);
+  text-align: center;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.login-logo {
+  width: 72px;
+  height: auto;
+  margin: 0 auto var(--space-4);
+  display: block;
+}
+
+.login-header h1 {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  letter-spacing: var(--tracking-tight);
+  margin: 0 0 var(--space-2);
+}
+
+.login-header p {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  margin: 0;
+  line-height: var(--leading-relaxed);
+}
+
+
+/* ── Content ───────────────────────────────────────────────── */
+
+.login-content {
+  padding: var(--space-8);
+  text-align: left;
+}
+
+.login-content h2 {
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  margin: 0 0 var(--space-6);
+  text-align: center;
+}
+
+/* ── Campos del formulario ─────────────────────────────────── */
+
+.login-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+}
+
+.login-field label {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--text-secondary);
+}
+
+.login-field input {
+  width: 100%;
+  height: var(--btn-height-md);
+  padding: 0 var(--space-4);
+  font-size: var(--text-sm);
+  font-family: var(--font-body);
+  color: var(--text-primary);
+  background: var(--bg-input);
+  border: 1px solid var(--border-input);
+  border-radius: var(--radius-lg);
+  outline: none;
+  transition: border-color var(--duration-fast) var(--ease-out),
+              box-shadow var(--duration-fast) var(--ease-out);
+  box-sizing: border-box;
+}
+
+.login-field input::placeholder {
+  color: var(--text-disabled);
+}
+
+.login-field input:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px var(--bg-accent-muted);
+}
+
+.login-field input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ── Error ─────────────────────────────────────────────────── */
+
+.login-error {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-5);
+  font-size: var(--text-sm);
+  color: var(--error-text);
+  background: var(--error-bg);
+  border: 1px solid var(--error-border);
+  border-radius: var(--radius-lg);
+  line-height: var(--leading-normal);
+}
+
+.login-error span {
+  flex-shrink: 0;
+  font-size: var(--text-base);
+}
+
+/* ── Botón ─────────────────────────────────────────────────── */
+
+.login-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  width: 100%;
+  height: var(--btn-height-lg);
+  padding: 0 var(--btn-padding-x-lg);
+  font-size: var(--text-base);
+  font-weight: var(--btn-font-weight);
+  font-family: var(--font-body);
+  color: var(--btn-primary-text);
+  background: var(--btn-primary-bg);
+  border: none;
+  border-radius: var(--btn-radius);
+  cursor: pointer;
+  transition: var(--transition-normal);
+  box-shadow: var(--btn-primary-shadow);
+  margin-top: var(--space-2);
+}
+
+.login-button:hover:not(:disabled) {
+  background: var(--btn-primary-bg-hover);
+  box-shadow: var(--shadow-glow);
+  transform: translateY(-1px);
+}
+
+.login-button:active:not(:disabled) {
+  background: var(--btn-primary-bg-active);
+  transform: translateY(0);
+  box-shadow: var(--shadow-glow-sm);
+}
+
+.login-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* ── Spinner ───────────────────────────────────────────────── */
+
+.login-spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: login-spin 0.7s linear infinite;
+}
+
+@keyframes login-spin {
+  to { transform: rotate(360deg); }
+}
+
+.login-icon {
+  font-size: var(--text-lg);
+  flex-shrink: 0;
+}
+
+
+/* ── Footer ────────────────────────────────────────────────── */
+
+.login-footer {
+  margin-top: var(--space-8);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.login-footer p {
+  margin: var(--space-1) 0;
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.login-version {
+  color: var(--text-disabled) !important;
+}
+
+
+/* ── Responsive ────────────────────────────────────────────── */
+
+@media (max-width: 480px) {
+  .login-card {
+    border-radius: var(--radius-xl);
+  }
+
+  .login-header {
+    padding: var(--space-8) var(--space-6) var(--space-5);
+  }
+
+  .login-content {
+    padding: var(--space-6);
+  }
+
+  .login-header h1 {
+    font-size: var(--text-2xl);
+  }
+}
+
+/* ── Forgot / Recovery helpers ─────────────────────────────── */
+
+/* Inline text link — "¿Olvidaste tu contraseña?" / "← Volver" */
+.login-link {
+  display: block;
+  background: none;
+  border: none;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--text-link);
+  text-align: center;
+  cursor: pointer;
+  padding: 0;
+  margin-top: var(--space-4);
+  width: 100%;
+  transition: var(--transition-fast);
+  text-decoration: none;
+}
+.login-link:hover {
+  color: var(--text-link-hover);
+  text-decoration: underline;
+}
+
+/* Description paragraph under the h2 */
+.login-description {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+  text-align: center;
+  margin: 0 0 var(--space-5);
+}
+.login-description--hint {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  margin-top: calc(-1 * var(--space-3));
+  margin-bottom: var(--space-5);
+}
+.login-description-email {
+  color: var(--text-primary);
+  font-weight: var(--font-semibold);
+}
+
+/* Success check icon (view: sent) */
+.login-sent-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-full);
+  background: var(--bg-success);
+  border: 1px solid var(--border-success);
+  color: var(--text-success);
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
+  margin: 0 auto var(--space-5);
+}

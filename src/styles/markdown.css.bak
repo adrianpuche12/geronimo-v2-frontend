@@ -1,0 +1,433 @@
+/* ============================================================
+   MARKDOWN — Estilos de renderizado en el chat
+   Todos los valores referencian tokens de styles/tokens.css
+   ============================================================ */
+
+/* ── Párrafos ──────────────────────────────────────────────── */
+
+.markdown-p {
+  margin: var(--space-3) 0;
+  line-height: var(--leading-loose);
+  color: var(--text-primary);
+}
+
+.markdown-p + .markdown-p {
+  margin-top: var(--space-2);
+}
+
+
+/* ── Títulos ───────────────────────────────────────────────── */
+
+.markdown-h1 {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  margin: var(--space-6) 0 var(--space-2);
+  padding-bottom: var(--space-1);
+  border-bottom: 1px solid var(--border-accent);
+  line-height: var(--leading-tight);
+}
+
+.markdown-h1:first-child { margin-top: 0; }
+
+.markdown-h2 {
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  margin: var(--space-5) 0 var(--space-2);
+  padding-bottom: var(--space-1);
+  border-bottom: 1px solid var(--border-subtle);
+  line-height: var(--leading-tight);
+}
+
+.markdown-h3 {
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  color: var(--text-accent);
+  margin: var(--space-3) 0 var(--space-1);
+  line-height: var(--leading-tight);
+}
+
+.markdown-h4 {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--text-accent);
+  opacity: 0.85;
+  margin: var(--space-3) 0 var(--space-1);
+}
+
+.markdown-h5,
+.markdown-h6 {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--text-tertiary);
+  margin: var(--space-2) 0 var(--space-1);
+}
+
+
+/* ── Listas ────────────────────────────────────────────────── */
+
+.markdown-ul,
+.markdown-ol {
+  margin: var(--space-3) 0;
+  padding-left: var(--space-6);
+}
+
+.markdown-ul li,
+.markdown-ol li {
+  margin: var(--space-1) 0;
+  color: var(--text-primary);
+  line-height: var(--leading-relaxed);
+}
+
+.markdown-ul li::marker {
+  color: var(--accent);
+}
+
+.markdown-ol li::marker {
+  color: var(--accent);
+  font-weight: var(--font-semibold);
+}
+
+.markdown-ul .markdown-ul,
+.markdown-ol .markdown-ol,
+.markdown-ul .markdown-ol,
+.markdown-ol .markdown-ul {
+  margin: 2px 0;
+}
+
+
+/* ── Código inline ─────────────────────────────────────────── */
+
+.markdown-code-inline {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: var(--code-padding-y) var(--code-padding-x);
+  border-radius: var(--code-radius);
+  font-family: var(--font-mono);
+  font-size: var(--code-font-size);
+  border: 1px solid var(--code-border);
+}
+
+
+/* ── Bloques de código ─────────────────────────────────────── */
+
+.markdown-code-block {
+  background: var(--bg-base);
+  border: 1px solid var(--border-subtle);
+  border-left: 2px solid var(--accent);
+  padding: var(--codeblock-padding);
+  border-radius: var(--codeblock-radius);
+  overflow-x: auto;
+  margin: var(--space-2) 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
+}
+
+.markdown-code-block code {
+  font-family: var(--font-mono);
+  font-size: var(--codeblock-font-size);
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+}
+
+.markdown-code-block::-webkit-scrollbar { height: 4px; }
+.markdown-code-block::-webkit-scrollbar-track { background: transparent; }
+.markdown-code-block::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: var(--radius-full);
+}
+
+
+/* ── Tablas ────────────────────────────────────────────────── */
+
+.markdown-table-wrapper {
+  overflow-x: auto;
+  margin: var(--space-2) 0;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+}
+
+.markdown-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-surface-1);
+}
+
+.markdown-table th {
+  background: var(--bg-accent-subtle);
+  color: var(--text-accent);
+  padding: var(--table-cell-py) var(--table-cell-px);
+  text-align: left;
+  font-weight: var(--font-semibold);
+  font-size: var(--table-font-size);
+  border-bottom: 1px solid var(--border-accent);
+}
+
+.markdown-table td {
+  padding: var(--table-cell-py) var(--table-cell-px);
+  border-bottom: 1px solid var(--table-border);
+  color: var(--text-secondary);
+  font-size: var(--table-font-size);
+}
+
+.markdown-table tr:hover td {
+  background: var(--table-row-hover);
+}
+
+.markdown-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+
+/* ── Blockquotes ───────────────────────────────────────────── */
+
+.markdown-blockquote {
+  border-left: 2px solid var(--border-accent);
+  padding: var(--space-2) var(--space-4);
+  margin: var(--space-2) 0;
+  color: var(--text-tertiary);
+  font-style: italic;
+  background: var(--bg-accent-subtle);
+  border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+}
+
+
+/* ── Separador ─────────────────────────────────────────────── */
+
+.markdown-hr {
+  border: none;
+  border-top: 1px solid var(--border-subtle);
+  margin: var(--space-4) 0;
+}
+
+
+/* ── Énfasis ───────────────────────────────────────────────── */
+
+.markdown-strong {
+  color: var(--text-primary);
+  font-weight: var(--font-semibold);
+}
+
+.markdown-em {
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+
+/* ── Enlaces ───────────────────────────────────────────────── */
+
+.markdown-link {
+  color: var(--text-link);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border-accent);
+  transition: var(--transition-colors);
+}
+
+.markdown-link:hover {
+  color: var(--text-link-hover);
+  border-bottom-color: var(--text-link-hover);
+}
+
+
+/* ── Imágenes ──────────────────────────────────────────────── */
+
+.markdown-img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-sm);
+  margin: var(--space-2) 0;
+  border: 1px solid var(--border-subtle);
+}
+
+
+/* -- CodeBlock: wrapper con header, label y copy button --------------- */
+
+.code-block-wrapper {
+  margin: var(--space-3) 0;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  border-left: 2px solid var(--accent);
+  overflow: hidden;
+}
+
+.code-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-1) var(--space-3);
+  background: var(--bg-surface-1);
+  border-bottom: 1px solid var(--border-subtle);
+  min-height: 32px;
+}
+
+.code-block-lang {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  font-weight: var(--font-semibold);
+  color: var(--text-accent);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+.code-block-copy-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  color: var(--text-tertiary);
+  background: none;
+  border: none;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition-colors);
+  margin-left: auto;
+}
+
+.code-block-copy-btn:hover {
+  color: var(--text-accent);
+  background: var(--bg-accent-subtle);
+}
+
+.code-block-copy-btn svg {
+  flex-shrink: 0;
+}
+
+.code-block-wrapper .markdown-code-block {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  border-left: none;
+}
+
+/* ============================================================
+   PHASE 3 — DOMAIN-ADAPTIVE STYLES (φ(Ω))
+   Applies when message has class message-domain--{domain}
+   ============================================================ */
+
+/* Legal domain — formal, serif typography */
+.message-domain--legal .markdown-content {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: var(--text-primary);
+}
+
+.message-domain--legal .markdown-h1,
+.message-domain--legal .markdown-h2,
+.message-domain--legal .markdown-h3 {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.message-domain--legal .markdown-h2 {
+  border-bottom: 2px solid var(--border-subtle);
+  padding-bottom: var(--space-2);
+}
+
+.message-domain--legal .markdown-blockquote {
+  border-left: 3px solid var(--text-secondary);
+  padding-left: var(--space-4);
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+.message-domain--legal .markdown-p {
+  text-align: justify;
+  text-indent: 1.5em;
+}
+
+.message-domain--legal .markdown-p:first-of-type {
+  text-indent: 0;
+}
+
+/* Automatic section counters for h2/h3 */
+.message-domain--legal .markdown-content {
+  counter-reset: legal-h2;
+}
+
+.message-domain--legal .markdown-h2 {
+  counter-reset: legal-h3;
+  counter-increment: legal-h2;
+}
+
+.message-domain--legal .markdown-h2::before {
+  content: counter(legal-h2) ". ";
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.message-domain--legal .markdown-h3 {
+  counter-increment: legal-h3;
+}
+
+.message-domain--legal .markdown-h3::before {
+  content: counter(legal-h2) "." counter(legal-h3) " ";
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+/* Code domain — monospace emphasis, developer feel */
+.message-domain--code .markdown-content {
+  font-size: 0.88rem;
+  line-height: 1.7;
+}
+
+.message-domain--code .markdown-h1,
+.message-domain--code .markdown-h2,
+.message-domain--code .markdown-h3 {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  color: var(--text-accent);
+}
+
+.message-domain--code .markdown-p {
+  font-family: var(--font-sans);
+}
+
+.message-domain--code .code-block-copy-btn {
+  color: var(--text-secondary);
+  opacity: 1;
+}
+
+.message-domain--code .code-block-copy-btn:hover {
+  color: var(--text-accent);
+  background: var(--bg-accent-subtle);
+}
+
+/* Data domain — clean, metrics-focused */
+.message-domain--data .markdown-content {
+  font-size: 0.88rem;
+  line-height: 1.65;
+}
+
+.message-domain--data .markdown-table {
+  font-size: 0.85rem;
+  border-collapse: collapse;
+  width: 100%;
+  margin: var(--space-3) 0;
+}
+
+.message-domain--data .markdown-th {
+  background: var(--bg-tertiary);
+  font-weight: 600;
+  text-align: left;
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 2px solid var(--border-subtle);
+}
+
+.message-domain--data .markdown-td {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.message-domain--data .markdown-td:not(:first-child) {
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: 0.83rem;
+  font-variant-numeric: tabular-nums;
+}

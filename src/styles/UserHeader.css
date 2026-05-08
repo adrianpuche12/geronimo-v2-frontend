@@ -1,0 +1,258 @@
+/* ============================================================
+   USER HEADER — Avatar y menú de perfil
+   Todos los valores referencian tokens de styles/tokens.css
+   ============================================================ */
+
+.user-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.user-info-container {
+  position: relative;
+}
+
+
+/* ── Botón avatar ──────────────────────────────────────────── */
+
+.user-avatar-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: var(--transition-spring);
+}
+
+.user-avatar-button:hover .user-avatar {
+  box-shadow: var(--shadow-glow);
+}
+
+
+/* ── Avatar circular ───────────────────────────────────────── */
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--accent) 0%, var(--_indigo-300) 100%);
+  color: var(--text-on-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--font-bold);
+  font-size: var(--text-sm);
+  box-shadow: var(--shadow-glow-sm);
+  transition: var(--transition-spring);
+}
+
+.user-avatar-button:hover .user-avatar {
+  box-shadow: var(--shadow-glow);
+}
+
+
+/* ── Badge admin (top bar) ─────────────────────────────────── */
+
+.admin-badge {
+  background: var(--bg-accent-muted);
+  color: var(--text-accent);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: var(--text-2xs);
+  font-weight: var(--font-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  border: 1px solid var(--border-accent);
+}
+
+
+/* ── Dropdown menú ─────────────────────────────────────────── */
+
+.user-menu {
+  position: absolute;
+  top: calc(100% + var(--space-3));
+  right: 0;
+  min-width: 240px;
+  z-index: var(--z-dropdown);
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border-default);
+  border-radius: var(--dropdown-radius);
+  box-shadow: var(--shadow-xl), var(--shadow-glow-sm);
+  animation: dropdown-appear var(--duration-normal) var(--ease-out);
+}
+
+@keyframes dropdown-appear {
+  from {
+    opacity: 0;
+    transform: translateY(calc(-1 * var(--space-2)));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* ── Header del menú ───────────────────────────────────────── */
+
+.user-menu-header {
+  padding: var(--space-6);
+  display: flex;
+  gap: var(--space-4);
+  align-items: center;
+  border-bottom: 1px solid var(--border-default);
+}
+
+.user-menu-avatar {
+  width: var(--avatar-lg);
+  height: var(--avatar-lg);
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--accent) 0%, var(--_indigo-300) 100%);
+  color: var(--text-on-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--font-bold);
+  font-size: var(--text-xl);
+  flex-shrink: 0;
+  box-shadow: var(--shadow-glow);
+}
+
+.user-menu-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.user-menu-name {
+  font-weight: var(--font-semibold);
+  font-size: var(--text-base);
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-menu-email {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-menu-role {
+  font-size: var(--badge-font-size);
+  color: var(--text-accent);
+  font-weight: var(--font-bold);
+  margin-top: var(--space-2);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  display: inline-block;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--bg-accent-subtle);
+  border: 1px solid var(--border-accent);
+}
+
+
+/* ── Opciones del menú ─────────────────────────────────────── */
+
+.user-menu-divider {
+  height: 1px;
+  background: var(--border-subtle);
+}
+
+.user-menu-options {
+  padding: var(--dropdown-padding-y) var(--space-2);
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-option-button {
+  width: 100%;
+  padding: var(--dropdown-item-py) var(--dropdown-item-px);
+  background: transparent;
+  color: var(--text-secondary);
+  border: none;
+  border-radius: var(--dropdown-radius);
+  font-family: var(--font-body);
+  font-size: var(--dropdown-item-size);
+  font-weight: var(--font-medium);
+  text-align: left;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.menu-option-button:hover {
+  color: var(--text-primary);
+  background: var(--dropdown-item-hover);
+}
+
+
+/* ── Botón cerrar sesión ───────────────────────────────────── */
+
+.logout-button {
+  display: block;
+  width: calc(100% - var(--space-4));
+  margin: 0 var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  border: none;
+  cursor: pointer;
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  font-family: var(--font-body);
+  color: var(--text-error);
+  background: transparent;
+  text-align: center;
+  transition: var(--transition-fast);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.logout-button:hover {
+  background: var(--error-bg);
+  color: var(--error-hover);
+}
+
+
+/* ── Overlay ───────────────────────────────────────────────── */
+
+.user-menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-overlay);
+  z-index: 99;
+  animation: overlay-appear var(--duration-normal) var(--ease-default);
+}
+
+@keyframes overlay-appear {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+
+/* ── Responsive (mobile) ───────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .user-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: auto;
+    width: 300px;
+    max-width: 85vw;
+    min-width: unset;
+    border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
+    z-index: var(--z-modal);
+    overflow-y: auto;
+    animation: slide-in-left var(--duration-slow) var(--ease-spring);
+  }
+
+  @keyframes slide-in-left {
+    from { transform: translateX(-100%); opacity: 0; }
+    to   { transform: translateX(0);     opacity: 1; }
+  }
+}

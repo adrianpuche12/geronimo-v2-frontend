@@ -1,0 +1,117 @@
+/* ============================================================
+   ProgressOverlay — bloquea la UI durante operaciones lentas
+   Usa tokens de Lexiius (var(--accent), var(--font-body), etc.)
+   ============================================================ */
+
+.pov-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(10, 8, 20, 0.75);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pov-fade-in 0.15s ease;
+}
+
+@keyframes pov-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.pov-card {
+  background: var(--bg-surface, #1a1428);
+  border: 1px solid var(--border-accent, rgba(109,40,217,0.45));
+  border-radius: var(--radius-xl, 16px);
+  padding: 36px 40px 32px;
+  width: 340px;
+  max-width: calc(100vw - 48px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 0 40px rgba(109, 40, 217, 0.20), 0 8px 32px rgba(0,0,0,0.5);
+  animation: pov-slide-up 0.2s ease;
+}
+
+@keyframes pov-slide-up {
+  from { transform: translateY(12px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* ── Spinner SVG ── */
+.pov-icon-wrap {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pov-spinner {
+  animation: pov-rotate 1.1s linear infinite;
+}
+
+@keyframes pov-rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Texto ── */
+.pov-message {
+  font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
+  font-size: var(--text-base, 0.9375rem);
+  font-weight: 600;
+  color: var(--text-primary, #FDFCFF);
+  text-align: center;
+  line-height: 1.4;
+}
+
+.pov-sub-message {
+  font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
+  font-size: var(--text-sm, 0.8125rem);
+  color: var(--text-secondary, #8B8A9B);
+  text-align: center;
+  margin-top: -8px;
+  max-width: 280px;
+}
+
+/* ── Barra de progreso ── */
+.pov-track {
+  width: 100%;
+  height: 6px;
+  background: var(--bg-accent-subtle, rgba(109,40,217,0.07));
+  border-radius: 99px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.pov-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent, #6D28D9), var(--text-accent, #9D6EF5));
+  border-radius: 99px;
+  transition: width 0.3s ease;
+  min-width: 4px;
+}
+
+/* Indeterminate: animación de barrido */
+.pov-fill--indeterminate {
+  width: 40% !important;
+  animation: pov-indeterminate 1.4s ease-in-out infinite;
+}
+
+@keyframes pov-indeterminate {
+  0%   { transform: translateX(-100%); }
+  50%  { transform: translateX(160%); }
+  100% { transform: translateX(160%); }
+}
+
+/* ── Porcentaje ── */
+.pov-percent {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: var(--text-sm, 0.8125rem);
+  color: var(--text-accent, #9D6EF5);
+  font-weight: 600;
+  margin-top: -4px;
+}

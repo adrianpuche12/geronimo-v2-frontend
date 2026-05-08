@@ -1,0 +1,424 @@
+/* ============================================================
+   FOLDER TREE BUILDER & IMPORTER — Estilos
+   Usa tokens del sistema (tokens.css)
+   ============================================================ */
+
+/* ── Modal contenedor ── */
+.folder-builder-modal {
+  width: 560px;
+  max-width: 96vw;
+  max-height: 82vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── Tabs ── */
+.fb-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 0 var(--space-6);
+  gap: var(--space-1);
+  flex-shrink: 0;
+}
+.fb-tab {
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  margin-bottom: -1px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.fb-tab:hover { color: var(--text-secondary); }
+.fb-tab.active {
+  color: var(--text-accent);
+  border-bottom-color: var(--accent);
+}
+
+/* ── Contenido del tab ── */
+.fb-tab-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-4) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* ── Árbol manual ── */
+.fb-tree {
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2);
+  min-height: 160px;
+  max-height: 320px;
+  overflow-y: auto;
+  transition: var(--transition-fast);
+}
+.fb-tree.drag-over-root {
+  border-color: var(--accent);
+  background: var(--bg-accent-subtle);
+}
+.fb-tree-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-8) var(--space-4);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+.fb-tree-empty svg { opacity: 0.3; }
+
+/* ── Item del árbol ── */
+.fb-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  transition: var(--transition-fast);
+  cursor: default;
+  position: relative;
+  user-select: none;
+}
+.fb-item:hover { background: var(--bg-hover); }
+.fb-item.dragging { opacity: 0.4; }
+.fb-item.drop-over {
+  background: var(--bg-accent-muted);
+  outline: 1.5px dashed var(--accent);
+  outline-offset: -1px;
+}
+
+.fb-drag-handle {
+  color: var(--text-disabled);
+  cursor: grab;
+  font-size: 14px;
+  padding: 0 2px;
+  flex-shrink: 0;
+}
+.fb-drag-handle:active { cursor: grabbing; }
+
+.fb-item-icon {
+  flex-shrink: 0;
+  color: var(--_indigo-400);
+}
+
+.fb-item-name {
+  flex: 1;
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  background: none;
+  border: none;
+  outline: none;
+  padding: 2px 4px;
+  border-radius: var(--radius-xs);
+  font-family: var(--font-body);
+}
+.fb-item-name.editing {
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border-accent);
+  box-shadow: var(--shadow-focus);
+  color: var(--text-primary);
+}
+
+.fb-item-actions {
+  display: flex;
+  gap: var(--space-1);
+  opacity: 0;
+  transition: var(--transition-fast);
+}
+.fb-item:hover .fb-item-actions { opacity: 1; }
+.fb-item-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-xs);
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  transition: var(--transition-fast);
+  padding: 0;
+}
+.fb-item-btn:hover { background: var(--bg-hover); color: var(--text-primary); }
+.fb-item-btn.delete:hover { background: var(--error-bg); color: var(--text-error); }
+
+/* ── Botón agregar carpeta raíz ── */
+.fb-add-root {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--text-accent);
+  background: var(--bg-accent-subtle);
+  border: 1px dashed var(--border-accent);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  width: 100%;
+  font-family: var(--font-body);
+  font-weight: var(--font-medium);
+}
+.fb-add-root:hover {
+  background: var(--bg-accent-muted);
+  border-color: var(--accent);
+}
+
+/* ── Drop zone (tab "Desde PC") ── */
+.fb-dropzone {
+  border: 2px dashed var(--border-strong);
+  border-radius: var(--radius-xl);
+  padding: var(--space-10) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition-normal);
+  background: var(--bg-surface-2);
+  min-height: 200px;
+}
+.fb-dropzone:hover, .fb-dropzone.drag-active {
+  border-color: var(--accent);
+  background: var(--bg-accent-subtle);
+}
+.fb-dropzone.drag-active .fb-dz-icon { transform: scale(1.1); }
+.fb-dz-icon {
+  font-size: 42px;
+  transition: var(--transition-normal);
+  line-height: 1;
+}
+.fb-dz-title {
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+}
+.fb-dz-sub {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+.fb-dz-sub span {
+  color: var(--text-accent);
+  font-weight: var(--font-medium);
+}
+.fb-dz-formats {
+  font-size: var(--text-xs);
+  color: var(--text-disabled);
+  margin-top: var(--space-1);
+}
+
+/* ── Preview del árbol importado ── */
+.fb-preview {
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.fb-preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-surface-1);
+}
+.fb-preview-title {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+}
+.fb-preview-stats {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  display: flex;
+  gap: var(--space-3);
+}
+.fb-preview-stat {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+.fb-preview-tree {
+  padding: var(--space-2);
+  max-height: 260px;
+  overflow-y: auto;
+}
+.fb-change-btn {
+  font-size: var(--text-xs);
+  color: var(--text-accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-xs);
+  transition: var(--transition-fast);
+  font-family: var(--font-body);
+}
+.fb-change-btn:hover { background: var(--bg-accent-subtle); }
+
+/* ── Items del preview ── */
+.fb-preview-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 3px var(--space-2);
+  border-radius: var(--radius-xs);
+  font-size: var(--text-xs);
+}
+.fb-preview-item:hover { background: var(--bg-hover); }
+.fb-pi-icon { font-size: 13px; flex-shrink: 0; }
+.fb-pi-name { color: var(--text-secondary); flex: 1; }
+.fb-pi-count {
+  font-size: var(--text-2xs);
+  color: var(--text-muted);
+  background: var(--bg-surface-3);
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+}
+
+/* ── Footer del modal ── */
+.fb-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-6);
+  border-top: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+  background: var(--bg-surface-1);
+}
+.fb-footer-info {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+.fb-footer-actions { display: flex; gap: var(--space-2); }
+
+/* ── Mini preview en modal "Crear Proyecto" ── */
+.fp-planned {
+  background: var(--bg-accent-subtle);
+  border: 1px solid var(--border-accent);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.fp-planned-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex: 1;
+}
+.fp-planned-text { font-size: var(--text-sm); color: var(--text-primary); }
+.fp-planned-sub { font-size: var(--text-xs); color: var(--text-muted); }
+.fp-planned-actions { display: flex; gap: var(--space-1); flex-shrink: 0; }
+
+.fp-btn-add {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  background: none;
+  border: 1px dashed var(--border-default);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-body);
+}
+.fp-btn-add:hover {
+  color: var(--text-accent);
+  border-color: var(--border-accent);
+  background: var(--bg-accent-subtle);
+}
+
+/* ── Barra de progreso (creación del proyecto) ── */
+.fp-progress-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-toast);
+}
+.fp-progress-box {
+  position: relative;
+  background: var(--bg-glass-strong);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8) var(--space-10);
+  min-width: 340px;
+  max-width: 90vw;
+  box-shadow: var(--shadow-xl), var(--shadow-glow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  animation: modal-in 0.2s var(--ease-default) both;
+}
+.fp-progress-box::before {
+  content: '';
+  position: absolute;
+  top: -1px; left: 20%; right: 20%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(157,110,245,0.55) 30%, rgba(109,40,217,0.80) 50%, rgba(157,110,245,0.55) 70%, transparent 100%);
+  border-radius: var(--radius-full);
+  pointer-events: none;
+}
+.fp-progress-title {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  letter-spacing: var(--tracking-tight);
+  font-family: var(--font-display);
+  -webkit-font-smoothing: antialiased;
+}
+.fp-progress-step {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.fp-progress-track {
+  height: 3px;
+  background: var(--border-subtle);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+.fp-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--_v-400));
+  border-radius: var(--radius-full);
+  transition: width 0.25s var(--ease-default);
+  box-shadow: 0 0 8px rgba(109, 40, 217, 0.4);
+}
+.fp-progress-count {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  text-align: right;
+}

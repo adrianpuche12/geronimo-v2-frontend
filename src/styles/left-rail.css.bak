@@ -1,0 +1,429 @@
+/* ============================================================
+   LEFT RAIL — App Shell Navigation
+   Todos los valores referencian tokens de styles/tokens.css
+   ============================================================ */
+
+/* ── App Shell Layout ──────────────────────────────────────── */
+
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: var(--bg-base);
+  overflow: hidden;
+}
+
+.app-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.app-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg-base);
+}
+
+
+/* ── Top Bar ───────────────────────────────────────────────── */
+
+.top-bar {
+  height: var(--topbar-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-5) 0 0;
+  border-bottom: 1px solid var(--border-default);
+  background: var(--bg-surface-1);
+  flex-shrink: 0;
+  z-index: var(--z-sticky);
+}
+
+.top-bar-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0 var(--space-4);
+  height: 100%;
+  border-right: 1px solid var(--border-default);
+  width: var(--rail-width-expanded);
+  min-width: var(--rail-width-expanded);
+  transition: width var(--duration-normal) var(--ease-default),
+              min-width var(--duration-normal) var(--ease-default);
+  flex-shrink: 0;
+}
+
+.top-bar-brand--collapsed {
+  width: var(--rail-width-collapsed);
+  min-width: var(--rail-width-collapsed);
+  justify-content: center;
+  padding: 0;
+  gap: 0;
+}
+
+.top-bar-logo {
+  height: 26px;
+  width: auto;
+  flex-shrink: 0;
+}
+
+.top-bar-title {
+  font-family: var(--font-display);
+  font-weight: var(--font-bold);
+  font-size: var(--text-base);
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.top-bar-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+
+/* ── Rail ──────────────────────────────────────────────────── */
+
+.rail {
+  width: var(--rail-width-expanded);
+  min-width: var(--rail-width-expanded);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-surface-1);
+  border-right: 1px solid var(--border-default);
+  transition: width var(--duration-normal) var(--ease-default),
+              min-width var(--duration-normal) var(--ease-default);
+  overflow: hidden;
+  position: relative;
+  z-index: var(--z-raised);
+}
+
+.rail--collapsed {
+  width: var(--rail-width-collapsed);
+  min-width: var(--rail-width-collapsed);
+}
+
+
+/* ── Nav items ─────────────────────────────────────────────── */
+
+.rail-nav {
+  padding: var(--space-2) var(--space-2) var(--space-1);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.rail-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  font-family: var(--font-body);
+  width: 100%;
+  text-align: left;
+  white-space: nowrap;
+  transition: var(--transition-fast);
+  position: relative;
+}
+
+.rail-item:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.rail-item--active {
+  background: var(--bg-accent-subtle);
+  color: var(--accent);
+}
+
+.rail-item--active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 18%;
+  height: 64%;
+  width: 3px;
+  background: var(--accent);
+  border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+}
+
+.rail-item-icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  width: 20px;
+}
+
+.rail-item-label {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Badge — indica carpeta activa como filtro RAG */
+.rail-badge {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--radius-full);
+  background: var(--accent);
+  flex-shrink: 0;
+  box-shadow: var(--shadow-glow-sm);
+}
+
+
+/* ── Divider ───────────────────────────────────────────────── */
+
+.rail-divider {
+  height: 1px;
+  background: var(--border-default);
+  margin: var(--space-1) var(--space-3);
+  flex-shrink: 0;
+}
+
+
+/* ── Projects section ──────────────────────────────────────── */
+
+.rail-projects {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: var(--space-1) 0;
+}
+
+.rail-section-label {
+  font-size: var(--text-2xs);
+  font-weight: var(--font-bold);
+  color: var(--text-muted);
+  letter-spacing: var(--tracking-widest);
+  padding: var(--space-1) var(--space-4);
+  white-space: nowrap;
+  overflow: hidden;
+  text-transform: uppercase;
+}
+
+.rail-project-list {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 2px var(--space-2);
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
+}
+
+.rail-project-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.rail-project-list::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: var(--radius-full);
+}
+
+.rail-project {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  white-space: nowrap;
+  transition: var(--transition-fast);
+  position: relative;
+}
+
+.rail-project:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.rail-project--active {
+  color: var(--accent);
+  background: var(--bg-accent-subtle);
+}
+
+.rail-project-dot {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: inherit;
+  opacity: 0.6;
+}
+
+.rail-project--active .rail-project-dot {
+  opacity: 1;
+}
+
+.rail-project-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rail-project-actions {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.rail-project-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: var(--transition-fast);
+  padding: 0;
+}
+
+.rail-project-btn:hover {
+  background: var(--bg-active);
+  color: var(--text-primary);
+}
+
+.rail-project-btn--danger:hover {
+  background: var(--error-bg);
+  color: var(--text-error);
+}
+
+
+/* ── Action buttons ────────────────────────────────────────── */
+
+.rail-actions {
+  padding: var(--space-1) var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.rail-action-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  font-family: var(--font-body);
+  white-space: nowrap;
+  width: 100%;
+  text-align: left;
+  transition: var(--transition-fast);
+}
+
+.rail-action-btn:hover:not(:disabled) {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.rail-action-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.rail-action-btn--secondary {
+  color: var(--text-muted);
+}
+
+
+/* ── Collapse toggle ───────────────────────────────────────── */
+
+.rail-collapse-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  border: none;
+  border-top: 1px solid var(--border-default);
+  background: transparent;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: var(--transition-fast);
+  flex-shrink: 0;
+  font-family: var(--font-body);
+}
+
+.rail-collapse-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+
+/* ── Section headers ───────────────────────────────────────── */
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-6);
+  border-bottom: 1px solid var(--border-default);
+  background: var(--bg-surface-1);
+  flex-shrink: 0;
+}
+
+.section-title {
+  font-size: var(--text-sm);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  margin: 0;
+}
+
+.section-context-badge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  background: var(--bg-accent-subtle);
+  border: 1px solid var(--border-accent);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  color: var(--text-accent);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 280px;
+}
+
+.section-context-clear {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-accent);
+  opacity: 0.7;
+  font-size: var(--text-xs);
+  padding: 0;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: var(--transition-fast);
+}
+
+.section-context-clear:hover {
+  opacity: 1;
+}
