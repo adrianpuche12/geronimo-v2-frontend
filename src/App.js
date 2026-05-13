@@ -104,6 +104,7 @@ function App() {
   const [isCreatingFolders, setIsCreatingFolders] = useState(false);
   const [folderProgress, setFolderProgress] = useState({ current: 0, total: 0, step: '' });
   const [progressOverlay, setProgressOverlay] = useState({ show: false, message: '', subMessage: '', progress: null });
+  const [clpState, setClpState] = useState(null);
 
   const showProgress = (message, subMessage = '', progress = null) =>
     setProgressOverlay({ show: true, message, subMessage, progress });
@@ -114,6 +115,7 @@ function App() {
   const zipInputRef = useRef(null);
   const jurisInputRef = useRef(null);
   const messagesEndRef = useRef(null);
+  const lastUserMsgRef = useRef(null); // para scroll al par pregunta+respuesta
 
   const showToast = (message, type = 'success', duration = 3500) => {
     setToast({ show: true, message, type, duration });
@@ -168,7 +170,13 @@ function App() {
   }, [authenticated, firstLogin]);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    // Scrollear al último mensaje del usuario (muestra el par pregunta+respuesta)
+    // Si no hay mensaje de usuario reciente, scrollear al fondo
+    if (lastUserMsgRef.current) {
+      lastUserMsgRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
   }, [messages]);
 
   useEffect(() => {
@@ -672,6 +680,13 @@ function App() {
           response = await axios.post(`${API_URL}/ai/query`, { projectId: selectedProject, question: inputMessage, mode: selectedMode, history, domain: projects.find(p => p.id === selectedProject)?.domain || 'general' });
         }
       }
+      // Actualizar estado CLP si la respuesta lo incluye
+      if (response.data.clp) {
+        setClpState(response.data.clp);
+      } else if (response.data.clp === null) {
+        setClpState(null);
+      }
+
       const assistantMessage = {
         role: 'assistant', content: response.data.answer || response.data.message || 'Sin respuesta',
         timestamp: new Date().toISOString(), mode: response.data.mode || selectedMode,
@@ -683,6 +698,7 @@ function App() {
         messageId: response.data.messageId || null,
         sessionId: resolvedSessionId,
         validatedResponse: response.data.validatedResponse || null,
+        clp: response.data.clp || null,
       };
       setMessages(prev => [...prev, assistantMessage]);
     } catch (error) {
@@ -697,6 +713,44 @@ function App() {
         addSystemMessage(`Error al enviar mensaje: ${error.message}`);
       }
     } finally { setIsLoading(false); setIsDeepAnalysis(false); }
+  };
+
+  // CLP — acción explícita desde los botones del chat
+  const handleClpAction = async (action) => {
+    if (!activeSession) return;
+    // Capturar valores antes del await para evitar closures stale
+    const sessionId  = activeSession.id;
+    const projectId  = selectedProject;
+    const domain     = projects.find(p => p.id === selectedProject)?.domain || 'general';
+    setIsLoading(true);
+    try {
+      const response = await axios.post(`${API_URL}/sessions/${sessionId}/query`, {
+        question: '',
+        projectId,
+        domain,
+        clp_action: action,
+      });
+      console.log('[CLP action] response received:', response.status, 'clp:', response.data?.clp, 'answer length:', response.data?.answer?.length);
+      if (response.data.clp !== undefined) setClpState(response.data.clp);
+      const assistantMessage = {
+        role: 'assistant', content: response.data.answer || 'Sin respuesta',
+        timestamp: new Date().toISOString(), mode: response.data.mode || selectedMode,
+        domain,
+        sourceMode: response.data.sourceMode || null,
+        sources: response.data.sources || [],
+        charts: [], tables: [], metrics: [], recommendations: [],
+        messageId: response.data.messageId || null,
+        sessionId,
+        validatedResponse: null,
+        clp: response.data.clp || null,
+      };
+      setMessages(prev => [...prev, assistantMessage]);
+    } catch (e) {
+      console.error('Error en acción CLP:', e);
+      addSystemMessage(`Error al avanzar al siguiente paso: ${e.response?.data?.message || e.message}`);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // V4 Sprint 4 — Feedback 👍👎
@@ -958,6 +1012,12 @@ function App() {
                   onSelectSession={async (s) => {
                     setActiveSession(s);
                     setShowSessions(false);
+                    // Restaurar estado CLP si la sesión lo tiene
+                    if (s.clp_active) {
+                      setClpState({ active: true, tipo: s.clp_tipo, step: s.clp_step, semaforo: s.clp_semaforo });
+                    } else {
+                      setClpState(null);
+                    }
                     const res = await axios.get((process.env.REACT_APP_API_URL || '/api') + '/sessions/' + s.id + '/messages');
                     setMessages(res.data.map((m, i) => ({
                       id: i, role: m.role,
@@ -966,8 +1026,8 @@ function App() {
                       domain: m.role === 'assistant' ? (projects.find(p => p.id === selectedProject)?.domain || 'general') : undefined,
                     })));
                   }}
-                  onNewSession={() => { setActiveSession(null); setMessages([]); }}
-                  onDeleteSession={() => { setActiveSession(null); setMessages([]); }}
+                  onNewSession={() => { setActiveSession(null); setMessages([]); setClpState(null); }}
+                  onDeleteSession={() => { setActiveSession(null); setMessages([]); setClpState(null); }}
                   collapsed={!showSessions}
                 />
               </div>
@@ -1056,6 +1116,9 @@ function App() {
                 onScopeChange={(id, name) => { setActiveFolderId(id); setActiveFolderName(name || null); }}
                 uploadedFiles={uploadedFiles}
                 onUploadClick={() => { setActiveTab('explorer'); }}
+                clpState={clpState}
+                onClpAction={handleClpAction}
+                lastUserMsgRef={lastUserMsgRef}
               />
               </div>
             </div>
@@ -1073,6 +1136,11 @@ function App() {
                 onSelectSession={async (s) => {
                   setActiveSession(s);
                   setActiveTab('chat');
+                  if (s.clp_active) {
+                    setClpState({ active: true, tipo: s.clp_tipo, step: s.clp_step, semaforo: s.clp_semaforo });
+                  } else {
+                    setClpState(null);
+                  }
                   const res = await axios.get((process.env.REACT_APP_API_URL || '/api') + '/sessions/' + s.id + '/messages');
                   setMessages(res.data.map((m, i) => ({
                     id: i, role: m.role, content: m.content,

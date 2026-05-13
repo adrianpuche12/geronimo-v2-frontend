@@ -309,3 +309,136 @@ label {
     transition-duration: 0.01ms !important;
   }
 }
+
+
+/* ─────────────────────────────────────────────────────────────
+   CLP — Construcción Legal Progresiva
+   ───────────────────────────────────────────────────────────── */
+
+/* Stepper — barra de pasos */
+.clp-stepper {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 10px 16px;
+  background: rgba(20, 20, 23, 0.6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  overflow-x: auto;
+  flex-shrink: 0;
+  scrollbar-width: none;
+}
+.clp-stepper::-webkit-scrollbar { display: none; }
+
+/* Cada paso */
+.clp-step {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* Etiqueta del paso */
+.clp-step-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  cursor: default;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+/* Número del paso */
+.clp-step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* Conector entre pasos */
+.clp-step-connector {
+  width: 20px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+  margin: 0 2px;
+}
+
+/* Estado: pendiente */
+.clp-step--pending .clp-step-label {
+  color: #5A5472;
+  border-color: transparent;
+  background: transparent;
+}
+.clp-step--pending .clp-step-num {
+  background: rgba(255, 255, 255, 0.04);
+  color: #5A5472;
+}
+
+/* Estado: activo (paso actual) */
+.clp-step--active .clp-step-label {
+  color: #B28BFF;
+  background: rgba(109, 40, 217, 0.12);
+  border-color: rgba(109, 40, 217, 0.4);
+}
+.clp-step--active .clp-step-num {
+  background: #6D28D9;
+  color: #fff;
+}
+.clp-step--active .clp-step-connector {
+  background: rgba(109, 40, 217, 0.35);
+}
+
+/* Estado: completado */
+.clp-step--done .clp-step-label {
+  color: #34D399;
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.2);
+}
+.clp-step--done .clp-step-num {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34D399;
+}
+.clp-step--done .clp-step-connector {
+  background: rgba(16, 185, 129, 0.25);
+}
+
+/* Botón Continuar */
+.clp-actions {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.clp-btn-continuar {
+  background: #6D28D9;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.1s;
+  letter-spacing: 0.01em;
+}
+.clp-btn-continuar:hover { background: #7C3AED; }
+
+.clp-step-hint {
+  font-size: 11px;
+  color: #5A5472;
+}

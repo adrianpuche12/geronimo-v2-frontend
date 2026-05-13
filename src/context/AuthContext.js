@@ -3,6 +3,8 @@ import axios from 'axios';
 import { supabase } from '../lib/supabase';
 import { hasPermission } from '../config/permissions';
 
+const API_URL = process.env.REACT_APP_API_URL || '/api';
+
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
@@ -52,7 +54,7 @@ export const AuthProvider = ({ children }) => {
   const checkFirstLogin = async (userId, accessToken) => {
     if (!userId || !accessToken) return false;
     try {
-      const res = await axios.get('/api/users', {
+      const res = await axios.get(`${API_URL}/users`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
       const profile = res.data?.find((u) => u.id === userId);
@@ -109,7 +111,7 @@ export const AuthProvider = ({ children }) => {
   const clearPasswordRecovery = () => setPasswordRecovery(false);
 
   const changePassword = async (newPassword) => {
-    const res = await axios.post('/api/auth/change-password', { newPassword });
+    const res = await axios.post(`${API_URL}/auth/change-password`, { newPassword });
     if (res.status === 200 || res.status === 201) {
       setFirstLogin(false);
     }

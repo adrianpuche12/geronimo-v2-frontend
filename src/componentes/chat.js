@@ -6,6 +6,47 @@ import { ExportMenu } from './utilities';
 import { EnrichedResponse } from './prompt-engine';
 import '../styles/markdown.css';
 
+// ─── CLP Stepper ──────────────────────────────────────────────────────────────
+
+const CLP_STEPS = [
+  { key: 'Q', num: 1, label: 'Calificación' },
+  { key: 'K', num: 2, label: 'Competencia'  },
+  { key: 'T', num: 3, label: 'Plazos'       },
+  { key: 'N', num: 4, label: 'Normas'       },
+  { key: 'S', num: 5, label: 'Subsunción'   },
+  { key: 'E', num: 6, label: 'Estrategia'   },
+];
+
+const STEP_ORDER = ['Q', 'K', 'T', 'N', 'S', 'E'];
+
+function CLPStepper({ clpState }) {
+  if (!clpState?.active) return null;
+
+  const currentIdx = STEP_ORDER.indexOf(clpState.step);
+
+  return (
+    <div className="clp-stepper">
+      {CLP_STEPS.map((step, idx) => {
+        const state = idx < currentIdx ? 'done'
+                    : idx === currentIdx ? 'active'
+                    : 'pending';
+        const isLast = idx === CLP_STEPS.length - 1;
+        return (
+          <div key={step.key} className="clp-step">
+            <div className={`clp-step-label clp-step--${state}`}>
+              <span className="clp-step-num">{step.num}</span>
+              {step.label}
+            </div>
+            {!isLast && (
+              <div className={`clp-step-connector clp-step--${state}`} />
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 // Componentes markdown personalizados
 const markdownComponents = {
   // Tablas con estilos profesionales
@@ -198,7 +239,10 @@ export const Chat = ({
   onCreateProject,
   onProjectSelect,
   uploadedFiles = [],
-  onUploadClick,}) => {
+  onUploadClick,
+  clpState = null,
+  onClpAction,
+  lastUserMsgRef,}) => {
   const { user } = useAuth();
   const getUserInitials = () => {
     if (!user) return 'Tu';
@@ -290,6 +334,7 @@ export const Chat = ({
   }, [user]);
   return (
     <section className="chat-section">
+      <CLPStepper clpState={clpState} />
       <div className="chat-messages">
         {messages.length === 0 ? (
           <div className="chat-empty-state">
@@ -394,9 +439,14 @@ export const Chat = ({
           </div>
         ) : (
           <>
-            {messages.map((message, index) => (
+            {messages.map((message, index) => {
+            // El último mensaje de usuario recibe el ref para el scroll
+            const isLastUserMsg = message.role === 'user' &&
+              messages.slice(index + 1).every(m => m.role !== 'user');
+            return (
               <div
                 key={index}
+                ref={isLastUserMsg ? lastUserMsgRef : null}
                 className={`message ${message.role}`}
               >
                 <div className="message-header">
@@ -487,6 +537,24 @@ export const Chat = ({
                   />
                 )}
 
+                {/* CLP — botón Continuar */}
+                {message.role === 'assistant' &&
+                  (message.clp?.active || clpState?.active) &&
+                  index === messages.length - 1 &&
+                  !isLoading && (
+                  <div className="clp-actions">
+                    <button
+                      className="clp-btn-continuar"
+                      onClick={() => onClpAction && onClpAction('continuar')}
+                    >
+                      Continuar al siguiente paso
+                    </button>
+                    <span className="clp-step-hint">
+                      Podés hacer más preguntas antes de avanzar
+                    </span>
+                  </div>
+                )}
+
                     {/* Botón exportar existente */}
                     <button
                       className="btn-export-response"
@@ -506,7 +574,8 @@ export const Chat = ({
                   </div>
                 )}
               </div>
-            ))}
+            );
+          })}
             {isLoading && (
               <div className="message assistant">
                 <div className="message-content" style={{background:'transparent',padding:'12px 0'}}>
