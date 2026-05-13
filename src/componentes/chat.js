@@ -205,7 +205,7 @@ export const Chat = ({
     (name) => name ? 'Hola ' + name + ', ¿en qué trabajamos hoy?' : '¿En qué puedo ayudarte hoy?',
     (name) => name ? 'Bienvenido, ' + name + '. ¿Qué necesitás resolver?' : '¿Qué necesitás resolver hoy?',
     (name) => name ? '¿Listo para trabajar, ' + name + '?' : '¿Listo para trabajar?',
-    (name) => name ? name + ', ¿cómo puedo ayudarte hoy?' : '¿Cómo puedo ayudarte hoy?',
+    (name) => name ? name + ', ¿cómo puedo ayudarte?' : '¿Cómo puedo ayudarte?',
   ];
   const greeting = React.useMemo(() => {
     const idx = new Date().getDay() % GREETINGS.length;
