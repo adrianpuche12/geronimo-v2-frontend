@@ -34,7 +34,7 @@ jobs:
         run: |
           echo "${{ secrets.SERVER_SSH_KEY }}" > /tmp/deploy_key
           chmod 600 /tmp/deploy_key
-          ssh -i /tmp/deploy_key -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "
+          ssh -i /tmp/deploy_key -o StrictHostKeyChecking=no root@62.171.160.238 "
             cd /opt/iurivia/dev &&
             docker compose pull iurivia-frontend-dev &&
             docker compose up -d iurivia-frontend-dev &&
