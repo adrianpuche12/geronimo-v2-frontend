@@ -499,7 +499,7 @@ export const Chat = ({
                         remarkPlugins={[remarkGfm]}
                         components={markdownComponents}
                       >
-                        {message.content}
+                        {message.content.replace(/\[CLP-T:[^\]]*\]/gi, '').trim()}
                       </ReactMarkdown>
                     ) : (
                       message.content
