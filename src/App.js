@@ -9,6 +9,7 @@ import { Chat } from './componentes/chat';
 import { Explorer } from './componentes/explorer';
 import { Search } from './componentes/search';
 import { Integrations } from './componentes/integrations';
+import { PlazosDashboard } from './componentes/PlazosDashboard';
 import { formatDate, formatFileSize } from './componentes/utilities';
 import { Login } from './componentes/Login';
 import { ResetPassword } from './componentes/ResetPassword';
@@ -1175,6 +1176,19 @@ function App() {
               onAnalyzeDocs={(action) => {
                 setInputMessage(action.prompt || '');
                 setActiveTab('chat');
+              }}
+            />
+          )}
+
+          {/* Plazos Dashboard */}
+          {activeTab === 'plazos' && (
+            <PlazosDashboard
+              onProjectSelect={(projectId) => {
+                const project = projects.find(p => p.id === projectId);
+                if (project) {
+                  setSelectedProject(projectId);
+                  setActiveTab('chat');
+                }
               }}
             />
           )}
