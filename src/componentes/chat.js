@@ -399,23 +399,14 @@ export const Chat = ({
                 Subir documentos
               </button>
             )}
-            {selectedProject && (
+            {selectedProject && lastSessions.length > 0 && (
               <div className="chat-empty-suggestions">
-                {[
-                  ...lastSessions.map(s => `Continuemos con "${s.title || 'la sesión anterior'}"`),
-                  '¿Cuál es el plazo de prescripción para esta acción?',
-                  '¿Qué artículos del CCyC aplican a este caso?',
-                  'Analizá los puntos débiles de la demanda',
-                  '¿Qué dice la jurisprudencia de la CSJN sobre este tema?',
-                  'Resumí los hechos principales del expediente',
-                  'Identificá las cláusulas problemáticas del contrato',
-                ].slice(0, 4).map((s) => (
+                {lastSessions.slice(0, 3).map(s => (
                   <button
-                    key={s}
+                    key={s.title}
                     className="chat-empty-chip"
-                    onClick={() => setInputMessage(s)}
-                  >
-                    {s}
+                    onClick={() => setInputMessage(`Continuemos con "${s.title || 'la sesión anterior'}"`)}>
+                    Continuemos con "{s.title || 'la sesión anterior'}"
                   </button>
                 ))}
               </div>
