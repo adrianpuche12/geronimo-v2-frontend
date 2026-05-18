@@ -10,6 +10,7 @@ import { Explorer } from './componentes/explorer';
 import { Search } from './componentes/search';
 import { Integrations } from './componentes/integrations';
 import { PlazosDashboard } from './componentes/PlazosDashboard';
+import { PrimerUso } from './componentes/PrimerUso';
 import { formatDate, formatFileSize } from './componentes/utilities';
 import { Login } from './componentes/Login';
 import { ResetPassword } from './componentes/ResetPassword';
@@ -1001,8 +1002,13 @@ function App() {
           <input ref={zipInputRef} type="file" onChange={handleZipUpload} style={{display:"none"}} accept=".zip" />
           <input ref={jurisInputRef} type="file" onChange={handleJurisUpload} style={{display:"none"}} accept=".pdf,.doc,.docx,.txt" />
 
+          {/* Primer uso — sin workspaces */}
+          {activeTab === 'chat' && projects.length === 0 && (
+            <PrimerUso onCreateWorkspace={() => setShowCreateProject(true)} />
+          )}
+
           {/* Chat */}
-          {activeTab === 'chat' && (
+          {activeTab === 'chat' && projects.length > 0 && (
             <div style={{display:'flex',height:'100%',overflow:'hidden'}}>
               {/* Session Panel sidebar */}
               <div style={{width:showSessions?220:0,minWidth:0,overflow:'hidden',borderRight:showSessions?'1px solid var(--border-subtle)':'none',transition:'width 0.2s',flexShrink:0,background:'var(--bg-secondary)'}}>
