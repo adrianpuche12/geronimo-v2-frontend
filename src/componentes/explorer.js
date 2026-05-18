@@ -1303,7 +1303,6 @@ export const Explorer = ({
           </div>
         </div>
       )}
-      </div>
     </section>
   );
 };
