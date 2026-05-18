@@ -543,13 +543,13 @@ export const Explorer = ({
       <section className="exp-root">
         <div className="exp-header">
           <div>
-            <h2 className="exp-title">Proyectos</h2>
-            <p className="exp-subtitle">Seleccióná un proyecto para navegar sus documentos</p>
+            <h2 className="exp-title">Workspaces</h2>
+            <p className="exp-subtitle">Seleccioná un workspace para navegar sus documentos</p>
           </div>
           {can && can("MANAGE_PROJECTS") && onCreateProject && (
             <button className="exp-btn exp-btn--primary exp-btn--sm" onClick={onCreateProject}>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{marginRight:4}}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              Nuevo proyecto
+              Nuevo workspace
             </button>
           )}
         </div>
@@ -557,9 +557,9 @@ export const Explorer = ({
           {projects.length === 0 ? (
             <div className="exp-empty-state">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" style={{color:'var(--text-disabled)',marginBottom:'var(--space-3)'}}><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
-              <h3 className="exp-empty-title">Creá tu primer proyecto</h3>
-              <p className="exp-empty-desc">Un proyecto agrupa los expedientes y documentos de un caso o cliente.</p>
-              <p className="exp-empty-hint">Ejemplo: "Caso Marsaz — Daños y Perjuicios 2024"</p>
+              <h3 className="exp-empty-title">Creá tu primer workspace</h3>
+              <p className="exp-empty-desc">Un workspace es el espacio de trabajo de un caso o expediente. Contiene documentos, historial y plazos.</p>
+              <p className="exp-empty-hint">Ejemplo: "García c/ Municipalidad — Daños 2024"</p>
             </div>
           ) : projects.map(project => (
             <div key={project.id}
@@ -601,7 +601,7 @@ export const Explorer = ({
         <nav className="exp-breadcrumb">
           <button className="exp-bc-btn" onClick={() => { setView('projects'); onFolderSelect(null); setWorkspaceTab('documentos'); }}>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-            Proyectos
+            Workspaces
           </button>
           <span className="exp-bc-sep">/</span>
           <button className="exp-bc-btn" onClick={() => { onFolderSelect(null); setWorkspaceTab('documentos'); }}>

@@ -83,7 +83,7 @@ const IcoHistory = () => (
 const NAV_ITEMS = [
   { id: 'chat',         label: 'Chat',          Icon: IcoChat },
   { id: 'sessions',     label: 'Historial',     Icon: IcoHistory },
-  { id: 'explorer',     label: 'Proyectos',     Icon: IcoExplorer },
+  { id: 'explorer',     label: 'Workspaces',    Icon: IcoExplorer },
   { id: 'plazos',       label: 'Plazos',        Icon: IcoPlazos },
   { id: 'search',       label: 'Búsqueda',      Icon: IcoSearch },
   { id: 'integrations', label: 'Integraciones', Icon: IcoIntegrations, requiredPermission: 'VIEW_INTEGRATIONS' },
