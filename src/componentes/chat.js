@@ -399,18 +399,6 @@ export const Chat = ({
                 Subir documentos
               </button>
             )}
-            {selectedProject && lastSessions.length > 0 && (
-              <div className="chat-empty-suggestions">
-                {lastSessions.slice(0, 3).map(s => (
-                  <button
-                    key={s.title}
-                    className="chat-empty-chip"
-                    onClick={() => setInputMessage(`Continuemos con "${s.title || 'la sesión anterior'}"`)}>
-                    Continuemos con "{s.title || 'la sesión anterior'}"
-                  </button>
-                ))}
-              </div>
-            )}
             {selectedProject && !hintDismissed && (
               <div className="scope-discovery-hint">
                 <div className="scope-hint-icon">
