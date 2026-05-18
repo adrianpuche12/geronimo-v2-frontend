@@ -1618,17 +1618,14 @@ function App() {
               <button
                 onClick={async () => {
                   if (!editingProject) return;
-                  setConfirmModal({ show: true, type: 'workspace', name: editingProject.name,
-                    onConfirm: async () => {
-                      try {
-                        await axios.patch(`${API_URL}/workspaces/${editingProject.id}/archive`);
-                        setShowEditProject(false);
-                        if (selectedProject === editingProject.id) setSelectedProject('');
-                        await loadProjects();
-                        showToast(`Workspace "${editingProject.name}" archivado.`, 'success');
-                      } catch { showToast('Error al archivar el workspace.', 'error'); }
-                    }
-                  });
+                  if (!window.confirm(`¿Archivar el workspace "${editingProject.name}"?\n\nPodés restaurarlo en cualquier momento desde la configuración.`)) return;
+                  try {
+                    await axios.patch(`${API_URL}/workspaces/${editingProject.id}/archive`);
+                    setShowEditProject(false);
+                    if (selectedProject === editingProject.id) setSelectedProject('');
+                    await loadProjects();
+                    showToast(`Workspace "${editingProject.name}" archivado.`, 'success');
+                  } catch { showToast('Error al archivar el workspace.', 'error'); }
                 }}
                 style={{padding:'0 var(--space-3)',height:'var(--btn-height-md)',background:'transparent',
                   border:'1px solid var(--border-error)',borderRadius:'var(--radius-sm)',
