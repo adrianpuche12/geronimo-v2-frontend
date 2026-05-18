@@ -640,7 +640,7 @@ export const Explorer = ({
         </div>
       </div>
 
-      {/* Render del tab activo */}
+      {/* Render del tab activo — Miembros y Notas reemplazan el exp-body */}
       {workspaceTab === 'miembros' && activeProject && (
         <WorkspaceMembers workspaceId={activeProject.id} miRol={activeProject.workspace_rol || 'RESPONSABLE'} />
       )}
@@ -648,7 +648,7 @@ export const Explorer = ({
         <WorkspaceNotas workspaceId={activeProject.id} miRol={activeProject.workspace_rol || 'RESPONSABLE'} />
       )}
 
-      {workspaceTab === 'documentos' && <div className="exp-body">
+      <div className="exp-body" style={{ display: workspaceTab === 'documentos' ? undefined : 'none' }}>
         <div className="exp-panel-left">
           <div className="exp-panel-title">
             <span>Carpetas</span>
@@ -1303,7 +1303,7 @@ export const Explorer = ({
           </div>
         </div>
       )}
-      </div>}
+      </div>
     </section>
   );
 };
