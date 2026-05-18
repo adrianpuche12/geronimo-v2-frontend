@@ -38,6 +38,7 @@ function App() {
 
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState('');
+  const [welcomeShown, setWelcomeShown] = useState(false);
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -129,6 +130,14 @@ function App() {
     if (authenticated && !firstLogin) loadProjects();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authenticated, firstLogin]);
+
+  // Disparar bienvenida cuando hay proyectos y no hay mensajes activos
+  useEffect(() => {
+    if (authenticated && projects.length > 0 && messages.length === 0 && !activeSession) {
+      showWelcomeMessage();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authenticated, projects.length]);
 
 
   // Session timeout — 1 hora de inactividad, warning 5 min antes
@@ -226,6 +235,20 @@ function App() {
       addSystemMessage('Error al cargar proyectos. Verifica la conexión con el servidor.');
     }
   };
+
+  // Mensaje de bienvenida personalizado — se muestra una vez por sesión de navegador
+  const showWelcomeMessage = React.useCallback(async () => {
+    const key = `iurivia_welcome_${user?.id}`;
+    if (welcomeShown || localStorage.getItem(key)) return;
+    setWelcomeShown(true);
+    localStorage.setItem(key, '1');
+    try {
+      const res = await axios.get(`${API_URL}/sessions/welcome`);
+      if (res.data?.message) {
+        setMessages([{ id: 'welcome', role: 'assistant', content: res.data.message, sources: [] }]);
+      }
+    } catch { /* silencioso — no es crítico */ }
+  }, [welcomeShown, user?.id]);
 
   const addSystemMessage = (content) => {
     setMessages(prev => [...prev, { role: 'system', content, timestamp: new Date().toISOString() }]);
