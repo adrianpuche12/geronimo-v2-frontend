@@ -133,11 +133,18 @@ function App() {
 
   // Disparar bienvenida cuando hay proyectos y no hay mensajes activos
   useEffect(() => {
-    if (authenticated && projects.length > 0 && messages.length === 0 && !activeSession) {
-      showWelcomeMessage();
-    }
+    if (!authenticated || projects.length === 0) return;
+    const key = `iurivia_welcome_${user?.id}`;
+    if (localStorage.getItem(key)) return;
+    // Pequeño delay para asegurarse que el estado está estable
+    const timer = setTimeout(() => {
+      if (messages.length === 0 && !activeSession) {
+        showWelcomeMessage();
+      }
+    }, 800);
+    return () => clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authenticated, projects.length]);
+  }, [authenticated, projects.length, user?.id]);
 
 
   // Session timeout — 1 hora de inactividad, warning 5 min antes
