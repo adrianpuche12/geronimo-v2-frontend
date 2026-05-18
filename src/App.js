@@ -131,20 +131,17 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authenticated, firstLogin]);
 
-  // Disparar bienvenida cuando hay proyectos y no hay mensajes activos
+  // Disparar bienvenida al primer ingreso — con o sin workspaces
   useEffect(() => {
-    if (!authenticated || projects.length === 0) return;
-    const key = `iurivia_welcome_${user?.id}`;
+    if (!authenticated || !user?.id) return;
+    const key = `iurivia_welcome_${user.id}`;
     if (localStorage.getItem(key)) return;
-    // Pequeño delay para asegurarse que el estado está estable
     const timer = setTimeout(() => {
-      if (messages.length === 0 && !activeSession) {
-        showWelcomeMessage();
-      }
-    }, 800);
+      showWelcomeMessage();
+    }, 1000);
     return () => clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authenticated, projects.length, user?.id]);
+  }, [authenticated, user?.id]);
 
 
   // Session timeout — 1 hora de inactividad, warning 5 min antes
@@ -1033,12 +1030,8 @@ function App() {
           <input ref={jurisInputRef} type="file" onChange={handleJurisUpload} style={{display:"none"}} accept=".pdf,.doc,.docx,.txt" />
 
           {/* Primer uso — sin workspaces */}
-          {activeTab === 'chat' && projects.length === 0 && (
-            <PrimerUso onCreateWorkspace={() => setShowCreateProject(true)} />
-          )}
-
-          {/* Chat */}
-          {activeTab === 'chat' && projects.length > 0 && (
+          {/* Chat — siempre visible para mostrar bienvenida */}
+          {activeTab === 'chat' && (
             <div style={{display:'flex',height:'100%',overflow:'hidden'}}>
               {/* Session Panel sidebar */}
               <div style={{width:showSessions?220:0,minWidth:0,overflow:'hidden',borderRight:showSessions?'1px solid var(--border-subtle)':'none',transition:'width 0.2s',flexShrink:0,background:'var(--bg-secondary)'}}>
@@ -1145,6 +1138,7 @@ function App() {
                 isDeepAnalysis={isDeepAnalysis}
                 selectedProject={selectedProject}
                 projects={projects}
+                noWorkspaces={projects.length === 0}
                 onProjectSelect={(id) => { setSelectedProject(id); setActiveFolderId(null); }}
                 onCreateProject={() => setShowCreateProject(true)}
                 inputMessage={inputMessage}

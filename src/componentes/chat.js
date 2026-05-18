@@ -242,7 +242,9 @@ export const Chat = ({
   onUploadClick,
   clpState = null,
   onClpAction,
-  lastUserMsgRef,}) => {
+  lastUserMsgRef,
+  noWorkspaces = false,
+}) => {
   const { user } = useAuth();
   const getUserInitials = () => {
     if (!user) return 'Tu';
