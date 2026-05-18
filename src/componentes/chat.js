@@ -388,10 +388,10 @@ export const Chat = ({
                 <h2 className="chat-empty-title">{greeting}</h2>
                 <p className="chat-empty-subtitle">
                   {selectedProject && uploadedFiles.length === 0
-                    ? 'Este proyecto todavía no tiene documentos. Subí expedientes, contratos o escritos para que Iurivia pueda consultarlos.'
+                    ? 'Este workspace todavía no tiene documentos. Subí expedientes, contratos o escritos para que Iurivia pueda consultarlos.'
                     : selectedProject
                     ? 'Hacé una pregunta sobre tus documentos o sobre cualquier tema.'
-                    : 'Seleccioná un proyecto en el panel lateral para comenzar.'}
+                    : 'Seleccioná un workspace en el panel lateral para comenzar.'}
                 </p>
             {selectedProject && uploadedFiles.length === 0 && onUploadClick && (
               <button className="chat-empty-cta-btn chat-empty-cta-btn--secondary" onClick={onUploadClick} style={{marginBottom:'var(--space-3)'}}>

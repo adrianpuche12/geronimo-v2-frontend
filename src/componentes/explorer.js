@@ -733,7 +733,7 @@ export const Explorer = ({
             ) : displayDocs.length === 0 ? (
               <div className="exp-docs-empty">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" style={{color:'var(--text-disabled)',marginBottom:'var(--space-2)'}}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                <p className="exp-docs-empty-title">{activeFolderId ? 'Esta carpeta está vacía' : 'Este proyecto no tiene documentos'}</p>
+                <p className="exp-docs-empty-title">{activeFolderId ? 'Esta carpeta está vacía' : 'Este workspace no tiene documentos'}</p>
                 <p className="exp-docs-empty-desc">Subí expedientes, contratos o escritos en PDF o Word. Iurivia los indexará para que puedas consultarlos desde el chat.</p>
                 {onUpload && <button className="exp-btn exp-btn--primary exp-btn--sm" style={{marginTop:'var(--space-4)'}} onClick={onUpload}>+ Subir primer documento</button>}
                 <p className="exp-docs-empty-hint">También podés arrastrar archivos a esta ventana</p>
