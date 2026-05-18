@@ -5,6 +5,8 @@ import remarkGfm from 'remark-gfm';
 const API_URL = process.env.REACT_APP_API_URL || '/api';
 import { formatDate, formatFileSize } from './utilities';
 import { ProgressOverlay } from './ProgressOverlay';
+import { WorkspaceMembers } from './WorkspaceMembers';
+import { WorkspaceNotas } from './WorkspaceNotas';
 
 const IconFolder = ({ open }) => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -397,6 +399,7 @@ export const Explorer = ({
   can,
 }) => {
   const [view, setView] = useState('projects');
+  const [workspaceTab, setWorkspaceTab] = useState('documentos'); // documentos | miembros | notas
   const [hoveredProject, setHoveredProject] = useState(null);
   const [folders, setFolders] = useState([]);
   const [docs, setDocs] = useState([]);
@@ -596,12 +599,12 @@ export const Explorer = ({
     <section className="exp-root">
       <div className="exp-header" style={{flexDirection:'column',alignItems:'flex-start',gap:'var(--space-2)',padding:'var(--space-3) var(--space-6)'}}>
         <nav className="exp-breadcrumb">
-          <button className="exp-bc-btn" onClick={() => { setView('projects'); onFolderSelect(null); }}>
+          <button className="exp-bc-btn" onClick={() => { setView('projects'); onFolderSelect(null); setWorkspaceTab('documentos'); }}>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
             Proyectos
           </button>
           <span className="exp-bc-sep">/</span>
-          <button className="exp-bc-btn" onClick={() => onFolderSelect(null)}>
+          <button className="exp-bc-btn" onClick={() => { onFolderSelect(null); setWorkspaceTab('documentos'); }}>
             {activeProject ? activeProject.name : 'Proyecto'}
           </button>
           {activeFolderObj && (() => {
@@ -619,9 +622,33 @@ export const Explorer = ({
             ));
           })()}
         </nav>
+
+        {/* Sub-tabs del workspace */}
+        <div style={{ display: 'flex', gap: 'var(--space-1)', marginTop: 'var(--space-2)' }}>
+          {['documentos', 'miembros', 'notas'].map(tab => (
+            <button key={tab} onClick={() => setWorkspaceTab(tab)}
+              style={{
+                padding: '3px 10px', fontSize: 'var(--text-xs)', fontWeight: 500,
+                borderRadius: 'var(--radius-full)', border: 'none', cursor: 'pointer',
+                background: workspaceTab === tab ? 'var(--bg-accent-muted)' : 'transparent',
+                color: workspaceTab === tab ? 'var(--text-accent)' : 'var(--text-muted)',
+                textTransform: 'capitalize',
+              }}>
+              {tab}
+            </button>
+          ))}
+        </div>
       </div>
 
-      <div className="exp-body">
+      {/* Render del tab activo */}
+      {workspaceTab === 'miembros' && activeProject && (
+        <WorkspaceMembers workspaceId={activeProject.id} miRol={activeProject.workspace_rol || 'RESPONSABLE'} />
+      )}
+      {workspaceTab === 'notas' && activeProject && (
+        <WorkspaceNotas workspaceId={activeProject.id} miRol={activeProject.workspace_rol || 'RESPONSABLE'} />
+      )}
+
+      {workspaceTab === 'documentos' && <div className="exp-body">
         <div className="exp-panel-left">
           <div className="exp-panel-title">
             <span>Carpetas</span>
@@ -1276,6 +1303,7 @@ export const Explorer = ({
           </div>
         </div>
       )}
+      </div>}
     </section>
   );
 };
