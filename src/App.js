@@ -1065,6 +1065,18 @@ function App() {
                               onClick={() => { setSelectedProject(p.id); setActiveFolderId(null); setActiveFolderName(null); setExpandedProject(expandedProject === p.id ? null : p.id); fetchFolders(p.id); }}>
                               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
                               <span style={{flex:1}}>{p.name}</span>
+                              {p.workspace_rol && p.workspace_rol !== 'RESPONSABLE' && (
+                                <span style={{
+                                  fontSize:9, fontWeight:600, letterSpacing:'0.06em',
+                                  padding:'1px 5px', borderRadius:'var(--radius-full)',
+                                  background: p.workspace_rol === 'COLABORADOR' ? 'var(--bg-accent-muted)' : 'var(--bg-surface-3)',
+                                  color: p.workspace_rol === 'COLABORADOR' ? 'var(--text-accent)' : 'var(--text-muted)',
+                                  border: `1px solid ${p.workspace_rol === 'COLABORADOR' ? 'var(--border-accent)' : 'var(--border-default)'}`,
+                                  flexShrink:0, textTransform:'uppercase',
+                                }}>
+                                  {p.workspace_rol === 'COLABORADOR' ? 'COLAB' : 'LECTOR'}
+                                </span>
+                              )}
                               {p.id === selectedProject && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" style={{flexShrink:0}}><polyline points="20 6 9 17 4 12"/></svg>}
                               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{opacity:0.4,flexShrink:0,marginLeft:4}}>{expandedProject === p.id ? <polyline points="18 15 12 9 6 15"/> : <polyline points="6 9 12 15 18 9"/>}</svg>
                             </button>
@@ -1602,11 +1614,33 @@ function App() {
                 </div>
               )}
             </div>
-            <div className="modal-actions">
-              <button className="btn-cancel" onClick={() => setShowEditProject(false)}>Cancelar</button>
-              <button className="btn-create" onClick={handleUpdateProject} disabled={!editProjectName.trim() || isLoading}>
-                {isLoading ? 'Guardando...' : 'Guardar Cambios'}
+            <div className="modal-actions" style={{justifyContent:'space-between'}}>
+              <button
+                onClick={async () => {
+                  if (!editingProject) return;
+                  setConfirmModal({ show: true, type: 'workspace', name: editingProject.name,
+                    onConfirm: async () => {
+                      try {
+                        await axios.patch(`${API_URL}/workspaces/${editingProject.id}/archive`);
+                        setShowEditProject(false);
+                        if (selectedProject === editingProject.id) setSelectedProject('');
+                        await loadProjects();
+                        showToast(`Workspace "${editingProject.name}" archivado.`, 'success');
+                      } catch { showToast('Error al archivar el workspace.', 'error'); }
+                    }
+                  });
+                }}
+                style={{padding:'0 var(--space-3)',height:'var(--btn-height-md)',background:'transparent',
+                  border:'1px solid var(--border-error)',borderRadius:'var(--radius-sm)',
+                  color:'var(--text-error)',fontSize:'var(--text-sm)',cursor:'pointer'}}>
+                Archivar
               </button>
+              <div style={{display:'flex',gap:'var(--space-2)'}}>
+                <button className="btn-cancel" onClick={() => setShowEditProject(false)}>Cancelar</button>
+                <button className="btn-create" onClick={handleUpdateProject} disabled={!editProjectName.trim() || isLoading}>
+                  {isLoading ? 'Guardando...' : 'Guardar Cambios'}
+                </button>
+              </div>
             </div>
           </div>
         </div>
