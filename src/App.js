@@ -693,6 +693,7 @@ function App() {
         response = await axios.post(`${API_URL}/sessions/${activeSession.id}/query`, {
           question: inputMessage, projectId: selectedProject,
           domain: projects.find(p => p.id === selectedProject)?.domain || 'general',
+          folderId: activeFolderId || undefined,
         });
       } else {
         // Create a new session automatically on first message
@@ -703,10 +704,11 @@ function App() {
           response = await axios.post(`${API_URL}/sessions/${newSess.data.id}/query`, {
             question: inputMessage, projectId: selectedProject,
             domain: projects.find(p => p.id === selectedProject)?.domain || 'general',
+            folderId: activeFolderId || undefined,
           });
         } catch (_e) {
           // Fallback to stateless query if session creation fails
-          response = await axios.post(`${API_URL}/ai/query`, { projectId: selectedProject, question: inputMessage, mode: selectedMode, history, domain: projects.find(p => p.id === selectedProject)?.domain || 'general' });
+          response = await axios.post(`${API_URL}/ai/query`, { projectId: selectedProject, question: inputMessage, mode: selectedMode, history, domain: projects.find(p => p.id === selectedProject)?.domain || 'general', folderId: activeFolderId || undefined });
         }
       }
       // Actualizar estado CLP si la respuesta lo incluye
