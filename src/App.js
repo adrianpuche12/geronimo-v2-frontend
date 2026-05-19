@@ -956,9 +956,25 @@ function App() {
       + '<div class="foot">Generado por Geronimo &middot; ' + now + '</div>'
       + '</body></html>';
     const w = window.open('', '_blank', 'width=860,height=700');
+    if (!w) {
+      // El navegador bloqueó la ventana emergente. Avisar y abortar.
+      showToast('El navegador bloqueó la ventana emergente. Habilitá pop-ups para iurivia.com y volvé a intentar.', 'warning', 7000);
+      return;
+    }
+    // Esperar a que la nueva ventana termine de renderizar antes de imprimir.
+    // El setTimeout(350) original era frágil: si el contenido tardaba más en
+    // pintarse, w.print() corría sobre una ventana en blanco y el diálogo de
+    // impresión nunca se abría (bug reportado por el tester en ej. 18).
+    w.addEventListener('load', () => {
+      // pequeño delay de gracia para asegurar render de estilos + fuentes
+      setTimeout(() => { try { w.print(); } catch (_e) {} }, 100);
+    });
+    w.document.open();
     w.document.write(html);
     w.document.close();
-    setTimeout(() => w.print(), 350);
+    // Mensaje claro al usuario: lo que se abre es el diálogo de impresión.
+    // El "PDF" se obtiene eligiendo "Guardar como PDF" en ese diálogo.
+    showToast('Se abrirá el diálogo de impresión — elegí "Guardar como PDF" para descargar.', 'info', 5000);
   };
 
   // ── RENDER ───────────────────────────────────────────────────────────────────
