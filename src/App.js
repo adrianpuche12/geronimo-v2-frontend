@@ -324,7 +324,7 @@ function App() {
       });
       const projectId = response.data.id;
       const filesToUpload = [...plannedFiles];
-      setNewProjectName(''); setNewProjectDescription(''); setNewProjectArea(''); setNewProjectObjects([]); setNewProjectObjectCustom(''); setNewProjectParties([]); setNewProjectPartiesCustom(''); setNewProjectCustomLaws(''); setPlannedFolders([]); setPlannedFiles([]); setShowCreateProject(false);
+      setNewProjectName(''); setNewProjectDescription(''); setNewProjectArea(''); setNewProjectObjects([]); setNewProjectObjectCustom(''); setNewProjectParties([]); setNewProjectPartiesCustom(''); setNewProjectCustomLaws(''); setPlannedFolders([]); setPlannedFiles([]); setShowCreateProject(false); setCreateStep(0);
 
       const tempToReal = {};
       if (foldersToCreate.length > 0) {
