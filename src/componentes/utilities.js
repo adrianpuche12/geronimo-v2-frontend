@@ -13,7 +13,7 @@ export const ExportMenu = ({ message, onClose, exportAIResponse, exportToPDF }) 
         Word (.docx)
       </button>
       <button onClick={() => { exportToPDF && exportToPDF(message); onClose(); }}>
-        PDF (imprimir)
+        PDF (vía Imprimir → Guardar como PDF)
       </button>
       <button onClick={() => { exportAIResponse(message, 'txt'); onClose(); }}>
         Texto (.txt)

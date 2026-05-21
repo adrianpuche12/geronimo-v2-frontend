@@ -855,7 +855,7 @@ export const Explorer = ({
                   Analizar {selectedDocs.length} {selectedDocs.length === 1 ? 'documento' : 'documentos'}
                 </span>
                 <span style={{fontSize:'var(--text-xs)',color:'var(--text-muted)'}}>
-                  Elegi que queres hacer con los documentos seleccionados
+                  Elegí qué querés hacer con los documentos seleccionados
                 </span>
               </div>
               <button
@@ -1101,7 +1101,7 @@ export const Explorer = ({
               <label style={{display:'block',marginBottom:'var(--space-2)',
                 fontSize:'var(--text-xs)',fontWeight:'var(--font-medium)',
                 color:'var(--text-muted)'}}>
-                Que queres hacer con estos documentos?
+                ¿Qué querés hacer con estos documentos?
               </label>
               <textarea
                 rows={3}
@@ -1113,7 +1113,7 @@ export const Explorer = ({
                   compareMode === 'positions'       ? 'Ej: donde puede ceder cada parte sin violar los minimos legales' :
                   compareMode === 'qa'              ? 'Ej: cuantos de estos contratos vencen antes de junio de 2026' :
                   compareMode === 'extract'         ? 'Ej: necesito partes, monto mensual, plazo y fecha de vencimiento' :
-                  'Describe que queres hacer...'
+                  'Describí qué querés hacer...'
                 }
                 value={compareQuestion}
                 onChange={e => setCompareQuestion(e.target.value)}
