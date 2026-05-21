@@ -38,6 +38,6 @@ jobs:
             cd /opt/iurivia/prod &&
             docker compose pull iurivia-frontend &&
             docker compose up -d iurivia-frontend &&
-            docker image prune -f
+            docker image prune -f || true
           "
           rm /tmp/deploy_key
