@@ -61,6 +61,7 @@ function App() {
   const [newProjectPartiesCustom, setNewProjectPartiesCustom] = useState('');
   const [newProjectCustomLaws, setNewProjectCustomLaws] = useState('');
   const [onboardingOptions, setOnboardingOptions] = useState(null);
+  const [onboardingOptionsError, setOnboardingOptionsError] = useState(false);
   const [editProjectArea, setEditProjectArea] = useState('');
   const [editProjectObjects, setEditProjectObjects] = useState([]);
   const [editProjectObjectCustom, setEditProjectObjectCustom] = useState('');
@@ -211,10 +212,13 @@ function App() {
   }, [getToken]);
 
   const loadOnboardingOptions = React.useCallback(async () => {
+    setOnboardingOptionsError(false);
     try {
       const r = await axios.get(`${API_URL}/projects/onboarding-options`);
       setOnboardingOptions(r.data);
-    } catch (_) {}
+    } catch (_) {
+      setOnboardingOptionsError(true);
+    }
   }, []);
 
   // Cargar opciones de onboarding cuando se abre el modal de crear/editar
@@ -1448,21 +1452,32 @@ function App() {
                   <p style={{color:'var(--text-tertiary)',fontSize:'var(--text-sm)',marginBottom:'var(--space-4)',margin:'0 0 var(--space-4)'}}>
                     ¿Cuál es el área jurídica principal de este proyecto?
                   </p>
-                  <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'var(--space-2)'}}>
-                    {(onboardingOptions?.legal_domains || []).map(d => (
-                      <button key={d.value}
-                        onClick={() => { setNewProjectArea(d.value); setNewProjectObjects([]); setNewProjectObjectCustom(''); }}
-                        style={{padding:'var(--space-3)',borderRadius:'var(--radius-md)',border:'1px solid',
-                          borderColor: newProjectArea === d.value ? 'var(--accent)' : 'var(--border-default)',
-                          background: newProjectArea === d.value ? 'var(--bg-accent-subtle)' : 'var(--bg-surface-2)',
-                          color: newProjectArea === d.value ? 'var(--text-accent)' : 'var(--text-secondary)',
-                          cursor:'pointer',textAlign:'left',fontSize:'var(--text-sm)',
-                          fontWeight: newProjectArea === d.value ? 'var(--font-semibold)' : 'var(--font-regular)',
-                          transition:'all var(--duration-fast)',lineHeight:1.4}}>
-                        {d.label}
-                      </button>
-                    ))}
-                  </div>
+                  {onboardingOptionsError || (onboardingOptions && (onboardingOptions.legal_domains || []).length === 0) ? (
+                    <div style={{padding:'var(--space-4)',borderRadius:'var(--radius-md)',border:'1px solid var(--border-default)',background:'var(--bg-surface-2)',textAlign:'center'}}>
+                      <p style={{color:'var(--text-secondary)',fontSize:'var(--text-sm)',marginBottom:'var(--space-3)'}}>
+                        No se pudieron cargar las áreas del derecho. Puede ser un problema de conexión momentáneo.
+                      </p>
+                      <button className="btn-cancel" onClick={loadOnboardingOptions}>Reintentar</button>
+                    </div>
+                  ) : !onboardingOptions ? (
+                    <p style={{color:'var(--text-tertiary)',fontSize:'var(--text-sm)'}}>Cargando áreas del derecho...</p>
+                  ) : (
+                    <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'var(--space-2)'}}>
+                      {(onboardingOptions?.legal_domains || []).map(d => (
+                        <button key={d.value}
+                          onClick={() => { setNewProjectArea(d.value); setNewProjectObjects([]); setNewProjectObjectCustom(''); }}
+                          style={{padding:'var(--space-3)',borderRadius:'var(--radius-md)',border:'1px solid',
+                            borderColor: newProjectArea === d.value ? 'var(--accent)' : 'var(--border-default)',
+                            background: newProjectArea === d.value ? 'var(--bg-accent-subtle)' : 'var(--bg-surface-2)',
+                            color: newProjectArea === d.value ? 'var(--text-accent)' : 'var(--text-secondary)',
+                            cursor:'pointer',textAlign:'left',fontSize:'var(--text-sm)',
+                            fontWeight: newProjectArea === d.value ? 'var(--font-semibold)' : 'var(--font-regular)',
+                            transition:'all var(--duration-fast)',lineHeight:1.4}}>
+                          {d.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 <div className="modal-actions">
                   <button className="btn-cancel" onClick={() => setCreateStep(0)}>← Atrás</button>
