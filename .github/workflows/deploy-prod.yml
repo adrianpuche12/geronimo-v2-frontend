@@ -26,7 +26,7 @@ jobs:
           push: true
           tags: adrianpuche/iurivia-frontend:latest
           build-args: |
-            REACT_APP_API_URL=https://api.lexiius.com/api
+            REACT_APP_API_URL=http://62.171.160.238:3005/api
             REACT_APP_SUPABASE_URL=${{ secrets.SUPABASE_URL }}
             REACT_APP_SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
 
