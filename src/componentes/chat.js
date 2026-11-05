@@ -481,7 +481,7 @@ export const Chat = ({
                         components={markdownComponents}
                       >
                         {message.content
-                          .replace(/\[CLP-T:[^\]]*\]\s*[-—]?\s*[^\n]*/gi, '')
+                          .replace(/\[CLP-[A-Z]:[^\]]*\]\s*[-—]?\s*[^\n]*/gi, '')
                           .trim()}
                       </ReactMarkdown>
                     ) : (
