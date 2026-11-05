@@ -19,6 +19,9 @@ RUN npm run build
 
 FROM nginx:alpine AS production
 COPY --from=builder /app/build /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# La imagen oficial de nginx pasa los templates por envsubst al arrancar
+# (solo reemplaza variables definidas: $uri y las demás de nginx quedan intactas).
+COPY nginx.conf /etc/nginx/templates/default.conf.template
+ENV AUTH_GATEWAY=http://iurivia-gateway
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
